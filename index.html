@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Stock</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- =========================
+         헤더
+    ========================== -->
+
+    <header>
+        <h1>📈 MY STOCK</h1>
+        <p>개인 투자 대시보드</p>
+    </header>
+
+
+    <!-- =========================
+         주요 시장
+    ========================== -->
+
+    <section class="market-index">
+
+        <h2>📊 주요 시장</h2>
+
+<div class="index-grid">
+
+    <!-- KOSPI -->
+    <div class="index-card">
+        <div class="index-name">🇰🇷 코스피</div>
+
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+
+            <script type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
+                async>
+            {
+                "symbol": "KRX:KOSPI",
+                "width": "100%",
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "locale": "kr"
+            }
+            </script>
+        </div>
+    </div>
+
+
+    <!-- KOSDAQ -->
+    <div class="index-card">
+        <div class="index-name">🇰🇷 코스닥</div>
+
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+
+            <script type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
+                async>
+            {
+                "symbol": "KRX:KOSDAQ",
+                "width": "100%",
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "locale": "kr"
+            }
+            </script>
+        </div>
+    </div>
+
+
+    <!-- USD/KRW -->
+    <div class="index-card">
+        <div class="index-name">💵 USD/KRW</div>
+
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+
+            <script type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
+                async>
+            {
+                "symbol": "FX:USDKRW",
+                "width": "100%",
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "locale": "kr"
+            }
+            </script>
+        </div>
+    </div>
+
+
+    <!-- NASDAQ -->
+    <div class="index-card">
+        <div class="index-name">🇺🇸 나스닥</div>
+
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+
+            <script type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
+                async>
+            {
+                "symbol": "NASDAQ:IXIC",
+                "width": "100%",
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "locale": "kr"
+            }
+            </script>
+        </div>
+    </div>
+
+
+    <!-- S&P 500 -->
+    <div class="index-card">
+        <div class="index-name">🇺🇸 S&P 500</div>
+
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+
+            <script type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
+                async>
+            {
+                "symbol": "SP:SPX",
+                "width": "100%",
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "locale": "kr"
+            }
+            </script>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- =========================
+         총 평가금
+    ========================== -->
+
+    <section class="summary">
+
+        <div class="card total">
+
+            <h3>총 평가금</h3>
+
+            <h2 id="totalAsset">₩0</h2>
+
+            <p id="todayProfit">+0.00%</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         국내주식
+    ========================== -->
+
+    <section class="market">
+
+        <h2>🇰🇷 국내주식</h2>
+
+        <div id="koreaStocks">
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        KODEX 미국나스닥100 데일리커버드콜OTM
+                    </div>
+
+                    <div class="share">
+                        28주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="kodexPrice">--</div>
+                    <div id="kodexValue">--</div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        RISE 미국AI밸류체인
+                    </div>
+
+                    <div class="share">
+                        7주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="risePrice">--</div>
+                    <div id="riseValue">--</div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        SOL 팔란티어커버드콜
+                    </div>
+
+                    <div class="share">
+                        28주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="solPrice">--</div>
+                    <div id="solValue">--</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         미국주식
+    ========================== -->
+
+    <section class="market">
+
+        <h2>🇺🇸 미국주식</h2>
+
+        <div id="usaStocks">
+
+
+            <!-- NVDY -->
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        NVDY
+                    </div>
+
+                    <div class="share">
+                        14주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="NVDY-price">--</div>
+                    <div id="NVDY-value">--</div>
+
+                </div>
+
+            </div>
+
+
+            <!-- QQQM -->
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        QQQM
+                    </div>
+
+                    <div class="share">
+                        0.759174주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="QQQM-price">--</div>
+                    <div id="QQQM-value">--</div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SCHD -->
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        SCHD
+                    </div>
+
+                    <div class="share">
+                        5주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="SCHD-price">--</div>
+                    <div id="SCHD-value">--</div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SK ADR -->
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        SK ADR
+                    </div>
+
+                    <div class="share">
+                        3주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="SK-price">--</div>
+                    <div id="SK-value">--</div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SPMO -->
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        SPMO
+                    </div>
+
+                    <div class="share">
+                        1.336567주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="SPMO-price">--</div>
+                    <div id="SPMO-value">--</div>
+
+                </div>
+
+            </div>
+
+
+            <!-- VIG -->
+
+            <div class="stock">
+
+                <div class="left">
+
+                    <div class="name">
+                        VIG
+                    </div>
+
+                    <div class="share">
+                        0.651781주
+                    </div>
+
+                </div>
+
+                <div class="right">
+
+                    <div id="VIG-price">--</div>
+                    <div id="VIG-value">--</div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- JavaScript -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+
+body{
+    background:#0f1115;
+    color:#fff;
+}
+
+.container{
+    max-width:500px;
+    margin:auto;
+    padding:20px;
+}
+
+header{
+    margin-bottom:25px;
+}
+
+header h1{
+    font-size:32px;
+    font-weight:700;
+}
+
+header p{
+    color:#9ca3af;
+    margin-top:5px;
+}
+
+.card{
+    background:#1b1f27;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,.35);
+}
+
+.total h3{
+    color:#9ca3af;
+    font-size:15px;
+}
+
+.total h2{
+    margin-top:10px;
+    font-size:34px;
+}
+
+.total p{
+    margin-top:8px;
+    color:#22c55e;
+    font-size:17px;
+}
+
+.market{
+    margin-bottom:35px;
+}
+
+.market h2{
+    margin-bottom:15px;
+    font-size:20px;
+}
+
+.stock{
+    background:#1b1f27;
+    border-radius:16px;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+    transition:.25s;
+}
+
+.stock:active{
+    transform:scale(.98);
+}
+
+.left{
+    width:65%;
+}
+
+.name{
+    font-size:17px;
+    font-weight:600;
+}
+
+.share{
+    color:#9ca3af;
+    margin-top:5px;
+    font-size:14px;
+}
+
+.right{
+    text-align:right;
+}
+
+.right div:first-child{
+    font-size:17px;
+    font-weight:bold;
+}
+
+.right div:last-child{
+    margin-top:5px;
+    color:#22c55e;
+    font-size:14px;
+}
+
+.up{
+    color:#ef4444 !important;
+}
+
+.down{
+    color:#3b82f6 !important;
+}
+
+@media(max-width:480px){
+
+header h1{
+    font-size:28px;
+}
+
+.total h2{
+    font-size:28px;
+}
+
+.name{
+    font-size:15px;
+}
+
+}
