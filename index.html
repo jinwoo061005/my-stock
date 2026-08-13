@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MY STOCK</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<h1>📈 MY STOCK</h1>
+
+<p>Personal Investment Dashboard</p>
+
+</header>
+
+
+<section class="market-index">
+
+<h3>🇰🇷 한국시장</h3>
+
+<div class="market-grid">
+
+    <div class="market-card">
+        <div class="market-name">코스피</div>
+        <div id="KOSPI-price">--</div>
+    </div>
+
+    <div class="market-card">
+        <div class="market-name">코스닥</div>
+        <div id="KOSDAQ-price">--</div>
+    </div>
+
+</div>
+
+<h3>🇺🇸 미국시장</h3>
+
+<div class="market-grid">
+
+    <div class="market-card">
+        <div class="market-name">S&P 500</div>
+        <div id="SP500-price">--</div>
+    </div>
+
+    <div class="market-card">
+        <div class="market-name">Nasdaq 100</div>
+        <div id="NASDAQ-price">--</div>
+    </div>
+
+</div>
+
+<h3>💱 환율</h3>
+
+<div class="market-card exchange-card">
+
+    <div class="market-name">USD / KRW</div>
+
+    <div id="USD-KRW-price">--</div>
+
+</div>
+
+</section>
+
+
+<section class="summary">
+
+<div class="card total">
+
+<h3>총 평가금</h3>
+
+<h2 id="totalAsset">₩0</h2>
+
+<p id="usdAsset">$0.00</p>
+
+<div class="today-box">
+
+    <div class="today-title">오늘 손익</div>
+    <div id="todayWon"></div>
+
+    <div class="today-title">달러 손익</div>
+    <div id="todayDollar"></div>
+
+    <div class="today-title">일간 수익률</div>
+    <div id="todayProfit"></div>
+
+</div>
+<div id="todayDollar"></div>
+
+<div id="todayWon"></div>
+
+<button id="refreshBtn">🔄 새로고침</button>
+
+<p id="lastUpdate">업데이트 : --</p>
+
+</div>
+
+</section>
+
+
+<section class="market">
+
+<h2>🇰🇷 국내 ETF</h2>
+
+<div id="koreaStocks">
+  <!-- ===========================
+     🇰🇷 국내 ETF
+=========================== -->
+
+<div class="stock">
+
+    <div class="left">
+        <div class="name">
+            KODEX 미국나스닥100 데일리커버드콜OTM
+        </div>
+
+        <div class="share">
+            28주
+        </div>
+    </div>
+
+    <div class="right">
+        <div id="kodex-price">--</div>
+        <div id="kodex-value">--</div>
+    </div>
+
+</div>
+
+
+<div class="stock">
+
+    <div class="left">
+        <div class="name">
+            RISE 미국AI밸류체인
+        </div>
+
+        <div class="share">
+            7주
+        </div>
+    </div>
+
+    <div class="right">
+        <div id="rise-price">--</div>
+        <div id="rise-value">--</div>
+    </div>
+
+</div>
+
+
+<div class="stock">
+
+    <div class="left">
+        <div class="name">
+            SOL 팔란티어커버드콜
+        </div>
+
+        <div class="share">
+            28주
+        </div>
+    </div>
+
+    <div class="right">
+        <div id="sol-price">--</div>
+        <div id="sol-value">--</div>
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ===========================
+     🇺🇸 미국주식
+=========================== -->
+
+<section class="market">
+
+<h2>🇺🇸 미국주식</h2>
+
+<div id="usaStocks">
+
+
+<div class="stock">
+
+<div class="left">
+<div class="name">NVDY</div>
+<div class="share">14주</div>
+</div>
+
+<div class="right">
+<div id="NVDY-price">--</div>
+<div id="NVDY-value">--</div>
+</div>
+
+</div>
+
+
+
+<div class="stock">
+
+<div class="left">
+<div class="name">QQQM</div>
+<div class="share">0.759174주</div>
+</div>
+
+<div class="right">
+<div id="QQQM-price">--</div>
+<div id="QQQM-value">--</div>
+</div>
+
+</div>
+
+
+
+<div class="stock">
+
+<div class="left">
+<div class="name">SCHD</div>
+<div class="share">5주</div>
+</div>
+
+<div class="right">
+<div id="SCHD-price">--</div>
+<div id="SCHD-value">--</div>
+</div>
+
+</div>
+
+
+
+<div class="stock">
+
+<div class="left">
+<div class="name">SK하이닉스 ADR</div>
+<div class="share">3주</div>
+</div>
+
+<div class="right">
+<div id="SK-price">--</div>
+<div id="SK-value">--</div>
+</div>
+
+</div>
+
+
+
+<div class="stock">
+
+<div class="left">
+<div class="name">SPMO</div>
+<div class="share">1.336567주</div>
+</div>
+
+<div class="right">
+<div id="SPMO-price">--</div>
+<div id="SPMO-value">--</div>
+</div>
+
+</div>
+
+
+
+<div class="stock">
+
+<div class="left">
+<div class="name">VIG</div>
+<div class="share">0.651781주</div>
+</div>
+
+<div class="right">
+<div id="VIG-price">--</div>
+<div id="VIG-value">--</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ===========================
+     포트폴리오 차트
+=========================== -->
+
+<section class="chart-section">
+
+<h2>🥧 포트폴리오 비중</h2>
+
+<canvas id="portfolioChart"></canvas>
+
+</section>
+<!-- ===========================
+     푸터
+=========================== -->
+
+<footer>
+
+<p>
+© 2026 MY STOCK Dashboard
+</p>
+
+</footer>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
