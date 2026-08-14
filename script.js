@@ -1,3 +1,4 @@
+console.log("SCRIPT LOADED");
 const API_URL = "/api/quote";
 
 const stocks = [
