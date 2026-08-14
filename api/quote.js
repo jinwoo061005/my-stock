@@ -13,29 +13,26 @@ export default async function handler(req, res) {
       "QQQM",
       "SCHD",
       "SPMO",
-      "SKADR",
       "VIG"
     ];
 
     const result = {};
 
     for (const symbol of symbols) {
-      const url =
-        `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`;
+      const response = await fetch(
+        `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`
+      );
 
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        continue;
-      }
+      if (!response.ok) continue;
 
       const data = await response.json();
 
-      if (data.c && data.c > 0) {
+      if (data.c > 0) {
         result[symbol] = data.c;
       }
     }
 
+    // USD/KRW 환율
     const fxResponse = await fetch(
       `https://finnhub.io/api/v1/forex/rates?base=USD&token=${API_KEY}`
     );
@@ -44,14 +41,14 @@ export default async function handler(req, res) {
       const fxData = await fxResponse.json();
 
       if (fxData.quote && fxData.quote.KRW) {
-        result.USD_KRW = fxData.quote.KRW;
+        result.USD_KRW = Number(fxData.quote.KRW);
       }
     }
 
     return res.status(200).json(result);
 
   } catch (error) {
-    console.error("QUOTE ERROR:", error);
+    console.error(error);
 
     return res.status(500).json({
       error: error.message
