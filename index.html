@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>My Stock</title>
+
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,161 +16,823 @@
 
   <h1>📈 My Stock</h1>
 
-  <!-- 총 평가금 -->
-  <div class="card">
+
+  <!-- =========================
+       총 평가금
+  ========================== -->
+
+  <div class="card total-card">
+
     <h2>총 평가금</h2>
+
     <div id="total-value">₩0</div>
+
     <div id="total-dollar">$0.00</div>
+
     <div id="total-profit">--</div>
+
   </div>
 
-  <!-- 주요 시장 -->
-  <div class="card">
+
+  <!-- =========================
+       주요 시장
+  ========================== -->
+
+  <div class="card market-card">
+
     <h2>주요 시장</h2>
 
-    <div>
-      USD/KRW
+    <div class="market-row">
+      <span>USD/KRW</span>
       <span id="usdkrw">--</span>
     </div>
 
-    <div>
-      S&P500
+    <div class="market-row">
+      <span>S&P500</span>
       <span id="sp500">--</span>
     </div>
 
-    <div>
-      Nasdaq
+    <div class="market-row">
+      <span>Nasdaq</span>
       <span id="nasdaq">--</span>
     </div>
 
-    <div>
-      KOSPI
+    <div class="market-row">
+      <span>KOSPI</span>
       <span id="kospi">--</span>
     </div>
 
-    <div>
-      KOSDAQ
+    <div class="market-row">
+      <span>KOSDAQ</span>
       <span id="kosdaq">--</span>
     </div>
 
   </div>
 
-  <!-- 보유 주식 -->
 
-  <div class="card stock-card">
+  <!-- =========================
+       보유 종목
+  ========================== -->
 
-    <div class="stock-header">
-      <div>
-        <h2>NVDY</h2>
-        <input id="NVDY-shares" type="number" step="0.000001" placeholder="보유수량">
-        <input id="NVDY-buy" type="number" step="0.01" placeholder="매수가">
+  <div id="stocks">
+
+
+    <!-- NVDY -->
+
+    <div class="stock-card card" data-symbol="NVDY">
+
+      <div class="stock-main">
+
+        <div class="stock-left">
+
+          <div class="stock-name">
+            NVDY
+          </div>
+
+          <div
+            class="stock-shares"
+            id="NVDY-shares-display">
+            0주
+          </div>
+
+        </div>
+
+
+        <div class="stock-right">
+
+          <div
+            class="stock-price"
+            id="NVDY-price">
+            --
+          </div>
+
+          <div
+            class="stock-value"
+            id="NVDY-value">
+            --
+          </div>
+
+          <div
+            class="stock-profit"
+            id="NVDY-profit">
+            --
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <div id="NVDY-price">--</div>
-        <div id="NVDY-value">--</div>
-        <div id="NVDY-profit">--</div>
+
+      <!-- 거래 상세 -->
+
+      <div
+        class="stock-detail"
+        id="NVDY-detail">
+
+        <div class="detail-row">
+          <span>보유수량</span>
+          <span id="NVDY-shares">0주</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평균매수가</span>
+          <span id="NVDY-average-buy">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가금</span>
+          <span id="NVDY-detail-value">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가손익</span>
+          <span id="NVDY-evaluation-profit">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>실현손익</span>
+          <span id="NVDY-realized-profit">₩0</span>
+        </div>
+
+        <div class="detail-row">
+          <span>총 수익률</span>
+          <span id="NVDY-total-profit">--</span>
+        </div>
+
+
+        <div class="trade-buttons">
+
+          <button
+            class="buy-button"
+            data-symbol="NVDY">
+            매수
+          </button>
+
+          <button
+            class="sell-button"
+            data-symbol="NVDY">
+            매도
+          </button>
+
+        </div>
+
+
+        <div
+          class="trade-form"
+          id="NVDY-trade-form">
+
+          <input
+            type="number"
+            id="NVDY-trade-shares"
+            placeholder="수량"
+            step="0.000001">
+
+          <input
+            type="number"
+            id="NVDY-trade-price"
+            placeholder="가격"
+            step="0.01">
+
+          <button
+            id="NVDY-trade-submit">
+            확인
+          </button>
+
+        </div>
+
       </div>
+
     </div>
 
-  </div>
 
+    <!-- QQQM -->
 
-  <div class="card stock-card">
+    <div class="stock-card card" data-symbol="QQQM">
 
-    <div class="stock-header">
-      <div>
-        <h2>QQQM</h2>
-        <input id="QQQM-shares" type="number" step="0.000001" placeholder="보유수량">
-        <input id="QQQM-buy" type="number" step="0.01" placeholder="매수가">
+      <div class="stock-main">
+
+        <div class="stock-left">
+
+          <div class="stock-name">
+            QQQM
+          </div>
+
+          <div
+            class="stock-shares"
+            id="QQQM-shares-display">
+            0주
+          </div>
+
+        </div>
+
+        <div class="stock-right">
+
+          <div
+            class="stock-price"
+            id="QQQM-price">
+            --
+          </div>
+
+          <div
+            class="stock-value"
+            id="QQQM-value">
+            --
+          </div>
+
+          <div
+            class="stock-profit"
+            id="QQQM-profit">
+            --
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <div id="QQQM-price">--</div>
-        <div id="QQQM-value">--</div>
-        <div id="QQQM-profit">--</div>
+
+      <div
+        class="stock-detail"
+        id="QQQM-detail">
+
+        <div class="detail-row">
+          <span>보유수량</span>
+          <span id="QQQM-shares">0주</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평균매수가</span>
+          <span id="QQQM-average-buy">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가금</span>
+          <span id="QQQM-detail-value">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가손익</span>
+          <span id="QQQM-evaluation-profit">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>실현손익</span>
+          <span id="QQQM-realized-profit">₩0</span>
+        </div>
+
+        <div class="detail-row">
+          <span>총 수익률</span>
+          <span id="QQQM-total-profit">--</span>
+        </div>
+
+
+        <div class="trade-buttons">
+
+          <button
+            class="buy-button"
+            data-symbol="QQQM">
+            매수
+          </button>
+
+          <button
+            class="sell-button"
+            data-symbol="QQQM">
+            매도
+          </button>
+
+        </div>
+
+
+        <div
+          class="trade-form"
+          id="QQQM-trade-form">
+
+          <input
+            type="number"
+            id="QQQM-trade-shares"
+            placeholder="수량"
+            step="0.000001">
+
+          <input
+            type="number"
+            id="QQQM-trade-price"
+            placeholder="가격"
+            step="0.01">
+
+          <button
+            id="QQQM-trade-submit">
+            확인
+          </button>
+
+        </div>
+
       </div>
+
     </div>
 
-  </div>
 
+    <!-- SCHD -->
 
-  <div class="card stock-card">
+    <div class="stock-card card" data-symbol="SCHD">
 
-    <div class="stock-header">
-      <div>
-        <h2>SCHD</h2>
-        <input id="SCHD-shares" type="number" step="0.000001" placeholder="보유수량">
-        <input id="SCHD-buy" type="number" step="0.01" placeholder="매수가">
+      <div class="stock-main">
+
+        <div class="stock-left">
+
+          <div class="stock-name">
+            SCHD
+          </div>
+
+          <div
+            class="stock-shares"
+            id="SCHD-shares-display">
+            0주
+          </div>
+
+        </div>
+
+        <div class="stock-right">
+
+          <div
+            class="stock-price"
+            id="SCHD-price">
+            --
+          </div>
+
+          <div
+            class="stock-value"
+            id="SCHD-value">
+            --
+          </div>
+
+          <div
+            class="stock-profit"
+            id="SCHD-profit">
+            --
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <div id="SCHD-price">--</div>
-        <div id="SCHD-value">--</div>
-        <div id="SCHD-profit">--</div>
+
+      <div
+        class="stock-detail"
+        id="SCHD-detail">
+
+        <div class="detail-row">
+          <span>보유수량</span>
+          <span id="SCHD-shares">0주</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평균매수가</span>
+          <span id="SCHD-average-buy">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가금</span>
+          <span id="SCHD-detail-value">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가손익</span>
+          <span id="SCHD-evaluation-profit">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>실현손익</span>
+          <span id="SCHD-realized-profit">₩0</span>
+        </div>
+
+        <div class="detail-row">
+          <span>총 수익률</span>
+          <span id="SCHD-total-profit">--</span>
+        </div>
+
+
+        <div class="trade-buttons">
+
+          <button
+            class="buy-button"
+            data-symbol="SCHD">
+            매수
+          </button>
+
+          <button
+            class="sell-button"
+            data-symbol="SCHD">
+            매도
+          </button>
+
+        </div>
+
+
+        <div
+          class="trade-form"
+          id="SCHD-trade-form">
+
+          <input
+            type="number"
+            id="SCHD-trade-shares"
+            placeholder="수량"
+            step="0.000001">
+
+          <input
+            type="number"
+            id="SCHD-trade-price"
+            placeholder="가격"
+            step="0.01">
+
+          <button
+            id="SCHD-trade-submit">
+            확인
+          </button>
+
+        </div>
+
       </div>
+
     </div>
 
-  </div>
 
+    <!-- SPMO -->
 
-  <div class="card stock-card">
+    <div class="stock-card card" data-symbol="SPMO">
 
-    <div class="stock-header">
-      <div>
-        <h2>SPMO</h2>
-        <input id="SPMO-shares" type="number" step="0.000001" placeholder="보유수량">
-        <input id="SPMO-buy" type="number" step="0.01" placeholder="매수가">
+      <div class="stock-main">
+
+        <div class="stock-left">
+
+          <div class="stock-name">
+            SPMO
+          </div>
+
+          <div
+            class="stock-shares"
+            id="SPMO-shares-display">
+            0주
+          </div>
+
+        </div>
+
+        <div class="stock-right">
+
+          <div
+            class="stock-price"
+            id="SPMO-price">
+            --
+          </div>
+
+          <div
+            class="stock-value"
+            id="SPMO-value">
+            --
+          </div>
+
+          <div
+            class="stock-profit"
+            id="SPMO-profit">
+            --
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <div id="SPMO-price">--</div>
-        <div id="SPMO-value">--</div>
-        <div id="SPMO-profit">--</div>
+
+      <div
+        class="stock-detail"
+        id="SPMO-detail">
+
+        <div class="detail-row">
+          <span>보유수량</span>
+          <span id="SPMO-shares">0주</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평균매수가</span>
+          <span id="SPMO-average-buy">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가금</span>
+          <span id="SPMO-detail-value">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가손익</span>
+          <span id="SPMO-evaluation-profit">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>실현손익</span>
+          <span id="SPMO-realized-profit">₩0</span>
+        </div>
+
+        <div class="detail-row">
+          <span>총 수익률</span>
+          <span id="SPMO-total-profit">--</span>
+        </div>
+
+
+        <div class="trade-buttons">
+
+          <button
+            class="buy-button"
+            data-symbol="SPMO">
+            매수
+          </button>
+
+          <button
+            class="sell-button"
+            data-symbol="SPMO">
+            매도
+          </button>
+
+        </div>
+
+
+        <div
+          class="trade-form"
+          id="SPMO-trade-form">
+
+          <input
+            type="number"
+            id="SPMO-trade-shares"
+            placeholder="수량"
+            step="0.000001">
+
+          <input
+            type="number"
+            id="SPMO-trade-price"
+            placeholder="가격"
+            step="0.01">
+
+          <button
+            id="SPMO-trade-submit">
+            확인
+          </button>
+
+        </div>
+
       </div>
+
     </div>
 
-  </div>
 
+    <!-- SKHY -->
 
-  <div class="card stock-card">
+    <div class="stock-card card" data-symbol="SKHY">
 
-    <div class="stock-header">
-      <div>
-        <h2>SKHY</h2>
-        <input id="SKHY-shares" type="number" step="0.000001" placeholder="보유수량">
-        <input id="SKHY-buy" type="number" step="0.01" placeholder="매수가">
+      <div class="stock-main">
+
+        <div class="stock-left">
+
+          <div class="stock-name">
+            SKHY
+          </div>
+
+          <div
+            class="stock-shares"
+            id="SKHY-shares-display">
+            0주
+          </div>
+
+        </div>
+
+        <div class="stock-right">
+
+          <div
+            class="stock-price"
+            id="SKHY-price">
+            --
+          </div>
+
+          <div
+            class="stock-value"
+            id="SKHY-value">
+            --
+          </div>
+
+          <div
+            class="stock-profit"
+            id="SKHY-profit">
+            --
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <div id="SKHY-price">--</div>
-        <div id="SKHY-value">--</div>
-        <div id="SKHY-profit">--</div>
+
+      <div
+        class="stock-detail"
+        id="SKHY-detail">
+
+        <div class="detail-row">
+          <span>보유수량</span>
+          <span id="SKHY-shares">0주</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평균매수가</span>
+          <span id="SKHY-average-buy">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가금</span>
+          <span id="SKHY-detail-value">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가손익</span>
+          <span id="SKHY-evaluation-profit">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>실현손익</span>
+          <span id="SKHY-realized-profit">₩0</span>
+        </div>
+
+        <div class="detail-row">
+          <span>총 수익률</span>
+          <span id="SKHY-total-profit">--</span>
+        </div>
+
+
+        <div class="trade-buttons">
+
+          <button
+            class="buy-button"
+            data-symbol="SKHY">
+            매수
+          </button>
+
+          <button
+            class="sell-button"
+            data-symbol="SKHY">
+            매도
+          </button>
+
+        </div>
+
+
+        <div
+          class="trade-form"
+          id="SKHY-trade-form">
+
+          <input
+            type="number"
+            id="SKHY-trade-shares"
+            placeholder="수량"
+            step="0.000001">
+
+          <input
+            type="number"
+            id="SKHY-trade-price"
+            placeholder="가격"
+            step="0.01">
+
+          <button
+            id="SKHY-trade-submit">
+            확인
+          </button>
+
+        </div>
+
       </div>
+
     </div>
 
-  </div>
 
+    <!-- VIG -->
 
-  <div class="card stock-card">
+    <div class="stock-card card" data-symbol="VIG">
 
-    <div class="stock-header">
-      <div>
-        <h2>VIG</h2>
-        <input id="VIG-shares" type="number" step="0.000001" placeholder="보유수량">
-        <input id="VIG-buy" type="number" step="0.01" placeholder="매수가">
+      <div class="stock-main">
+
+        <div class="stock-left">
+
+          <div class="stock-name">
+            VIG
+          </div>
+
+          <div
+            class="stock-shares"
+            id="VIG-shares-display">
+            0주
+          </div>
+
+        </div>
+
+        <div class="stock-right">
+
+          <div
+            class="stock-price"
+            id="VIG-price">
+            --
+          </div>
+
+          <div
+            class="stock-value"
+            id="VIG-value">
+            --
+          </div>
+
+          <div
+            class="stock-profit"
+            id="VIG-profit">
+            --
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <div id="VIG-price">--</div>
-        <div id="VIG-value">--</div>
-        <div id="VIG-profit">--</div>
+
+      <div
+        class="stock-detail"
+        id="VIG-detail">
+
+        <div class="detail-row">
+          <span>보유수량</span>
+          <span id="VIG-shares">0주</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평균매수가</span>
+          <span id="VIG-average-buy">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가금</span>
+          <span id="VIG-detail-value">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>평가손익</span>
+          <span id="VIG-evaluation-profit">--</span>
+        </div>
+
+        <div class="detail-row">
+          <span>실현손익</span>
+          <span id="VIG-realized-profit">₩0</span>
+        </div>
+
+        <div class="detail-row">
+          <span>총 수익률</span>
+          <span id="VIG-total-profit">--</span>
+        </div>
+
+
+        <div class="trade-buttons">
+
+          <button
+            class="buy-button"
+            data-symbol="VIG">
+            매수
+          </button>
+
+          <button
+            class="sell-button"
+            data-symbol="VIG">
+            매도
+          </button>
+
+        </div>
+
+
+        <div
+          class="trade-form"
+          id="VIG-trade-form">
+
+          <input
+            type="number"
+            id="VIG-trade-shares"
+            placeholder="수량"
+            step="0.000001">
+
+          <input
+            type="number"
+            id="VIG-trade-price"
+            placeholder="가격"
+            step="0.01">
+
+          <button
+            id="VIG-trade-submit">
+            확인
+          </button>
+
+        </div>
+
       </div>
+
     </div>
 
   </div>
 
 </div>
+
 
 <script src="script.js"></script>
 
