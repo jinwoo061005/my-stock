@@ -13,6 +13,7 @@ export default async function handler(req, res) {
       "QQQM",
       "SCHD",
       "SPMO",
+      "SKHY",
       "VIG"
     ];
 
@@ -29,19 +30,6 @@ export default async function handler(req, res) {
 
       if (data.c > 0) {
         result[symbol] = data.c;
-      }
-    }
-
-    // USD/KRW 환율
-    const fxResponse = await fetch(
-      `https://finnhub.io/api/v1/forex/rates?base=USD&token=${API_KEY}`
-    );
-
-    if (fxResponse.ok) {
-      const fxData = await fxResponse.json();
-
-      if (fxData.quote && fxData.quote.KRW) {
-        result.USD_KRW = Number(fxData.quote.KRW);
       }
     }
 
