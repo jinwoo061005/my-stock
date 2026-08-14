@@ -6,28 +6,170 @@
 <title>My Stock</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
 <div class="container">
-<h1>📈 My Stock</h1>
 
-<div class="card">
-<h2>총 평가금</h2>
-<div id="totalAsset">₩0</div>
-<div id="totalDollar">$0.00</div>
-<div id="todayProfit">--</div>
+  <h1>📈 My Stock</h1>
+
+  <!-- 총 평가금 -->
+  <div class="card">
+    <h2>총 평가금</h2>
+    <div id="total-value">₩0</div>
+    <div id="total-dollar">$0.00</div>
+    <div id="total-profit">--</div>
+  </div>
+
+  <!-- 주요 시장 -->
+  <div class="card">
+    <h2>주요 시장</h2>
+
+    <div>
+      USD/KRW
+      <span id="usdkrw">--</span>
+    </div>
+
+    <div>
+      S&P500
+      <span id="sp500">--</span>
+    </div>
+
+    <div>
+      Nasdaq
+      <span id="nasdaq">--</span>
+    </div>
+
+    <div>
+      KOSPI
+      <span id="kospi">--</span>
+    </div>
+
+    <div>
+      KOSDAQ
+      <span id="kosdaq">--</span>
+    </div>
+
+  </div>
+
+  <!-- 보유 주식 -->
+
+  <div class="card stock-card">
+
+    <div class="stock-header">
+      <div>
+        <h2>NVDY</h2>
+        <input id="NVDY-shares" type="number" step="0.000001" placeholder="보유수량">
+        <input id="NVDY-buy" type="number" step="0.01" placeholder="매수가">
+      </div>
+
+      <div>
+        <div id="NVDY-price">--</div>
+        <div id="NVDY-value">--</div>
+        <div id="NVDY-profit">--</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="card stock-card">
+
+    <div class="stock-header">
+      <div>
+        <h2>QQQM</h2>
+        <input id="QQQM-shares" type="number" step="0.000001" placeholder="보유수량">
+        <input id="QQQM-buy" type="number" step="0.01" placeholder="매수가">
+      </div>
+
+      <div>
+        <div id="QQQM-price">--</div>
+        <div id="QQQM-value">--</div>
+        <div id="QQQM-profit">--</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="card stock-card">
+
+    <div class="stock-header">
+      <div>
+        <h2>SCHD</h2>
+        <input id="SCHD-shares" type="number" step="0.000001" placeholder="보유수량">
+        <input id="SCHD-buy" type="number" step="0.01" placeholder="매수가">
+      </div>
+
+      <div>
+        <div id="SCHD-price">--</div>
+        <div id="SCHD-value">--</div>
+        <div id="SCHD-profit">--</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="card stock-card">
+
+    <div class="stock-header">
+      <div>
+        <h2>SPMO</h2>
+        <input id="SPMO-shares" type="number" step="0.000001" placeholder="보유수량">
+        <input id="SPMO-buy" type="number" step="0.01" placeholder="매수가">
+      </div>
+
+      <div>
+        <div id="SPMO-price">--</div>
+        <div id="SPMO-value">--</div>
+        <div id="SPMO-profit">--</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="card stock-card">
+
+    <div class="stock-header">
+      <div>
+        <h2>SKHY</h2>
+        <input id="SKHY-shares" type="number" step="0.000001" placeholder="보유수량">
+        <input id="SKHY-buy" type="number" step="0.01" placeholder="매수가">
+      </div>
+
+      <div>
+        <div id="SKHY-price">--</div>
+        <div id="SKHY-value">--</div>
+        <div id="SKHY-profit">--</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="card stock-card">
+
+    <div class="stock-header">
+      <div>
+        <h2>VIG</h2>
+        <input id="VIG-shares" type="number" step="0.000001" placeholder="보유수량">
+        <input id="VIG-buy" type="number" step="0.01" placeholder="매수가">
+      </div>
+
+      <div>
+        <div id="VIG-price">--</div>
+        <div id="VIG-value">--</div>
+        <div id="VIG-profit">--</div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
-<div class="card">
-<h2>주요 시장</h2>
-<div>USD/KRW <span id="usdkrw">--</span></div>
-<div>S&P500 <span id="sp500">--</span></div>
-<div>Nasdaq <span id="nasdaq">--</span></div>
-<div>KOSPI <span id="kospi">--</span></div>
-<div>KOSDAQ <span id="kosdaq">--</span></div>
-</div>
-
-<div id="stocks"></div>
-</div>
 <script src="script.js"></script>
+
 </body>
 </html>
