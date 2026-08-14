@@ -787,15 +787,12 @@ function submitTrade() {
 
 
   trades.push({
-
     type: tradeType,
-
     shares: shares,
-
     price: price,
-
-    date:
-      new Date().toISOString()
+    exchangeRate: usdKrw,
+    date: new Date().toISOString()
+});
 
   });
 
