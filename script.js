@@ -106,3 +106,210 @@ stocks.forEach(stock => {
   );
 
 });
+
+async function loadQuotes() {
+
+  const symbols =
+    stocks
+      .map(s => s.symbol)
+      .join(",");
+
+  const res =
+    await fetch(
+      `${API_URL}?symbols=${symbols}`
+    );
+
+  const data =
+    await res.json();
+
+  usdKrw =
+    data.usdKrw || 0;
+
+  document.getElementById(
+    "usdkrw"
+  ).textContent =
+    usdKrw
+      ? usdKrw.toLocaleString()
+      : "--";
+
+  let totalUSD = 0;
+
+  stocks.forEach(stock => {
+
+    const quote =
+      data.stocks[
+        stock.symbol
+      ];
+
+    if (!quote) return;
+
+    const price =
+      quote.current;
+
+    const prev =
+      quote.previousClose;
+
+    const value =
+      price *
+      stock.shares;
+
+    const changeDollar =
+      (price - prev) *
+      stock.shares;
+
+    const changeRate =
+      prev === 0
+        ? 0
+        : ((price - prev) /
+            prev) *
+          100;
+
+    totalUSD += value;
+
+    document.getElementById(
+      stock.symbol + "-price"
+    ).textContent =
+      "$" +
+      price.toFixed(2);
+
+    const changeEl =
+      document.getElementById(
+        stock.symbol + "-change"
+      );
+
+    changeEl.textContent =
+      `${changeDollar >= 0 ? "▲" : "▼"} ${
+        changeDollar >= 0
+          ? "+"
+          : ""
+      }$${Math.abs(
+        changeDollar
+      ).toFixed(2)}
+      (${changeRate.toFixed(
+        2
+      )}%)`;
+
+    changeEl.style.color =
+      changeDollar >= 0
+        ? "#00d26a"
+        : "#ff4d4f";
+
+    document.getElementById(
+      stock.symbol + "-value"
+    ).textContent =
+      "$" +
+      value.toFixed(2);
+
+  });
+
+  updateTotal(
+    totalUSD
+  );
+
+}
+
+function updateTotal(totalUSD) {
+
+  const totalKRW =
+    totalUSD * usdKrw;
+
+  document.getElementById(
+    "totalAsset"
+  ).innerHTML =
+    "₩" +
+    Math.round(
+      totalKRW
+    ).toLocaleString();
+
+  document.getElementById(
+    "totalDollar"
+  ).textContent =
+    "$" +
+    totalUSD.toFixed(2);
+
+  let todayUSD = 0;
+
+  stocks.forEach(stock => {
+
+    const price = Number(
+      document.getElementById(
+        stock.symbol + "-price"
+      ).textContent.replace(
+        "$",
+        ""
+      )
+    );
+
+    if (!price) return;
+
+    fetch(
+      `${API_URL}?symbols=${stock.symbol}`
+    )
+      .then(r => r.json())
+      .then(d => {
+
+        const q =
+          d.stocks[
+            stock.symbol
+          ];
+
+        if (!q) return;
+
+        todayUSD +=
+          (q.current -
+            q.previousClose) *
+          stock.shares;
+
+        const rate =
+          totalUSD === 0
+            ? 0
+            : (todayUSD /
+                totalUSD) *
+              100;
+
+        document.getElementById(
+          "todayProfit"
+        ).textContent =
+          `${todayUSD >= 0 ? "▲" : "▼"} ${
+            todayUSD >= 0
+              ? "+"
+              : ""
+          }${rate.toFixed(
+            2
+          )}%`;
+
+        document.getElementById(
+          "todayDollar"
+        ).textContent =
+          `${todayUSD >= 0 ? "▲" : "▼"} ${
+            todayUSD >= 0
+              ? "+"
+              : ""
+          }$${Math.abs(
+            todayUSD
+          ).toFixed(2)}`;
+
+        document.getElementById(
+          "todayWon"
+        ).textContent =
+          `${todayUSD >= 0 ? "▲" : "▼"} ${
+            todayUSD >= 0
+              ? "+"
+              : ""
+          }₩${Math.round(
+            todayUSD *
+              usdKrw
+          ).toLocaleString()}`;
+
+      });
+
+  });
+
+}
+
+loadQuotes();
+
+setInterval(
+  loadQuotes,
+  60000
+);
