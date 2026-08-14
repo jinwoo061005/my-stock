@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Stock</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>My Stock</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 </head>
+
 
 <body>
 
 <div class="container">
+
 
   <!-- =========================
        메인 화면
@@ -18,6 +30,7 @@
   <div id="main-screen">
 
     <h1>📈 My Stock</h1>
+
 
     <!-- 총 평가금 -->
 
@@ -42,7 +55,9 @@
     </div>
 
 
-    <!-- 주요 시장 -->
+    <!-- =========================
+         주요 시장
+    ========================== -->
 
     <div class="card market-card">
 
@@ -50,25 +65,30 @@
         주요 시장
       </div>
 
+
       <div class="market-row">
         <span>USD/KRW</span>
         <span id="usdkrw">--</span>
       </div>
+
 
       <div class="market-row">
         <span>S&P500</span>
         <span id="sp500">--</span>
       </div>
 
+
       <div class="market-row">
         <span>Nasdaq</span>
         <span id="nasdaq">--</span>
       </div>
 
+
       <div class="market-row">
         <span>KOSPI</span>
         <span id="kospi">--</span>
       </div>
+
 
       <div class="market-row">
         <span>KOSDAQ</span>
@@ -78,43 +98,58 @@
     </div>
 
 
-    <!-- 종목 목록 -->
+    <!-- =========================
+         종목 목록
+    ========================== -->
 
     <div id="stocks">
 
-      <div class="stock-card" data-symbol="NVDY">
+
+      <!-- NVDY -->
+
+      <div
+        class="stock-card"
+        data-symbol="NVDY"
+      >
 
         <div class="stock-main">
 
           <div>
+
             <div class="stock-name">
               NVDY
             </div>
 
             <div
               class="stock-shares"
-              id="NVDY-shares-display">
+              id="NVDY-shares-display"
+            >
               0주
             </div>
+
           </div>
+
 
           <div class="stock-info">
 
             <div
               class="stock-price"
-              id="NVDY-price">
+              id="NVDY-price"
+            >
               --
             </div>
 
             <div
               class="stock-value"
-              id="NVDY-value">
+              id="NVDY-value"
+            >
               --
             </div>
 
             <div
               class="stock-profit"
-              id="NVDY-profit">
+              id="NVDY-profit"
+            >
               --
             </div>
 
@@ -125,39 +160,51 @@
       </div>
 
 
-      <div class="stock-card" data-symbol="QQQM">
+      <!-- QQQM -->
+
+      <div
+        class="stock-card"
+        data-symbol="QQQM"
+      >
 
         <div class="stock-main">
 
           <div>
+
             <div class="stock-name">
               QQQM
             </div>
 
             <div
               class="stock-shares"
-              id="QQQM-shares-display">
+              id="QQQM-shares-display"
+            >
               0주
             </div>
+
           </div>
+
 
           <div class="stock-info">
 
             <div
               class="stock-price"
-              id="QQQM-price">
+              id="QQQM-price"
+            >
               --
             </div>
 
             <div
               class="stock-value"
-              id="QQQM-value">
+              id="QQQM-value"
+            >
               --
             </div>
 
             <div
               class="stock-profit"
-              id="QQQM-profit">
+              id="QQQM-profit"
+            >
               --
             </div>
 
@@ -168,39 +215,51 @@
       </div>
 
 
-      <div class="stock-card" data-symbol="SCHD">
+      <!-- SCHD -->
+
+      <div
+        class="stock-card"
+        data-symbol="SCHD"
+      >
 
         <div class="stock-main">
 
           <div>
+
             <div class="stock-name">
               SCHD
             </div>
 
             <div
               class="stock-shares"
-              id="SCHD-shares-display">
+              id="SCHD-shares-display"
+            >
               0주
             </div>
+
           </div>
+
 
           <div class="stock-info">
 
             <div
               class="stock-price"
-              id="SCHD-price">
+              id="SCHD-price"
+            >
               --
             </div>
 
             <div
               class="stock-value"
-              id="SCHD-value">
+              id="SCHD-value"
+            >
               --
             </div>
 
             <div
               class="stock-profit"
-              id="SCHD-profit">
+              id="SCHD-profit"
+            >
               --
             </div>
 
@@ -211,39 +270,51 @@
       </div>
 
 
-      <div class="stock-card" data-symbol="SPMO">
+      <!-- SPMO -->
+
+      <div
+        class="stock-card"
+        data-symbol="SPMO"
+      >
 
         <div class="stock-main">
 
           <div>
+
             <div class="stock-name">
               SPMO
             </div>
 
             <div
               class="stock-shares"
-              id="SPMO-shares-display">
+              id="SPMO-shares-display"
+            >
               0주
             </div>
+
           </div>
+
 
           <div class="stock-info">
 
             <div
               class="stock-price"
-              id="SPMO-price">
+              id="SPMO-price"
+            >
               --
             </div>
 
             <div
               class="stock-value"
-              id="SPMO-value">
+              id="SPMO-value"
+            >
               --
             </div>
 
             <div
               class="stock-profit"
-              id="SPMO-profit">
+              id="SPMO-profit"
+            >
               --
             </div>
 
@@ -254,39 +325,51 @@
       </div>
 
 
-      <div class="stock-card" data-symbol="SKHY">
+      <!-- SKHY -->
+
+      <div
+        class="stock-card"
+        data-symbol="SKHY"
+      >
 
         <div class="stock-main">
 
           <div>
+
             <div class="stock-name">
               SKHY
             </div>
 
             <div
               class="stock-shares"
-              id="SKHY-shares-display">
+              id="SKHY-shares-display"
+            >
               0주
             </div>
+
           </div>
+
 
           <div class="stock-info">
 
             <div
               class="stock-price"
-              id="SKHY-price">
+              id="SKHY-price"
+            >
               --
             </div>
 
             <div
               class="stock-value"
-              id="SKHY-value">
+              id="SKHY-value"
+            >
               --
             </div>
 
             <div
               class="stock-profit"
-              id="SKHY-profit">
+              id="SKHY-profit"
+            >
               --
             </div>
 
@@ -297,49 +380,60 @@
       </div>
 
 
-<div class="stock-card" data-symbol="VIG">
-
-  <div class="stock-main">
-
-    <div>
-      <div class="stock-name">
-        VIG
-      </div>
+      <!-- VIG -->
 
       <div
-        class="stock-shares"
-        id="VIG-shares-display">
-        0주
+        class="stock-card"
+        data-symbol="VIG"
+      >
+
+        <div class="stock-main">
+
+          <div>
+
+            <div class="stock-name">
+              VIG
+            </div>
+
+            <div
+              class="stock-shares"
+              id="VIG-shares-display"
+            >
+              0주
+            </div>
+
+          </div>
+
+
+          <div class="stock-info">
+
+            <div
+              class="stock-price"
+              id="VIG-price"
+            >
+              --
+            </div>
+
+            <div
+              class="stock-value"
+              id="VIG-value"
+            >
+              --
+            </div>
+
+            <div
+              class="stock-profit"
+              id="VIG-profit"
+            >
+              --
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
-    </div>
 
-    <div class="stock-info">
-
-      <div
-        class="stock-price"
-        id="VIG-price">
-        --
-      </div>
-
-      <div
-        class="stock-value"
-        id="VIG-value">
-        --
-      </div>
-
-      <div
-        class="stock-profit"
-        id="VIG-profit">
-        --
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-      </div>
 
     </div>
 
@@ -347,14 +441,19 @@
 
 
   <!-- =========================
-       종목 상세 화면
+       상세 화면
   ========================== -->
 
-  <div id="detail-screen" style="display:none;">
+  <div
+    id="detail-screen"
+    style="display:none;"
+  >
+
 
     <button id="back-button">
       ← 뒤로
     </button>
+
 
     <div class="detail-header">
 
@@ -364,107 +463,181 @@
 
       <div
         id="detail-price"
-        class="detail-price">
+        class="detail-price"
+      >
         --
       </div>
 
     </div>
 
 
+    <!-- =========================
+         상세 정보
+    ========================== -->
+
     <div class="card detail-card">
 
+
       <div class="detail-row">
-        <span>보유수량</span>
+
+        <span>
+          보유수량
+        </span>
+
         <strong id="detail-shares">
           0주
         </strong>
+
       </div>
 
+
       <div class="detail-row">
-        <span>평균매수가</span>
+
+        <span>
+          평균매수가
+        </span>
+
         <strong id="detail-average-buy">
           --
         </strong>
+
       </div>
 
+
       <div class="detail-row">
-        <span>평가금</span>
+
+        <span>
+          평가금
+        </span>
+
         <strong id="detail-value">
           --
         </strong>
+
       </div>
 
+
       <div class="detail-row">
-        <span>평가손익</span>
+
+        <span>
+          평가손익
+        </span>
+
         <strong id="detail-evaluation-profit">
           --
         </strong>
+
       </div>
 
+
       <div class="detail-row">
-        <span>실현손익</span>
+
+        <span>
+          실현손익
+        </span>
+
         <strong id="detail-realized-profit">
           ₩0
         </strong>
+
       </div>
 
+
       <div class="detail-row">
-        <span>총 수익률</span>
+
+        <span>
+          총 수익률
+        </span>
+
         <strong id="detail-total-profit">
           --
         </strong>
+
       </div>
+
 
     </div>
 
 
-    <!-- 거래 버튼 -->
+    <!-- =========================
+         매수 / 매도
+    ========================== -->
 
     <div class="trade-buttons">
 
       <button
         id="detail-buy-button"
-        class="buy-button">
+        class="buy-button"
+      >
         매수
       </button>
 
+
       <button
         id="detail-sell-button"
-        class="sell-button">
+        class="sell-button"
+      >
         매도
       </button>
 
     </div>
 
 
-    <!-- 거래 입력 -->
+    <!-- =========================
+         거래 입력창
+    ========================== -->
 
     <div
       id="trade-form"
       class="card trade-form"
-      style="display:none;">
+      style="display:none;"
+    >
+
 
       <div
         id="trade-title"
-        class="section-title">
+        class="section-title"
+      >
         매수
       </div>
+
+
+      <!-- 수량 -->
 
       <input
         type="number"
         id="trade-shares"
         placeholder="수량"
-        step="0.000001">
+        step="0.000001"
+      >
+
+
+      <!-- 매수가 / 매도가 -->
 
       <input
         type="number"
         id="trade-price"
-        placeholder="가격"
-        step="0.01">
+        placeholder="매수가 (USD)"
+        step="0.01"
+      >
 
-      <button id="trade-submit">
+
+      <!-- ★ 직접 입력하는 당시 환율 -->
+
+      <input
+        type="number"
+        id="trade-exchange-rate"
+        placeholder="거래 당시 환율 (KRW/USD)"
+        step="0.01"
+      >
+
+
+      <button
+        id="trade-submit"
+      >
         확인
       </button>
+
 
     </div>
 
@@ -476,4 +649,5 @@
 <script src="script.js"></script>
 
 </body>
+
 </html>
