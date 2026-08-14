@@ -18,40 +18,39 @@ body {
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
-  padding: 20px 14px 40px;
+  padding: 18px 14px 40px;
 }
 
 
 /* =========================
-   상단
+   제목
 ========================= */
 
 h1 {
-  margin: 4px 2px 22px;
+  margin: 4px 2px 20px;
   font-size: 25px;
   font-weight: 750;
-  letter-spacing: -0.7px;
+  letter-spacing: -0.8px;
 }
 
 
 /* =========================
-   카드 공통
+   공통 카드
 ========================= */
 
 .card {
   background: #15181d;
   border: 1px solid #20242b;
   border-radius: 16px;
-  padding: 18px;
+  padding: 17px;
   margin-bottom: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
 }
 
-.card h2 {
-  margin: 0 0 14px;
-  font-size: 15px;
+.section-title {
+  margin-bottom: 12px;
+  color: #9da4ae;
+  font-size: 14px;
   font-weight: 600;
-  color: #aeb4bd;
 }
 
 
@@ -60,7 +59,6 @@ h1 {
 ========================= */
 
 #total-value {
-  margin-top: 2px;
   font-size: 31px;
   line-height: 1.2;
   font-weight: 750;
@@ -69,37 +67,35 @@ h1 {
 
 #total-dollar {
   margin-top: 6px;
-  font-size: 14px;
   color: #858c96;
+  font-size: 14px;
 }
 
 #total-profit {
-  margin-top: 13px;
+  margin-top: 12px;
   font-size: 15px;
   font-weight: 650;
 }
 
 
 /* =========================
-   주요 시장
+   시장
 ========================= */
 
-.card > div {
+.market-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
   font-size: 14px;
 }
 
-.card > div:not(:last-child) {
-  margin-bottom: 10px;
+.market-row:not(:last-child) {
+  border-bottom: 1px solid #20242b;
 }
 
-#usdkrw,
-#sp500,
-#nasdaq,
-#kospi,
-#kosdaq {
-  float: right;
-  color: #e8ebef;
-  font-weight: 600;
+.market-row span:last-child {
+  font-weight: 650;
 }
 
 
@@ -108,63 +104,248 @@ h1 {
 ========================= */
 
 .stock-card {
+  background: #15181d;
+  border: 1px solid #20242b;
+  border-radius: 15px;
   padding: 17px;
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease;
 }
 
-.stock-header {
+.stock-card:active {
+  transform: scale(0.985);
+  background: #191c21;
+}
+
+.stock-main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
 }
 
-.stock-header > div:first-child {
-  min-width: 0;
-}
-
-.stock-header > div:last-child {
-  flex: 1;
-  text-align: right;
-}
-
-
-/* 종목명 */
-
-.stock-header h2 {
-  margin: 0 0 11px;
-  color: #ffffff;
+.stock-name {
   font-size: 19px;
   font-weight: 750;
   letter-spacing: -0.3px;
 }
 
+.stock-shares {
+  margin-top: 6px;
+  color: #8c939d;
+  font-size: 13px;
+}
+
+.stock-info {
+  text-align: right;
+  min-width: 120px;
+}
+
+.stock-price {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.stock-value {
+  margin-top: 4px;
+  color: #aeb4bd;
+  font-size: 13px;
+}
+
+.stock-profit {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
 
 /* =========================
-   입력창
+   상세 화면
 ========================= */
 
-input {
-  width: 92px;
-  height: 34px;
-  padding: 0 9px;
-  margin: 0 3px 0 0;
+#detail-screen {
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* 뒤로가기 */
+
+#back-button {
+  border: 0;
+  background: transparent;
+  color: #aeb4bd;
+  padding: 4px 0;
+  margin-bottom: 20px;
+
+  font-size: 15px;
+  cursor: pointer;
+}
+
+
+/* 상세 제목 */
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 16px;
+}
+
+#detail-symbol {
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
+
+.detail-price {
+  font-size: 22px;
+  font-weight: 750;
+}
+
+
+/* =========================
+   상세 정보
+========================= */
+
+.detail-card {
+  padding: 8px 17px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  min-height: 50px;
+
+  border-bottom: 1px solid #20242b;
+
+  font-size: 14px;
+}
+
+.detail-row:last-child {
+  border-bottom: 0;
+}
+
+.detail-row span {
+  color: #9299a3;
+}
+
+.detail-row strong {
+  font-size: 15px;
+  font-weight: 650;
+}
+
+
+/* =========================
+   매수 / 매도
+========================= */
+
+.trade-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+.trade-buttons button {
+  flex: 1;
+
+  height: 48px;
+
+  border: 0;
+  border-radius: 11px;
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.buy-button {
+  background: #d94a55;
+}
+
+.sell-button {
+  background: #397dcc;
+}
+
+.buy-button:active,
+.sell-button:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================
+   거래 입력
+========================= */
+
+.trade-form {
+  margin-top: 10px;
+}
+
+.trade-form .section-title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.trade-form input {
+  display: block;
+
+  width: 100%;
+  height: 45px;
+
+  margin-bottom: 9px;
+  padding: 0 12px;
 
   border: 1px solid #30353d;
-  border-radius: 8px;
+  border-radius: 9px;
 
   background: #0f1115;
-  color: #ffffff;
+  color: white;
 
-  font-size: 12px;
+  font-size: 14px;
   outline: none;
 }
 
-input:focus {
+.trade-form input:focus {
   border-color: #59616d;
 }
 
-input::placeholder {
-  color: #666d77;
+.trade-form button {
+  width: 100%;
+  height: 45px;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: #2b3038;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
 }
 
 
@@ -182,38 +363,15 @@ input[type="number"] {
 
 
 /* =========================
-   현재가
-========================= */
-
-[id$="-price"] {
-  font-size: 20px;
-  font-weight: 750;
-  letter-spacing: -0.4px;
-}
-
-[id$="-value"] {
-  margin-top: 5px;
-  font-size: 13px;
-  color: #aeb4bd;
-}
-
-[id$="-profit"] {
-  margin-top: 5px;
-  font-size: 13px;
-  font-weight: 650;
-}
-
-
-/* =========================
    수익 색상
 ========================= */
 
 .up {
-  color: #ff5c68;
+  color: #ff5965 !important;
 }
 
 .down {
-  color: #4d9aff;
+  color: #4d9aff !important;
 }
 
 
@@ -229,41 +387,37 @@ input[type="number"] {
 
   h1 {
     font-size: 23px;
-    margin-bottom: 18px;
-  }
-
-  .card {
-    padding: 16px;
-    border-radius: 15px;
   }
 
   #total-value {
     font-size: 28px;
   }
 
-  .stock-header {
-    gap: 8px;
+  .stock-card {
+    padding: 16px;
   }
 
-  .stock-header h2 {
+  .stock-name {
     font-size: 18px;
   }
 
-  input {
-    width: 82px;
-    height: 33px;
-    font-size: 11px;
+  .stock-info {
+    min-width: 105px;
   }
 
-  [id$="-price"] {
+  .stock-price {
     font-size: 18px;
+  }
+
+  #detail-symbol {
+    font-size: 25px;
   }
 
 }
 
 
 /* =========================
-   아주 작은 화면
+   작은 화면
 ========================= */
 
 @media (max-width: 360px) {
@@ -273,15 +427,15 @@ input[type="number"] {
     padding-right: 9px;
   }
 
-  .stock-header {
-    gap: 5px;
+  .stock-main {
+    gap: 8px;
   }
 
-  input {
-    width: 74px;
+  .stock-info {
+    min-width: 95px;
   }
 
-  [id$="-price"] {
+  .stock-price {
     font-size: 17px;
   }
 
