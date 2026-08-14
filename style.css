@@ -1,5 +1,121 @@
-body{background:#111;color:#fff;font-family:Arial;margin:0}
-.container{max-width:700px;margin:auto;padding:16px}
-.card,.stock{background:#1b1b1b;border-radius:12px;padding:16px;margin-bottom:12px}
-input{width:90px}
-.row{display:flex;justify-content:space-between;align-items:center}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #111;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 16px;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 28px;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.card {
+  background: #1b1b1b;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+#total-value {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#total-dollar {
+  margin-top: 4px;
+  color: #aaa;
+}
+
+#total-profit {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.stock-card {
+  margin-bottom: 12px;
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.stock-header > div:last-child {
+  text-align: right;
+}
+
+.stock-header h2 {
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100px;
+  height: 36px;
+  padding: 6px 8px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #222;
+  color: #fff;
+}
+
+input::placeholder {
+  color: #888;
+}
+
+[id$="-price"] {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+[id$="-value"] {
+  margin-top: 5px;
+  color: #ccc;
+}
+
+[id$="-profit"] {
+  margin-top: 5px;
+}
+
+.up {
+  color: #ff4d4d;
+}
+
+.down {
+  color: #4d8dff;
+}
+
+@media (max-width: 500px) {
+
+  .container {
+    padding: 12px;
+  }
+
+  .stock-header {
+    align-items: flex-start;
+  }
+
+  input {
+    width: 90px;
+  }
+
+}
