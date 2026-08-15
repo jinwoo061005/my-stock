@@ -31,116 +31,193 @@ let usdKrw = 0;
 let selectedSymbol = null;
 
 
+/* =========================
+   API
+========================= */
+
 async function loadQuotes() {
 
-    try {
-
-        const response =
-            await fetch(
-                "/api/quotes",
-                {
-                    cache: "no-store"
-                }
-            );
-
-        if (!response.ok) {
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-
-        }
-
-        return await response.json();
-
-    } catch (error) {
-
-        console.error(
-            "주가 불러오기 실패:",
-            error
+    const response =
+        await fetch(
+            "/api/quotes?_=" +
+            Date.now(),
+            {
+                cache: "no-store"
+            }
         );
 
-        return null;
+
+    if (!response.ok) {
+
+        throw new Error(
+            `API ERROR ${response.status}`
+        );
 
     }
+
+
+    return await response.json();
 
 }
 
 
-async function refresh() {
+/* =========================
+   주가를 HTML에 직접 표시
+========================= */
 
-    const data =
-        await loadQuotes();
-
-    if (!data) return;
-
-
-    usdKrw =
-        Number(
-            data.USD_KRW || 0
-        );
-
-
-    updateExchangeRate(
-        usdKrw
-    );
-
+function renderPrices(data) {
 
     symbols.forEach(symbol => {
 
-        prices[symbol] =
+        const price =
             Number(
-                data[symbol] || 0
+                data[symbol]
             );
 
 
-        const priceElement =
+        prices[symbol] =
+            Number.isFinite(price)
+                ? price
+                : 0;
+
+
+        const element =
             document.getElementById(
-                `${symbol}-price`
+                symbol + "-price"
             );
 
 
-        if (priceElement) {
+        if (!element) {
 
-            priceElement.textContent =
-                prices[symbol] > 0
-                    ? `$${prices[symbol].toFixed(2)}`
-                    : "--";
+            console.error(
+                "HTML 요소 없음:",
+                symbol + "-price"
+            );
+
+            return;
 
         }
 
 
-        updateStockCard(
-            symbol,
-            prices,
-            usdKrw,
-            getTrades
-        );
+        if (
+            prices[symbol] > 0
+        ) {
+
+            element.textContent =
+                "$" +
+                prices[symbol].toFixed(2);
+
+        } else {
+
+            element.textContent =
+                "--";
+
+        }
 
     });
 
 
-    updateTotal(
-        symbols,
-        prices,
-        usdKrw,
-        getTrades
-    );
+    usdKrw =
+        Number(
+            data.USD_KRW
+        );
 
 
-    if (selectedSymbol) {
+    const usdElement =
+        document.getElementById(
+            "usdkrw"
+        );
 
-        updateDetail(
-            selectedSymbol,
+
+    if (
+        usdElement &&
+        usdKrw > 0
+    ) {
+
+        usdElement.textContent =
+            "₩" +
+            Math.round(usdKrw)
+                .toLocaleString();
+
+    }
+
+}
+
+
+/* =========================
+   전체 갱신
+========================= */
+
+async function refresh() {
+
+    try {
+
+        const data =
+            await loadQuotes();
+
+
+        console.log(
+            "QUOTE DATA:",
+            data
+        );
+
+
+        /* 주가 */
+
+        renderPrices(
+            data
+        );
+
+
+        /* 기존 UI 계산 */
+
+        symbols.forEach(symbol => {
+
+            updateStockCard(
+                symbol,
+                prices,
+                usdKrw,
+                getTrades
+            );
+
+        });
+
+
+        updateTotal(
+            symbols,
             prices,
             usdKrw,
             getTrades
+        );
+
+
+        if (selectedSymbol) {
+
+            updateDetail(
+                selectedSymbol,
+                prices,
+                usdKrw,
+                getTrades
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "주가 갱신 실패:",
+            error
         );
 
     }
 
 }
 
+
+/* =========================
+   시작
+========================= */
 
 window.addEventListener(
     "DOMContentLoaded",
@@ -149,6 +226,7 @@ window.addEventListener(
         getWallet();
 
         await refresh();
+
 
         setInterval(
             refresh,
@@ -159,14 +237,20 @@ window.addEventListener(
 );
 
 
+/* =========================
+   상세
+========================= */
+
 window.openDetail = symbol => {
 
     selectedSymbol =
         symbol;
 
+
     openDetail(
         symbol
     );
+
 
     updateDetail(
         symbol,
@@ -195,6 +279,10 @@ window.showTradeForm = type => {
 
 };
 
+
+/* =========================
+   거래
+========================= */
 
 window.submitTrade = tradeType => {
 
@@ -246,7 +334,11 @@ window.submitTrade = tradeType => {
         });
 
 
-    if (!success) return;
+    if (!success) {
+
+        return;
+
+    }
 
 
     updateStockCard(
