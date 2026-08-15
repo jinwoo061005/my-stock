@@ -1,3 +1,4 @@
+import { loadQuotes } from "./api.js";
 const API_URL = "/api/quote";
 
 const symbols = [
