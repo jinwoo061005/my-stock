@@ -6,6 +6,8 @@ import { getTrades, submitTrade } from "./trade.js";
 
 import { getWallet } from "./wallet.js";
 
+import { calculateStock } from "./calculate.js";
+
 import {
     updateStockCard,
     updateTotal,
