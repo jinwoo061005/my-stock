@@ -7,14 +7,12 @@ export default async function handler(req, res) {
   if (!API_KEY) {
 
     return res.status(500).json({
-      error:
-        "FINNHUB_API_KEY 없음"
+      error: "FINNHUB_API_KEY 없음"
     });
-
   }
 
 
-  const stockSymbols = [
+  const symbols = [
     "NVDY",
     "QQQM",
     "SCHD",
@@ -24,20 +22,11 @@ export default async function handler(req, res) {
   ];
 
 
-  const marketSymbols = {
-
-    KOSPI:
-      "^KS11",
-
-    KOSDAQ:
-      "^KQ11",
-
-    SP500:
-      "^GSPC",
-
-    NASDAQ:
-      "^IXIC"
-
+  const indexSymbols = {
+    SP500: "^GSPC",
+    NASDAQ: "^IXIC",
+    KOSPI: "^KS11",
+    KOSDAQ: "^KQ11"
   };
 
 
@@ -50,215 +39,99 @@ export default async function handler(req, res) {
     // 미국 주식
     // =========================
 
-    for (
-      const symbol
-      of stockSymbols
-    ) {
+    for (const symbol of symbols) {
 
-      try {
-
-        const url =
-          `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${API_KEY}`;
+      const url =
+        `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${API_KEY}`;
 
 
-        const response =
-          await fetch(
-            url,
-            {
-              cache:
-                "no-store"
-            }
-          );
+      const response =
+        await fetch(url);
 
 
-        if (!response.ok) {
-
-          console.error(
-            `${symbol} HTTP ${response.status}`
-          );
-
-          result[symbol] =
-            0;
-
-          continue;
-        }
-
-
-        const data =
-          await response.json();
-
-
-        result[symbol] =
-          Number(
-            data.c || 0
-          );
-
-      } catch (error) {
-
-        console.error(
-          `${symbol} 오류:`,
-          error
-        );
-
-        result[symbol] =
-          0;
+      if (!response.ok) {
+        continue;
       }
 
+
+      const data =
+        await response.json();
+
+
+      result[symbol] =
+        Number(data.c || 0);
     }
 
 
     // =========================
-    // 주요 시장
+    // 주요 지수
     // =========================
 
     for (
-      const [
-        name,
-        symbol
-      ]
-      of Object.entries(
-        marketSymbols
-      )
+      const [name, symbol]
+      of Object.entries(indexSymbols)
     ) {
 
-      try {
-
-        const url =
-          `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${API_KEY}`;
+      const url =
+        `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${API_KEY}`;
 
 
-        const response =
-          await fetch(
-            url,
-            {
-              cache:
-                "no-store"
-            }
-          );
+      const response =
+        await fetch(url);
 
 
-        if (!response.ok) {
-
-          result[name] = {
-
-            price: 0,
-            change: 0,
-            percent: 0
-
-          };
-
-          continue;
-        }
-
-
-        const data =
-          await response.json();
-
-
-        result[name] = {
-
-          price:
-            Number(
-              data.c || 0
-            ),
-
-          change:
-            Number(
-              data.d || 0
-            ),
-
-          percent:
-            Number(
-              data.dp || 0
-            )
-
-        };
-
-      } catch (error) {
-
-        console.error(
-          `${name} 오류:`,
-          error
-        );
-
-
-        result[name] = {
-
-          price: 0,
-          change: 0,
-          percent: 0
-
-        };
+      if (!response.ok) {
+        result[name] = 0;
+        continue;
       }
 
+
+      const data =
+        await response.json();
+
+
+      result[name] =
+        Number(data.c || 0);
     }
 
 
     // =========================
-    // USD / KRW
+    // 환율
     // =========================
 
-    try {
-
-      const exchangeResponse =
-        await fetch(
-          "https://api.frankfurter.app/latest?from=USD&to=KRW",
-          {
-            cache:
-              "no-store"
-          }
-        );
-
-
-      if (
-        exchangeResponse.ok
-      ) {
-
-        const exchangeData =
-          await exchangeResponse.json();
-
-
-        result.USD_KRW =
-          Number(
-            exchangeData
-              .rates
-              ?.KRW || 0
-          );
-
-      } else {
-
-        result.USD_KRW =
-          0;
-      }
-
-    } catch (error) {
-
-      console.error(
-        "환율 오류:",
-        error
+    const exchangeResponse =
+      await fetch(
+        "https://api.frankfurter.app/latest?from=USD&to=KRW"
       );
 
+
+    if (exchangeResponse.ok) {
+
+      const exchangeData =
+        await exchangeResponse.json();
+
+
       result.USD_KRW =
-        0;
+        Number(
+          exchangeData.rates?.KRW || 0
+        );
+
+    } else {
+
+      result.USD_KRW = 0;
     }
 
 
-    return res.status(200).json(
-      result
-    );
+    return res.status(200).json(result);
 
 
   } catch (error) {
 
-    console.error(
-      "QUOTE API ERROR:",
-      error
-    );
+    console.error(error);
 
 
     return res.status(500).json({
-      error:
-        error.message
+      error: error.message
     });
   }
 }
