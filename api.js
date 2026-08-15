@@ -8,7 +8,9 @@ export async function loadQuotes() {
             await fetch("/api/quotes");
 
         if (!response.ok) {
-            throw new Error("API 오류");
+            throw new Error(
+                `HTTP ${response.status}`
+            );
         }
 
         const data =
@@ -19,7 +21,7 @@ export async function loadQuotes() {
     } catch (error) {
 
         console.error(
-            "시세 불러오기 실패:",
+            "주가 불러오기 실패:",
             error
         );
 
