@@ -1,5 +1,83 @@
 // ui.js
 
+function calculateStock(symbol, prices, getTrades) {
+
+    const price = Number(prices[symbol] || 0);
+
+    const allTrades = getTrades();
+    const trades = allTrades[symbol] || [];
+
+    let shares = 0;
+    let totalCost = 0;
+    let realizedProfit = 0;
+
+    trades.forEach(trade => {
+
+        const tradeShares = Number(trade.shares || 0);
+        const tradePrice = Number(trade.price || 0);
+
+        if (trade.type === "buy") {
+
+            shares += tradeShares;
+
+            totalCost +=
+                tradeShares * tradePrice;
+
+        }
+
+        if (trade.type === "sell") {
+
+            const averagePrice =
+                shares > 0
+                    ? totalCost / shares
+                    : 0;
+
+            realizedProfit +=
+                (tradePrice - averagePrice) *
+                tradeShares;
+
+            shares -= tradeShares;
+
+            totalCost -=
+                averagePrice * tradeShares;
+
+        }
+
+    });
+
+    const currentValue =
+        shares * price;
+
+    const evaluationProfit =
+        currentValue - totalCost;
+
+    const totalProfit =
+        evaluationProfit + realizedProfit;
+
+    const profitPercent =
+        totalCost > 0
+            ? (evaluationProfit / totalCost) * 100
+            : 0;
+
+    const averageBuy =
+        shares > 0
+            ? totalCost / shares
+            : 0;
+
+    return {
+        shares,
+        totalCost,
+        currentValue,
+        evaluationProfit,
+        realizedProfit,
+        totalProfit,
+        profitPercent,
+        averageBuy,
+        price
+    };
+}
+
+
 export function updateStockCard(
     symbol,
     prices,
@@ -7,56 +85,12 @@ export function updateStockCard(
     getTrades
 ) {
 
-    const price =
-        Number(prices[symbol] || 0);
-
-    const trades =
-        getTrades()[symbol] || [];
-
-    let shares = 0;
-    let totalCostUSD = 0;
-
-    trades.forEach(trade => {
-
-        const quantity =
-            Number(trade.shares || 0);
-
-        const tradePrice =
-            Number(trade.price || 0);
-
-        if (trade.type === "buy") {
-
-            shares += quantity;
-
-            totalCostUSD +=
-                quantity * tradePrice;
-
-        }
-
-        if (trade.type === "sell") {
-
-            shares -= quantity;
-
-        }
-
-    });
-
-    const valueUSD =
-        shares * price;
-
-    const averagePrice =
-        shares > 0
-            ? totalCostUSD / shares
-            : 0;
-
-    const profitUSD =
-        valueUSD -
-        totalCostUSD;
-
-    const profitPercent =
-        totalCostUSD > 0
-            ? (profitUSD / totalCostUSD) * 100
-            : 0;
+    const stock =
+        calculateStock(
+            symbol,
+            prices,
+            getTrades
+        );
 
     const priceElement =
         document.getElementById(
@@ -65,7 +99,7 @@ export function updateStockCard(
 
     const sharesElement =
         document.getElementById(
-            `${symbol}-shares`
+            `${symbol}-shares-display`
         );
 
     const valueElement =
@@ -78,33 +112,39 @@ export function updateStockCard(
             `${symbol}-profit`
         );
 
+
     if (priceElement) {
 
         priceElement.textContent =
-            `$${price.toFixed(2)}`;
+            `$${stock.price.toFixed(2)}`;
 
     }
+
 
     if (sharesElement) {
 
         sharesElement.textContent =
-            `${shares.toFixed(6)}주`;
+            `${stock.shares.toFixed(6)}주`;
 
     }
+
 
     if (valueElement) {
 
         valueElement.textContent =
-            `$${valueUSD.toFixed(2)}`;
+            `$${stock.currentValue.toFixed(2)}`;
 
     }
+
 
     if (profitElement) {
 
         profitElement.textContent =
-            `${profitUSD >= 0 ? "+" : ""}$${profitUSD.toFixed(2)} (${profitPercent.toFixed(2)}%)`;
+            `${stock.evaluationProfit >= 0 ? "+" : ""}$${stock.evaluationProfit.toFixed(2)} ` +
+            `(${stock.profitPercent.toFixed(2)}%)`;
 
     }
+
 }
 
 
@@ -116,67 +156,85 @@ export function updateTotal(
 ) {
 
     let totalUSD = 0;
+    let totalCostUSD = 0;
 
     symbols.forEach(symbol => {
 
-        const price =
-            Number(prices[symbol] || 0);
-
-        const trades =
-            getTrades()[symbol] || [];
-
-        let shares = 0;
-
-        trades.forEach(trade => {
-
-            const quantity =
-                Number(trade.shares || 0);
-
-            if (trade.type === "buy") {
-
-                shares += quantity;
-
-            }
-
-            if (trade.type === "sell") {
-
-                shares -= quantity;
-
-            }
-
-        });
+        const stock =
+            calculateStock(
+                symbol,
+                prices,
+                getTrades
+            );
 
         totalUSD +=
-            shares * price;
+            stock.currentValue;
+
+        totalCostUSD +=
+            stock.totalCost;
 
     });
+
 
     const totalKRW =
         totalUSD * usdKrw;
 
-    const totalElement =
+
+    const totalProfitUSD =
+        totalUSD - totalCostUSD;
+
+
+    const totalProfitKRW =
+        totalProfitUSD * usdKrw;
+
+
+    const totalProfitPercent =
+        totalCostUSD > 0
+            ? (totalProfitUSD / totalCostUSD) * 100
+            : 0;
+
+
+    const totalValueElement =
         document.getElementById(
-            "total-asset"
+            "total-value"
         );
 
-    const totalUSDElement =
+    const totalDollarElement =
         document.getElementById(
-            "total-asset-usd"
+            "total-dollar"
         );
 
-    if (totalElement) {
+    const totalProfitElement =
+        document.getElementById(
+            "total-profit"
+        );
 
-        totalElement.textContent =
-            `${Math.round(totalKRW).toLocaleString()}원`;
+
+    if (totalValueElement) {
+
+        totalValueElement.textContent =
+            `₩${Math.round(totalKRW).toLocaleString()}`;
 
     }
 
-    if (totalUSDElement) {
 
-        totalUSDElement.textContent =
+    if (totalDollarElement) {
+
+        totalDollarElement.textContent =
             `$${totalUSD.toFixed(2)}`;
 
     }
+
+
+    if (totalProfitElement) {
+
+        totalProfitElement.textContent =
+            `${totalProfitKRW >= 0 ? "+" : ""}` +
+            `₩${Math.round(totalProfitKRW).toLocaleString()} ` +
+            `(${totalProfitPercent.toFixed(2)}%)`;
+
+    }
+
 }
 
 
@@ -187,110 +245,122 @@ export function updateDetail(
     getTrades
 ) {
 
-    const price =
-        Number(prices[symbol] || 0);
+    const stock =
+        calculateStock(
+            symbol,
+            prices,
+            getTrades
+        );
 
-    const trades =
-        getTrades()[symbol] || [];
 
-    let shares = 0;
-    let totalCost = 0;
+    const symbolElement =
+        document.getElementById(
+            "detail-symbol"
+        );
 
-    trades.forEach(trade => {
-
-        const quantity =
-            Number(trade.shares || 0);
-
-        const tradePrice =
-            Number(trade.price || 0);
-
-        if (trade.type === "buy") {
-
-            shares += quantity;
-
-            totalCost +=
-                quantity * tradePrice;
-
-        }
-
-        if (trade.type === "sell") {
-
-            shares -= quantity;
-
-        }
-
-    });
-
-    const value =
-        shares * price;
-
-    const profit =
-        value - totalCost;
-
-    const averagePrice =
-        shares > 0
-            ? totalCost / shares
-            : 0;
-
-    const detailPrice =
+    const priceElement =
         document.getElementById(
             "detail-price"
         );
 
-    const detailShares =
+    const sharesElement =
         document.getElementById(
             "detail-shares"
         );
 
-    const detailAverage =
+    const averageElement =
         document.getElementById(
-            "detail-average"
+            "detail-average-buy"
         );
 
-    const detailValue =
+    const valueElement =
         document.getElementById(
             "detail-value"
         );
 
-    const detailProfit =
+    const evaluationProfitElement =
         document.getElementById(
-            "detail-profit"
+            "detail-evaluation-profit"
         );
 
-    if (detailPrice) {
+    const realizedProfitElement =
+        document.getElementById(
+            "detail-realized-profit"
+        );
 
-        detailPrice.textContent =
-            `$${price.toFixed(2)}`;
+    const totalProfitElement =
+        document.getElementById(
+            "detail-total-profit"
+        );
 
-    }
 
-    if (detailShares) {
+    if (symbolElement) {
 
-        detailShares.textContent =
-            `${shares.toFixed(6)}주`;
-
-    }
-
-    if (detailAverage) {
-
-        detailAverage.textContent =
-            `$${averagePrice.toFixed(2)}`;
+        symbolElement.textContent =
+            symbol;
 
     }
 
-    if (detailValue) {
 
-        detailValue.textContent =
-            `$${value.toFixed(2)}`;
+    if (priceElement) {
+
+        priceElement.textContent =
+            `$${stock.price.toFixed(2)}`;
+
+    }
+
+
+    if (sharesElement) {
+
+        sharesElement.textContent =
+            `${stock.shares.toFixed(6)}주`;
 
     }
 
-    if (detailProfit) {
 
-        detailProfit.textContent =
-            `${profit >= 0 ? "+" : ""}$${profit.toFixed(2)}`;
+    if (averageElement) {
+
+        averageElement.textContent =
+            `$${stock.averageBuy.toFixed(2)}`;
 
     }
+
+
+    if (valueElement) {
+
+        valueElement.textContent =
+            `$${stock.currentValue.toFixed(2)}`;
+
+    }
+
+
+    if (evaluationProfitElement) {
+
+        evaluationProfitElement.textContent =
+            `${stock.evaluationProfit >= 0 ? "+" : ""}` +
+            `$${stock.evaluationProfit.toFixed(2)}`;
+
+    }
+
+
+    if (realizedProfitElement) {
+
+        realizedProfitElement.textContent =
+            `${stock.realizedProfit >= 0 ? "+" : ""}` +
+            `$${stock.realizedProfit.toFixed(2)}`;
+
+    }
+
+
+    if (totalProfitElement) {
+
+        totalProfitElement.textContent =
+            `${stock.totalProfit >= 0 ? "+" : ""}` +
+            `$${stock.totalProfit.toFixed(2)} ` +
+            `(${stock.profitPercent.toFixed(2)}%)`;
+
+    }
+
 }
 
 
@@ -300,57 +370,86 @@ export function updateExchangeRate(
 
     const element =
         document.getElementById(
-            "exchange-rate"
+            "usdkrw"
         );
 
     if (!element) return;
 
+
+    if (!usdKrw) {
+
+        element.textContent =
+            "--";
+
+        return;
+
+    }
+
+
     element.textContent =
-        `${Math.round(usdKrw).toLocaleString()}원`;
+        `₩${Math.round(usdKrw).toLocaleString()}`;
 
 }
 
 
-export function openDetail(
-    symbol
-) {
+export function openDetail(symbol) {
 
-    const modal =
+    const mainScreen =
         document.getElementById(
-            "detail-modal"
+            "main-screen"
         );
 
-    if (!modal) return;
-
-    const title =
+    const detailScreen =
         document.getElementById(
-            "detail-symbol"
+            "detail-screen"
         );
 
-    if (title) {
 
-        title.textContent =
-            symbol;
+    if (mainScreen) {
+
+        mainScreen.style.display =
+            "none";
 
     }
 
-    modal.style.display =
-        "block";
+
+    if (detailScreen) {
+
+        detailScreen.style.display =
+            "block";
+
+    }
 
 }
 
 
 export function closeDetail() {
 
-    const modal =
+    const mainScreen =
         document.getElementById(
-            "detail-modal"
+            "main-screen"
         );
 
-    if (!modal) return;
+    const detailScreen =
+        document.getElementById(
+            "detail-screen"
+        );
 
-    modal.style.display =
-        "none";
+
+    if (detailScreen) {
+
+        detailScreen.style.display =
+            "none";
+
+    }
+
+
+    if (mainScreen) {
+
+        mainScreen.style.display =
+            "block";
+
+    }
 
 }
 
@@ -366,11 +465,9 @@ export function showTradeForm(
             "trade-form"
         );
 
-    if (!form) return;
-
     const title =
         document.getElementById(
-            "trade-form-title"
+            "trade-title"
         );
 
     const priceInput =
@@ -378,10 +475,8 @@ export function showTradeForm(
             "trade-price"
         );
 
-    const symbolElement =
-        document.getElementById(
-            "trade-symbol"
-        );
+    if (!form) return;
+
 
     if (title) {
 
@@ -392,12 +487,6 @@ export function showTradeForm(
 
     }
 
-    if (symbolElement) {
-
-        symbolElement.textContent =
-            selectedSymbol || "";
-
-    }
 
     if (priceInput) {
 
@@ -406,9 +495,129 @@ export function showTradeForm(
 
     }
 
+
     form.dataset.type =
         type;
 
     form.style.display =
         "block";
+
+}
+
+
+export function setupUI() {
+
+    const stockCards =
+        document.querySelectorAll(
+            ".stock-card"
+        );
+
+
+    stockCards.forEach(card => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                const symbol =
+                    card.dataset.symbol;
+
+                if (
+                    window.openDetail &&
+                    symbol
+                ) {
+
+                    window.openDetail(
+                        symbol
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+    const backButton =
+        document.getElementById(
+            "back-button"
+        );
+
+
+    if (backButton) {
+
+        backButton.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    window.closeDetail
+                ) {
+
+                    window.closeDetail();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    const buyButton =
+        document.getElementById(
+            "detail-buy-button"
+        );
+
+
+    if (buyButton) {
+
+        buyButton.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    window.showTradeForm
+                ) {
+
+                    window.showTradeForm(
+                        "buy"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    const sellButton =
+        document.getElementById(
+            "detail-sell-button"
+        );
+
+
+    if (sellButton) {
+
+        sellButton.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    window.showTradeForm
+                ) {
+
+                    window.showTradeForm(
+                        "sell"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
 }
