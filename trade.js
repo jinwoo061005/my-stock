@@ -1,130 +1,66 @@
 // trade.js
 
-export function getTrades(symbol) {
+const STORAGE_KEY = "stockTrades";
+
+export function getTrades() {
 
     const saved =
-        localStorage.getItem(
-            `${symbol}_trades`
-        );
+        localStorage.getItem(STORAGE_KEY);
 
-    if (!saved) return [];
-
-    try {
-
-        return JSON.parse(saved);
-
-    } catch {
-
-        return [];
-
+    if (!saved) {
+        return {};
     }
 
+    try {
+        return JSON.parse(saved);
+    } catch {
+        return {};
+    }
 }
 
-export function saveTrades(
-    symbol,
-    trades
-) {
+function saveTrades(trades) {
 
     localStorage.setItem(
-        `${symbol}_trades`,
+        STORAGE_KEY,
         JSON.stringify(trades)
     );
-
 }
 
 export function submitTrade({
-
     symbol,
-
     type,
-
     shares,
-
     price,
-
     exchangeRate,
-
-    calculateStock,
-
     prices,
-
-    usdKrw
-
+    usdKrw,
+    getTrades,
+    calculateStock
 }) {
 
     if (!symbol) {
-
-        alert("종목 오류");
-
+        alert("종목을 선택해주세요.");
         return false;
-
     }
 
-    if (
-        !Number.isFinite(shares) ||
-        shares <= 0
-    ) {
-
-        alert("수량을 입력해줘.");
-
+    if (!shares || shares <= 0) {
+        alert("수량을 입력해주세요.");
         return false;
-
     }
 
-    if (
-        !Number.isFinite(price) ||
-        price <= 0
-    ) {
-
-        alert("가격을 입력해줘.");
-
+    if (!price || price <= 0) {
+        alert("가격을 입력해주세요.");
         return false;
-
-    }
-
-    if (
-        !Number.isFinite(exchangeRate) ||
-        exchangeRate <= 0
-    ) {
-
-        alert(
-            "거래 당시 환율을 입력해줘."
-        );
-
-        return false;
-
-    }
-
-    if (type === "sell") {
-
-        const stock =
-            calculateStock(
-                symbol,
-                prices,
-                usdKrw,
-                getTrades
-            );
-
-        if (
-            shares >
-            stock.shares + 0.0000001
-        ) {
-
-            alert(
-                `현재 보유수량은 ${stock.shares}주입니다.`
-            );
-
-            return false;
-
-        }
-
     }
 
     const trades =
-        getTrades(symbol);
+        getTrades();
 
-    trades.push({
+    if (!trades[symbol]) {
+        trades[symbol] = [];
+    }
+
+    trades[symbol].push({
 
         type,
 
@@ -139,11 +75,7 @@ export function submitTrade({
 
     });
 
-    saveTrades(
-        symbol,
-        trades
-    );
+    saveTrades(trades);
 
     return true;
-
 }
