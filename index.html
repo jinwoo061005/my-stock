@@ -652,6 +652,46 @@
 
 </div>
 
+<script>
+fetch("/api/quotes", { cache: "no-store" })
+    .then(response => response.json())
+    .then(data => {
+
+        console.log("API:", data);
+
+        const symbols = [
+            "NVDY",
+            "QQQM",
+            "SCHD",
+            "SPMO",
+            "VIG",
+            "SKHY"
+        ];
+
+        symbols.forEach(symbol => {
+
+            const element =
+                document.getElementById(
+                    `${symbol}-price`
+                );
+
+            if (!element) return;
+
+            const price =
+                Number(data[symbol] || 0);
+
+            if (price > 0) {
+                element.textContent =
+                    `$${price.toFixed(2)}`;
+            }
+
+        });
+
+    })
+    .catch(error => {
+        console.error("API 오류:", error);
+    });
+</script>
 
 <script type="module" src="main.js"></script>
 
