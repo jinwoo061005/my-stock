@@ -5,12 +5,19 @@ export async function loadQuotes() {
     try {
 
         const response =
-            await fetch("/api/quotes");
+            await fetch(
+                "/api/quotes",
+                {
+                    cache: "no-store"
+                }
+            );
 
         if (!response.ok) {
+
             throw new Error(
                 `HTTP ${response.status}`
             );
+
         }
 
         const data =
@@ -26,5 +33,7 @@ export async function loadQuotes() {
         );
 
         return null;
+
     }
+
 }
