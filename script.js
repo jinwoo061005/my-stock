@@ -52,7 +52,7 @@ function calculateStock(symbol) {
   // 실제 매수 당시 원화 원가
   let costKRW = 0;
 
-  // USD 기준 매수 원가
+  // USD 기준 원가
   let costUSD = 0;
 
   // 실현손익
@@ -116,20 +116,17 @@ function calculateStock(symbol) {
         Math.min(quantity, shares);
 
 
-      // 매도 전 USD 평단
+      // 매도 전 평균 매수가
       const averageCostUSD =
         costUSD / shares;
 
-
-      // 매도 전 원화 평단
       const averageCostKRW =
         costKRW / shares;
 
 
-      // 매도금액
+      // 매도 금액
       const sellRevenueUSD =
         sellQuantity * priceUSD;
-
 
       const sellRevenueKRW =
         sellRevenueUSD * rate;
@@ -138,7 +135,6 @@ function calculateStock(symbol) {
       // 매도한 주식의 원가
       const soldCostUSD =
         averageCostUSD * sellQuantity;
-
 
       const soldCostKRW =
         averageCostKRW * sellQuantity;
@@ -149,7 +145,7 @@ function calculateStock(symbol) {
         sellRevenueKRW - soldCostKRW;
 
 
-      // 남은 주식 원가
+      // 남은 보유분 원가
       costUSD -= soldCostUSD;
 
       costKRW -= soldCostKRW;
@@ -169,7 +165,7 @@ function calculateStock(symbol) {
 
 
   // =========================
-  // 현재 평가금액
+  // 현재 평가금
   // =========================
 
   const marketValueUSD =
@@ -209,25 +205,17 @@ function calculateStock(symbol) {
 
 
   // =========================
-  // 주가 기준 수익률
-  // 환율 영향 없음
-  // =========================
-
-  const stockReturnRate =
-    costUSD > 0
-      ? (evaluationProfitUSD / costUSD) * 100
-      : 0;
-
-
-  // =========================
   // 원화 기준 총손익
-  // 환율 변동 포함
   // =========================
 
   const totalProfitKRW =
     evaluationProfitKRW +
     realizedKRW;
 
+
+  // =========================
+  // 원화 기준 수익률
+  // =========================
 
   const totalReturnRateKRW =
     costKRW > 0
@@ -239,29 +227,22 @@ function calculateStock(symbol) {
     shares,
 
     costUSD,
-
     costKRW,
 
     averageBuyUSD,
-
     averageBuyKRW,
 
     currentPriceUSD,
 
     marketValueUSD,
-
     marketValueKRW,
 
     evaluationProfitUSD,
-
     evaluationProfitKRW,
 
     realizedKRW,
 
-    stockReturnRate,
-
     totalProfitKRW,
-
     totalReturnRateKRW
   };
 }
@@ -352,15 +333,17 @@ function updateStockCard(symbol) {
   }
 
 
-  // 수익률
-  // 주가 기준 → 환율 영향 없음
+  // =========================
+  // 종목 수익률
+  // 원화 기준
+  // =========================
 
   if (profitElement) {
 
     profitElement.textContent =
-      stock.costUSD > 0
+      stock.costKRW > 0
         ? formatPercent(
-            stock.stockReturnRate
+            stock.totalReturnRateKRW
           )
         : "--";
 
@@ -371,14 +354,12 @@ function updateStockCard(symbol) {
     );
 
 
-    if (stock.stockReturnRate > 0) {
-
+    if (stock.totalReturnRateKRW > 0) {
       profitElement.classList.add("up");
     }
 
 
-    if (stock.stockReturnRate < 0) {
-
+    if (stock.totalReturnRateKRW < 0) {
       profitElement.classList.add("down");
     }
   }
@@ -504,13 +485,11 @@ function updateTotal() {
 
 
     if (totalProfitKRW > 0) {
-
       totalProfit.classList.add("up");
     }
 
 
     if (totalProfitKRW < 0) {
-
       totalProfit.classList.add("down");
     }
   }
@@ -687,13 +666,11 @@ function updateDetail(symbol) {
 
 
   if (stock.evaluationProfitKRW > 0) {
-
     evaluation.classList.add("up");
   }
 
 
   if (stock.evaluationProfitKRW < 0) {
-
     evaluation.classList.add("down");
   }
 
@@ -713,27 +690,24 @@ function updateDetail(symbol) {
 
 
   if (stock.realizedKRW > 0) {
-
     realized.classList.add("up");
   }
 
 
   if (stock.realizedKRW < 0) {
-
     realized.classList.add("down");
   }
 
 
   // =========================
   // 총 수익률
+  // 원화 기준
   // =========================
-  // 주가 기준
-  // 환율 영향 없음
 
   totalProfit.textContent =
-    stock.costUSD > 0
+    stock.costKRW > 0
       ? formatPercent(
-          stock.stockReturnRate
+          stock.totalReturnRateKRW
         )
       : "--";
 
@@ -744,14 +718,12 @@ function updateDetail(symbol) {
   );
 
 
-  if (stock.stockReturnRate > 0) {
-
+  if (stock.totalReturnRateKRW > 0) {
     totalProfit.classList.add("up");
   }
 
 
-  if (stock.stockReturnRate < 0) {
-
+  if (stock.totalReturnRateKRW < 0) {
     totalProfit.classList.add("down");
   }
 }
@@ -862,7 +834,7 @@ function showTradeForm() {
     prices[selectedSymbol] || "";
 
 
-  // 환율 직접 입력
+  // 환율은 직접 입력
 
   exchangeRateInput.value = "";
 
@@ -1031,19 +1003,15 @@ function submitTrade() {
   tradeType = null;
 
 
-  // =========================
   // 화면 갱신
-  // =========================
 
   updateStockCard(
     selectedSymbol
   );
 
-
   updateDetail(
     selectedSymbol
   );
-
 
   updateTotal();
 }
