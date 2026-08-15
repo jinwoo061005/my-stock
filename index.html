@@ -693,7 +693,127 @@ fetch("/api/quotes", { cache: "no-store" })
     });
 </script>
 
-<script type="module" src="main.js"></script>
+<script>
+async function loadStockPrices() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/quotes?time=" +
+                Date.now()
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "API 오류: " +
+                response.status
+            );
+        }
+
+        const data =
+            await response.json();
+
+
+        const symbols = [
+            "NVDY",
+            "QQQM",
+            "SCHD",
+            "SPMO",
+            "VIG",
+            "SKHY"
+        ];
+
+
+        symbols.forEach(symbol => {
+
+            const element =
+                document.getElementById(
+                    symbol + "-price"
+                );
+
+            if (!element) {
+                return;
+            }
+
+
+            const price =
+                Number(
+                    data[symbol]
+                );
+
+
+            if (
+                Number.isFinite(price) &&
+                price > 0
+            ) {
+
+                element.textContent =
+                    "$" +
+                    price.toFixed(2);
+
+            } else {
+
+                element.textContent =
+                    "--";
+
+            }
+
+        });
+
+
+        const usd =
+            Number(
+                data.USD_KRW
+            );
+
+
+        const usdElement =
+            document.getElementById(
+                "usdkrw"
+            );
+
+
+        if (
+            usdElement &&
+            Number.isFinite(usd) &&
+            usd > 0
+        ) {
+
+            usdElement.textContent =
+                "₩" +
+                Math.round(usd)
+                    .toLocaleString();
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "주가 로딩 실패:",
+            error
+        );
+
+    }
+
+}
+
+
+loadStockPrices();
+
+
+setInterval(
+    loadStockPrices,
+    60000
+);
+</script>
+
+
+<script
+    type="module"
+    src="main.js"
+></script>
 
 </body>
 
