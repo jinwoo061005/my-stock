@@ -1,4 +1,3 @@
-import { loadQuotes } from "./api.js";
 const API_URL = "/api/quote";
 
 const symbols = [
@@ -812,39 +811,92 @@ function submitTrade() {
 }
 
 
-function updateMarketData(data){
+// =========================
+// API
+// =========================
 
-    if(Number.isFinite(Number(data.USD_KRW))){
+async function loadQuotes() {
 
-        usdKrw = Number(data.USD_KRW);
+  try {
 
-        updateExchangeRate();
+    const response =
+      await fetch(
+        API_URL,
+        {
+          cache: "no-store"
+        }
+      );
 
+
+    if (!response.ok) {
+
+      throw new Error(
+        `HTTP ${response.status}`
+      );
     }
 
-    symbols.forEach(symbol=>{
 
-        const price = Number(data[symbol]);
+    const data =
+      await response.json();
 
-        if(Number.isFinite(price)&&price>0){
 
-            prices[symbol]=price;
+    // 환율
 
-        }
+    if (
+      Number.isFinite(
+        Number(data.USD_KRW)
+      )
+    ) {
 
-        updateStockCard(symbol);
+      usdKrw =
+        Number(data.USD_KRW);
 
+      updateExchangeRate();
+    }
+
+
+    // 주가
+
+    symbols.forEach(symbol => {
+
+      const price =
+        Number(data[symbol]);
+
+
+      if (
+        Number.isFinite(price) &&
+        price > 0
+      ) {
+
+        prices[symbol] =
+          price;
+      }
+
+
+      updateStockCard(symbol);
     });
+
 
     updateTotal();
 
-    if(selectedSymbol){
 
-        updateDetail(selectedSymbol);
+    if (selectedSymbol) {
 
+      updateDetail(
+        selectedSymbol
+      );
     }
 
+
+  } catch (error) {
+
+    console.error(
+      "주가 업데이트 실패:",
+      error
+    );
+  }
 }
+
 
 // =========================
 // 이벤트
