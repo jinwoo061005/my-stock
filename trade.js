@@ -18,13 +18,16 @@ export function getTrades() {
     }
 }
 
+
 function saveTrades(trades) {
 
     localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(trades)
     );
+
 }
+
 
 export function submitTrade({
     symbol,
@@ -34,48 +37,126 @@ export function submitTrade({
     exchangeRate,
     prices,
     usdKrw,
-    getTrades,
-    calculateStock
+    getTrades
 }) {
 
     if (!symbol) {
+
         alert("종목을 선택해주세요.");
+
         return false;
+
     }
+
 
     if (!shares || shares <= 0) {
+
         alert("수량을 입력해주세요.");
+
         return false;
+
     }
 
+
     if (!price || price <= 0) {
+
         alert("가격을 입력해주세요.");
+
         return false;
+
     }
+
+
+    if (!exchangeRate || exchangeRate <= 0) {
+
+        alert("거래 당시 환율을 입력해주세요.");
+
+        return false;
+
+    }
+
 
     const trades =
         getTrades();
 
+
     if (!trades[symbol]) {
+
         trades[symbol] = [];
+
     }
+
+
+    if (type === "sell") {
+
+        let currentShares = 0;
+
+        trades[symbol].forEach(trade => {
+
+            if (trade.type === "buy") {
+
+                currentShares +=
+                    Number(trade.shares || 0);
+
+            }
+
+            if (trade.type === "sell") {
+
+                currentShares -=
+                    Number(trade.shares || 0);
+
+            }
+
+        });
+
+
+        if (shares > currentShares) {
+
+            alert("보유 수량보다 많이 매도할 수 없습니다.");
+
+            return false;
+
+        }
+
+    }
+
 
     trades[symbol].push({
 
         type,
 
-        shares,
+        shares:
+            Number(shares),
 
-        price,
+        price:
+            Number(price),
 
-        exchangeRate,
+        exchangeRate:
+            Number(exchangeRate),
 
         date:
             new Date().toISOString()
 
     });
 
+
     saveTrades(trades);
 
+
+    const form =
+        document.getElementById(
+            "trade-form"
+        );
+
+
+    if (form) {
+
+        form.style.display =
+            "none";
+
+    }
+
+
     return true;
+
 }
