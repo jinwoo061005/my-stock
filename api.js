@@ -1,27 +1,28 @@
 // api.js
 
-const API_URL = "/api/quote";
-
 export async function loadQuotes() {
 
     try {
 
-        const response = await fetch(API_URL, {
-            cache: "no-store"
-        });
+        const response =
+            await fetch("/api/quotes");
 
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+            throw new Error("API 오류");
         }
 
-        return await response.json();
+        const data =
+            await response.json();
+
+        return data;
 
     } catch (error) {
 
-        console.error("API 오류 :", error);
+        console.error(
+            "시세 불러오기 실패:",
+            error
+        );
 
         return null;
-
     }
-
 }
