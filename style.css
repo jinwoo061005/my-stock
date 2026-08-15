@@ -4,9 +4,8 @@
 
 body {
   margin: 0;
-  padding: 20px 12px 40px;
-  background: #f5f6f8;
-  color: #111;
+  background: #111;
+  color: #eee;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -15,29 +14,32 @@ body {
 }
 
 .container {
-  width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  padding: 18px;
 }
 
 h1 {
-  margin: 8px 0 18px;
-  font-size: 28px;
+  margin: 5px 0 20px;
+  font-size: 25px;
 }
 
+
+/* =========================
+   카드
+========================= */
+
 .card {
-  background: white;
-  border-radius: 16px;
-  padding: 18px;
+  background: #1b1b1b;
+  border: 1px solid #2c2c2c;
+  border-radius: 14px;
+  padding: 17px;
   margin-bottom: 14px;
-  box-shadow:
-    0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .section-title {
+  color: #aaa;
   font-size: 14px;
-  font-weight: 700;
-  color: #777;
   margin-bottom: 10px;
 }
 
@@ -47,169 +49,78 @@ h1 {
 ========================= */
 
 .total-card {
-  text-align: center;
+  text-align: left;
 }
 
 #total-value {
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 #total-dollar {
+  color: #aaa;
   margin-top: 4px;
-  font-size: 16px;
-  color: #777;
 }
 
 #total-profit {
-  margin-top: 10px;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.fx-profit {
+  display: inline-block;
+  margin-left: 5px;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.daily-profit-box {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 13px;
+  padding-top: 12px;
+  border-top: 1px solid #2c2c2c;
+  font-size: 13px;
+  color: #aaa;
 }
 
 
 /* =========================
-   일간 수익
+   주요시장
 ========================= */
 
-.daily-card {
-  text-align: center;
+.market-card {
+  padding-bottom: 10px;
 }
 
-.daily-main {
-  font-size: 24px;
-  font-weight: 800;
+.market-group {
+  margin-bottom: 15px;
 }
 
-.daily-usd {
-  margin-top: 5px;
-  font-size: 15px;
-  color: #777;
+.market-group:last-child {
+  margin-bottom: 0;
 }
-
-.daily-rate {
-  margin-top: 5px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.daily-fx {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #777;
-}
-
-
-/* =========================
-   색상
-========================= */
-
-.up {
-  color: #e53935;
-}
-
-.down {
-  color: #1976d2;
-}
-
-
-/* =========================
-   일간 기록
-========================= */
-
-.history-card {
-  overflow: hidden;
-}
-
-.history-row {
-  display: grid;
-  grid-template-columns:
-    70px
-    1fr
-    1fr
-    70px;
-
-  gap: 6px;
-
-  padding: 11px 0;
-
-  border-bottom:
-    1px solid #eee;
-
-  font-size: 12px;
-  align-items: center;
-}
-
-.history-row:last-child {
-  border-bottom: none;
-}
-
-.history-date {
-  font-weight: 700;
-}
-
-.history-profit,
-.history-usd,
-.history-rate,
-.history-fx {
-  text-align: right;
-}
-
-.history-fx {
-  color: #777;
-}
-
-.history-empty {
-  text-align: center;
-  color: #999;
-  padding: 10px;
-}
-
-
-/* =========================
-   주요 시장
-========================= */
 
 .market-group-title {
-  margin-top: 16px;
-  margin-bottom: 5px;
   font-size: 12px;
-  font-weight: 700;
-  color: #999;
-}
-
-.market-group-title:first-of-type {
-  margin-top: 0;
+  color: #777;
+  margin-bottom: 5px;
+  font-weight: 600;
 }
 
 .market-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 10px 0;
-
-  border-bottom:
-    1px solid #eee;
-
-  font-size: 15px;
+  padding: 8px 0;
+  border-bottom: 1px solid #252525;
 }
 
 .market-row:last-child {
   border-bottom: none;
-}
-
-.market-value {
-  text-align: right;
-}
-
-.market-price {
-  font-weight: 700;
-}
-
-.market-change {
-  margin-left: 7px;
-  font-size: 12px;
 }
 
 
@@ -218,15 +129,16 @@ h1 {
 ========================= */
 
 .stock-card {
-  background: white;
-  border-radius: 16px;
-  padding: 17px;
+  background: #1b1b1b;
+  border: 1px solid #2c2c2c;
+  border-radius: 14px;
+  padding: 16px;
   margin-bottom: 10px;
-
-  box-shadow:
-    0 2px 10px rgba(0, 0, 0, 0.05);
-
   cursor: pointer;
+}
+
+.stock-card:active {
+  background: #222;
 }
 
 .stock-main {
@@ -236,14 +148,14 @@ h1 {
 }
 
 .stock-name {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .stock-shares {
-  margin-top: 5px;
-  font-size: 13px;
   color: #888;
+  font-size: 13px;
+  margin-top: 5px;
 }
 
 .stock-info {
@@ -252,19 +164,32 @@ h1 {
 
 .stock-price {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .stock-value {
-  margin-top: 3px;
+  color: #aaa;
   font-size: 13px;
-  color: #777;
+  margin-top: 3px;
 }
 
 .stock-profit {
-  margin-top: 4px;
   font-size: 13px;
-  font-weight: 700;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+
+/* =========================
+   수익 색상
+========================= */
+
+.up {
+  color: #ff5c5c !important;
+}
+
+.down {
+  color: #4f9cff !important;
 }
 
 
@@ -273,50 +198,47 @@ h1 {
 ========================= */
 
 #back-button {
+  background: none;
   border: none;
-  background: white;
-
-  padding: 10px 14px;
-
-  border-radius: 10px;
-
-  font-size: 14px;
-
-  cursor: pointer;
-
-  margin-bottom: 15px;
+  color: #aaa;
+  font-size: 16px;
+  padding: 5px 0 15px;
 }
 
 .detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 15px;
 }
 
 #detail-symbol {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 25px;
+  font-weight: 700;
 }
 
 .detail-price {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .detail-row {
   display: flex;
   justify-content: space-between;
-
   padding: 13px 0;
-
-  border-bottom:
-    1px solid #eee;
+  border-bottom: 1px solid #292929;
 }
 
 .detail-row:last-child {
   border-bottom: none;
+}
+
+.detail-row span {
+  color: #999;
+}
+
+.detail-row strong {
+  font-weight: 600;
 }
 
 
@@ -327,33 +249,26 @@ h1 {
 .trade-buttons {
   display: flex;
   gap: 10px;
-
-  margin-bottom: 14px;
+  margin-top: 12px;
 }
 
 .trade-buttons button {
   flex: 1;
-
   border: none;
-
-  padding: 14px;
-
-  border-radius: 12px;
-
-  color: white;
-
-  font-size: 16px;
-  font-weight: 700;
-
-  cursor: pointer;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .buy-button {
-  background: #e53935;
+  background: #252525;
+  color: #ff5c5c;
 }
 
 .sell-button {
-  background: #1976d2;
+  background: #252525;
+  color: #4f9cff;
 }
 
 
@@ -362,66 +277,26 @@ h1 {
 ========================= */
 
 .trade-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  margin-top: 12px;
 }
 
 .trade-form input {
   width: 100%;
-
-  padding: 13px;
-
-  border:
-    1px solid #ddd;
-
-  border-radius: 10px;
-
-  font-size: 15px;
-}
-
-#trade-submit {
-  border: none;
-
-  padding: 13px;
-
-  border-radius: 10px;
-
   background: #111;
-  color: white;
-
-  font-size: 15px;
-  font-weight: 700;
+  border: 1px solid #333;
+  border-radius: 9px;
+  color: #eee;
+  padding: 12px;
+  margin-bottom: 9px;
+  font-size: 14px;
 }
 
-
-/* =========================
-   모바일
-========================= */
-
-@media (max-width: 450px) {
-
-  body {
-    padding:
-      15px 10px 30px;
-  }
-
-  h1 {
-    font-size: 25px;
-  }
-
-  #total-value {
-    font-size: 27px;
-  }
-
-  .history-row {
-    grid-template-columns:
-      55px
-      1fr
-      1fr
-      60px;
-
-    font-size: 11px;
-  }
-
+.trade-form button {
+  width: 100%;
+  background: #eee;
+  color: #111;
+  border: none;
+  border-radius: 9px;
+  padding: 12px;
+  font-weight: 700;
 }
