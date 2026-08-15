@@ -531,10 +531,17 @@ function updateStockCard(symbol) {
         : 0;
 
 
-    profitElement.textContent =
-      stock.shares > 0
-        ? formatPercent(rate)
-        : "--";
+    profitElement.innerHTML =
+  stock.costKRW > 0
+    ? `
+      <span class="profit-money">
+        ${totalProfitKRW >= 0 ? "+" : ""}${formatKRW(totalProfitKRW)}
+      </span>
+      <span class="profit-rate">
+        ${formatPercent(returnRate)}
+      </span>
+    `
+    : "--";
 
 
     applyProfitColor(
