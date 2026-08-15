@@ -1,6 +1,5 @@
 // main.js
 
-import { loadQuotes } from "./api.js";
 import { getTrades, submitTrade } from "./trade.js";
 import { getWallet } from "./wallet.js";
 
@@ -14,6 +13,7 @@ import {
     showTradeForm
 } from "./ui.js";
 
+
 const symbols = [
     "NVDY",
     "QQQM",
@@ -23,6 +23,7 @@ const symbols = [
     "SKHY"
 ];
 
+
 const prices = {};
 
 let usdKrw = 0;
@@ -30,29 +31,67 @@ let usdKrw = 0;
 let selectedSymbol = null;
 
 
-async function refresh() {
+async function loadQuotes() {
 
-    const data = await loadQuotes();
+    try {
 
-    if (!data) {
-        console.error("시세 데이터를 받지 못했습니다.");
-        return;
+        const response =
+            await fetch(
+                "/api/quotes",
+                {
+                    cache: "no-store"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+        return await response.json();
+
+    } catch (error) {
+
+        console.error(
+            "주가 불러오기 실패:",
+            error
+        );
+
+        return null;
+
     }
 
-    console.log("받은 시세:", data);
+}
+
+
+async function refresh() {
+
+    const data =
+        await loadQuotes();
+
+    if (!data) return;
+
 
     usdKrw =
-        Number(data.USD_KRW || 0);
+        Number(
+            data.USD_KRW || 0
+        );
 
-    updateExchangeRate(usdKrw);
+
+    updateExchangeRate(
+        usdKrw
+    );
 
 
     symbols.forEach(symbol => {
 
-        const price =
-            Number(data[symbol] || 0);
-
-        prices[symbol] = price;
+        prices[symbol] =
+            Number(
+                data[symbol] || 0
+            );
 
 
         const priceElement =
@@ -60,11 +99,12 @@ async function refresh() {
                 `${symbol}-price`
             );
 
+
         if (priceElement) {
 
             priceElement.textContent =
-                price > 0
-                    ? `$${price.toFixed(2)}`
+                prices[symbol] > 0
+                    ? `$${prices[symbol].toFixed(2)}`
                     : "--";
 
         }
@@ -121,9 +161,12 @@ window.addEventListener(
 
 window.openDetail = symbol => {
 
-    selectedSymbol = symbol;
+    selectedSymbol =
+        symbol;
 
-    openDetail(symbol);
+    openDetail(
+        symbol
+    );
 
     updateDetail(
         symbol,
@@ -162,12 +205,14 @@ window.submitTrade = tradeType => {
             ).value
         );
 
+
     const price =
         Number(
             document.getElementById(
                 "trade-price"
             ).value
         );
+
 
     const exchangeRate =
         Number(
@@ -201,8 +246,7 @@ window.submitTrade = tradeType => {
         });
 
 
-    if (!success)
-        return;
+    if (!success) return;
 
 
     updateStockCard(
