@@ -39,21 +39,20 @@ function saveTrades(symbol, trades) {
 }
 
 
-// =========================
-// 종목 계산
-// =========================
-
 function calculateStock(symbol) {
 
   const trades = getTrades(symbol);
 
   let shares = 0;
 
-  // 매수한 주식의 USD 원가
+  // 현재 보유주식의 실제 원화 매수원가
+  let costKRW = 0;
+
+  // 현재 보유주식의 USD 매수원가
   let costUSD = 0;
 
-  // 매도해서 확정된 원화 손익
   let realizedKRW = 0;
+
 
   trades.forEach(trade => {
 
@@ -86,8 +85,14 @@ function calculateStock(symbol) {
       const buyCostUSD =
         quantity * priceUSD;
 
-      costUSD += buyCostUSD;
+      const buyCostKRW =
+        buyCostUSD * rate;
+
       shares += quantity;
+
+      costUSD += buyCostUSD;
+
+      costKRW += buyCostKRW;
     }
 
 
@@ -99,18 +104,28 @@ function calculateStock(symbol) {
 
       if (shares <= 0) return;
 
+
       const sellQuantity =
         Math.min(quantity, shares);
 
 
-      // 매도 전 USD 평단
+      // 현재 보유주식의 USD 평단
       const averageCostUSD =
         costUSD / shares;
 
 
-      // 실제 매도금액
+      // 현재 보유주식의 원화 평단
+      const averageCostKRW =
+        costKRW / shares;
+
+
+      // 매도금액
       const sellRevenueUSD =
         sellQuantity * priceUSD;
+
+
+      const sellRevenueKRW =
+        sellRevenueUSD * rate;
 
 
       // 매도한 주식의 원가
@@ -118,20 +133,19 @@ function calculateStock(symbol) {
         averageCostUSD * sellQuantity;
 
 
-      // USD 기준 주식손익
-      const stockProfitUSD =
-        sellRevenueUSD - soldCostUSD;
+      const soldCostKRW =
+        averageCostKRW * sellQuantity;
 
 
-      // 매도 당시 환율로 원화 환산
-      const stockProfitKRW =
-        stockProfitUSD * rate;
+      // 실현손익
+      realizedKRW +=
+        sellRevenueKRW - soldCostKRW;
 
 
-      realizedKRW += stockProfitKRW;
-
-
+      // 남은 보유분 원가
       costUSD -= soldCostUSD;
+
+      costKRW -= soldCostKRW;
 
       shares -= sellQuantity;
     }
@@ -140,7 +154,7 @@ function calculateStock(symbol) {
 
 
   // =========================
-  // 현재 가격
+  // 현재 주가
   // =========================
 
   const currentPriceUSD =
@@ -160,7 +174,7 @@ function calculateStock(symbol) {
 
 
   // =========================
-  // USD 평단
+  // 평단
   // =========================
 
   const averageBuyUSD =
@@ -169,29 +183,26 @@ function calculateStock(symbol) {
       : 0;
 
 
+  const averageBuyKRW =
+    shares > 0
+      ? costKRW / shares
+      : 0;
+
+
   // =========================
-  // USD 기준 평가손익
-  // 환율 변화 제외
+  // 평가손익
   // =========================
 
   const evaluationProfitUSD =
     marketValueUSD - costUSD;
 
 
-  // =========================
-  // 원화 기준 평가손익
-  // 환율 변화 포함
-  // =========================
-
-  const costKRW =
-    costUSD * getCurrentEquivalentRate(symbol);
-
   const evaluationProfitKRW =
     marketValueKRW - costKRW;
 
 
   // =========================
-  // 주가 수익률
+  // 주가 기준 수익률
   // 환율 영향 없음
   // =========================
 
@@ -202,8 +213,7 @@ function calculateStock(symbol) {
 
 
   // =========================
-  // 실제 원화 수익률
-  // 환율 변화 포함
+  // 실제 원화 총손익
   // =========================
 
   const totalProfitKRW =
@@ -218,6 +228,7 @@ function calculateStock(symbol) {
 
 
   return {
+
     shares,
 
     costUSD,
@@ -225,6 +236,8 @@ function calculateStock(symbol) {
     costKRW,
 
     averageBuyUSD,
+
+    averageBuyKRW,
 
     currentPriceUSD,
 
@@ -245,7 +258,6 @@ function calculateStock(symbol) {
     totalReturnRateKRW
   };
 }
-
 
 // =========================
 // 현재 환율 기준 원가
