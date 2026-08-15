@@ -37,6 +37,8 @@ async function refresh() {
 
     const data = await loadQuotes();
 
+    console.log("QUOTES DATA:", data);
+
     if (!data) return;
 
     usdKrw = Number(data.USD_KRW || 0);
