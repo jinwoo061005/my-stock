@@ -248,33 +248,73 @@ h1 {
 
 
 /* =========================
-   종목 수익률
+   수익 표시 - 새 디자인
 ========================= */
 
 .stock-profit {
-  display: inline-block;
+  margin-top: 7px;
+  padding: 0;
 
-  margin-top: 6px;
-  padding: 3px 7px;
+  background: none;
+  border: none;
+  border-radius: 0;
 
-  border-radius: 6px;
-
-  font-size: 11px;
-  font-weight: 750;
-
-  background: rgba(255,255,255,.045);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
 }
 
+
+/* 상세 화면 수익 */
+
+#detail-evaluation-profit,
+#detail-realized-profit,
+#detail-total-profit {
+  font-weight: 700;
+}
+
+
+/* 총 수익 */
+
+#total-profit {
+  margin-top: 16px;
+
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+
+/* 일간 수익 */
+
+#daily-profit-krw {
+  margin-top: 11px;
+
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+#daily-profit-usd {
+  margin-top: 4px;
+
+  color: var(--sub);
+  font-size: 13px;
+}
+
+
+/* 수익 색상 */
+
 .up {
-  color: var(--up) !important;
+  color: #ff4d5a !important;
 }
 
 .down {
-  color: var(--down) !important;
+  color: #4d8dff !important;
 }
 
 .flat {
-  color: var(--flat) !important;
+  color: #858b94 !important;
 }
 
 
