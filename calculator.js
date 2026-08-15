@@ -1,1 +1,3 @@
-c.js
+export function calculatePortfolio() {
+
+}
