@@ -5,63 +5,128 @@ export function calculateStock(
     prices,
     getTrades
 ) {
+
     const price =
-        Number(prices[symbol] || 0);
+        Number(
+            prices[symbol] || 0
+        );
+
+
+    const allTrades =
+        getTrades();
+
 
     const trades =
-        getTrades()[symbol] || [];
+        allTrades[symbol] || [];
+
 
     let shares = 0;
+
     let totalCost = 0;
+
+    let realizedProfit = 0;
+
 
     trades.forEach(trade => {
 
         const tradeShares =
-            Number(trade.shares || 0);
+            Number(
+                trade.shares || 0
+            );
+
 
         const tradePrice =
-            Number(trade.price || 0);
+            Number(
+                trade.price || 0
+            );
+
 
         if (trade.type === "buy") {
 
-            shares += tradeShares;
+            shares +=
+                tradeShares;
+
 
             totalCost +=
-                tradeShares * tradePrice;
+                tradeShares *
+                tradePrice;
+
         }
+
 
         if (trade.type === "sell") {
 
-            shares -= tradeShares;
+            const averagePrice =
+                shares > 0
+                    ? totalCost / shares
+                    : 0;
+
+
+            realizedProfit +=
+                (
+                    tradePrice -
+                    averagePrice
+                ) *
+                tradeShares;
+
+
+            shares -=
+                tradeShares;
+
+
+            totalCost -=
+                averagePrice *
+                tradeShares;
 
         }
 
     });
 
+
     const currentValue =
         shares * price;
 
-    const profit =
-        currentValue - totalCost;
+
+    const evaluationProfit =
+        currentValue -
+        totalCost;
+
 
     const profitPercent =
         totalCost > 0
-            ? (profit / totalCost) * 100
+            ? (
+                evaluationProfit /
+                totalCost
+            ) * 100
             : 0;
 
-    const averagePrice =
+
+    const averageBuy =
         shares > 0
             ? totalCost / shares
             : 0;
 
+
     return {
+
         symbol,
+
+        price,
+
         shares,
-        averagePrice,
+
         totalCost,
-        currentPrice: price,
+
         currentValue,
-        profit,
-        profitPercent
+
+        evaluationProfit,
+
+        realizedProfit,
+
+        profitPercent,
+
+        averageBuy
+
     };
+
 }
