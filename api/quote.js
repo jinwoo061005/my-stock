@@ -1,40 +1,49 @@
 export default async function handler(req, res) {
+    const API_KEY = process.env.FINNHUB_API_KEY;
+
+    if (!API_KEY) {
+        return res.status(500).json({
+            error: "FINNHUB_API_KEY 없음"
+        });
+    }
+
+    const symbols = [
+        "NVDY",
+        "QQQM",
+        "SCHD",
+        "SPMO",
+        "VIG",
+        "SKHY"
+    ];
+
     try {
-        const symbols = [
-            "NVDY",
-            "QQQM",
-            "SCHD",
-            "SPMO",
-            "VIG",
-            "SKHY"
-        ];
-
-        const API_KEY = process.env.FINNHUB_API_KEY;
-
-        if (!API_KEY) {
-            return res.status(500).json({
-                error: "FINNHUB_API_KEY가 없습니다."
-            });
-        }
-
         const result = {};
 
         for (const symbol of symbols) {
-            const response = await fetch(
-                `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`
-            );
 
-            if (!response.ok) {
-                continue;
-            }
+            const url =
+                `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`;
 
-            const data = await response.json();
+            const response =
+                await fetch(url);
 
-            result[symbol] = Number(data.c || 0);
+            const data =
+                await response.json();
+
+            result[symbol] =
+                Number(data.c || 0);
         }
 
+        const exchangeResponse =
+            await fetch(
+                "https://api.frankfurter.app/latest?from=USD&to=KRW"
+            );
+
+        const exchangeData =
+            await exchangeResponse.json();
+
         result.USD_KRW =
-            await getExchangeRate();
+            Number(exchangeData.rates?.KRW || 0);
 
         return res.status(200).json(result);
 
@@ -43,34 +52,7 @@ export default async function handler(req, res) {
         console.error(error);
 
         return res.status(500).json({
-            error: "주가를 불러오지 못했습니다."
+            error: error.message
         });
-    }
-}
-
-async function getExchangeRate() {
-
-    try {
-
-        const response =
-            await fetch(
-                "https://api.frankfurter.app/latest?from=USD&to=KRW"
-            );
-
-        if (!response.ok) {
-            return 0;
-        }
-
-        const data =
-            await response.json();
-
-        return Number(
-            data.rates?.KRW || 0
-        );
-
-    } catch {
-
-        return 0;
-
     }
 }
