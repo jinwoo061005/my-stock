@@ -23,6 +23,7 @@ const symbols = [
     "QQQM",
     "SCHD",
     "SPMO",
+    "SKHY",
     "VIG"
 ];
 
