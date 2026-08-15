@@ -811,92 +811,39 @@ function submitTrade() {
 }
 
 
-// =========================
-// API
-// =========================
+function updateMarketData(data){
 
-async function loadQuotes() {
+    if(Number.isFinite(Number(data.USD_KRW))){
 
-  try {
+        usdKrw = Number(data.USD_KRW);
 
-    const response =
-      await fetch(
-        API_URL,
-        {
-          cache: "no-store"
+        updateExchangeRate();
+
+    }
+
+    symbols.forEach(symbol=>{
+
+        const price = Number(data[symbol]);
+
+        if(Number.isFinite(price)&&price>0){
+
+            prices[symbol]=price;
+
         }
-      );
 
+        updateStockCard(symbol);
 
-    if (!response.ok) {
-
-      throw new Error(
-        `HTTP ${response.status}`
-      );
-    }
-
-
-    const data =
-      await response.json();
-
-
-    // 환율
-
-    if (
-      Number.isFinite(
-        Number(data.USD_KRW)
-      )
-    ) {
-
-      usdKrw =
-        Number(data.USD_KRW);
-
-      updateExchangeRate();
-    }
-
-
-    // 주가
-
-    symbols.forEach(symbol => {
-
-      const price =
-        Number(data[symbol]);
-
-
-      if (
-        Number.isFinite(price) &&
-        price > 0
-      ) {
-
-        prices[symbol] =
-          price;
-      }
-
-
-      updateStockCard(symbol);
     });
-
 
     updateTotal();
 
+    if(selectedSymbol){
 
-    if (selectedSymbol) {
+        updateDetail(selectedSymbol);
 
-      updateDetail(
-        selectedSymbol
-      );
     }
 
-
-  } catch (error) {
-
-    console.error(
-      "주가 업데이트 실패:",
-      error
-    );
-  }
 }
-
 
 // =========================
 // 이벤트
