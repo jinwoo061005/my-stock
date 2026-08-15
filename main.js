@@ -1,12 +1,8 @@
 // main.js
 
 import { loadQuotes } from "./api.js";
-
 import { getTrades, submitTrade } from "./trade.js";
-
 import { getWallet } from "./wallet.js";
-
-import { calculateStock } from "./calculate.js";
 
 import {
     updateStockCard,
@@ -23,8 +19,8 @@ const symbols = [
     "QQQM",
     "SCHD",
     "SPMO",
-    "SKHY",
-    "VIG"
+    "VIG",
+    "SKHY"
 ];
 
 const prices = {};
@@ -33,22 +29,46 @@ let usdKrw = 0;
 
 let selectedSymbol = null;
 
+
 async function refresh() {
 
     const data = await loadQuotes();
 
-    console.log("QUOTES DATA:", data);
+    if (!data) {
+        console.error("시세 데이터를 받지 못했습니다.");
+        return;
+    }
 
-    if (!data) return;
+    console.log("받은 시세:", data);
 
-    usdKrw = Number(data.USD_KRW || 0);
+    usdKrw =
+        Number(data.USD_KRW || 0);
 
     updateExchangeRate(usdKrw);
 
+
     symbols.forEach(symbol => {
 
-        prices[symbol] =
+        const price =
             Number(data[symbol] || 0);
+
+        prices[symbol] = price;
+
+
+        const priceElement =
+            document.getElementById(
+                `${symbol}-price`
+            );
+
+        if (priceElement) {
+
+            priceElement.textContent =
+                price > 0
+                    ? `$${price.toFixed(2)}`
+                    : "--";
+
+        }
+
 
         updateStockCard(
             symbol,
@@ -59,12 +79,14 @@ async function refresh() {
 
     });
 
+
     updateTotal(
         symbols,
         prices,
         usdKrw,
         getTrades
     );
+
 
     if (selectedSymbol) {
 
@@ -78,6 +100,7 @@ async function refresh() {
     }
 
 }
+
 
 window.addEventListener(
     "DOMContentLoaded",
@@ -95,6 +118,7 @@ window.addEventListener(
     }
 );
 
+
 window.openDetail = symbol => {
 
     selectedSymbol = symbol;
@@ -110,11 +134,13 @@ window.openDetail = symbol => {
 
 };
 
+
 window.closeDetail = () => {
 
     closeDetail();
 
 };
+
 
 window.showTradeForm = type => {
 
@@ -125,6 +151,7 @@ window.showTradeForm = type => {
     );
 
 };
+
 
 window.submitTrade = tradeType => {
 
@@ -149,6 +176,7 @@ window.submitTrade = tradeType => {
             ).value
         );
 
+
     const success =
         submitTrade({
 
@@ -168,14 +196,14 @@ window.submitTrade = tradeType => {
 
             usdKrw,
 
-            getTrades,
-
-            calculateStock
+            getTrades
 
         });
 
+
     if (!success)
         return;
+
 
     updateStockCard(
         selectedSymbol,
@@ -184,12 +212,14 @@ window.submitTrade = tradeType => {
         getTrades
     );
 
+
     updateTotal(
         symbols,
         prices,
         usdKrw,
         getTrades
     );
+
 
     updateDetail(
         selectedSymbol,
