@@ -17,11 +17,9 @@
   >
 </head>
 
-
 <body>
 
 <div class="container">
-
 
   <!-- =========================
        메인 화면
@@ -32,7 +30,9 @@
     <h1>📈 My Stock</h1>
 
 
-    <!-- 총 평가금 -->
+    <!-- =========================
+         총 평가금
+    ========================== -->
 
     <div class="card total-card">
 
@@ -48,16 +48,75 @@
         $0.00
       </div>
 
-      <div id="total-profit">
-        --
-      </div>
-      <div id="daily-profit-usd">
+      <div
+        id="total-profit"
+        class="main-profit"
+      >
         --
       </div>
 
-      <div id="daily-profit-krw">
+    </div>
+
+
+    <!-- =========================
+         일간 수익
+    ========================== -->
+
+    <div class="card daily-card">
+
+      <div class="section-title">
+        오늘 수익
+      </div>
+
+      <div
+        id="daily-profit-krw"
+        class="daily-main"
+      >
         --
       </div>
+
+      <div
+        id="daily-profit-usd"
+        class="daily-usd"
+      >
+        --
+      </div>
+
+      <div
+        id="daily-profit-rate"
+        class="daily-rate"
+      >
+        --
+      </div>
+
+      <div
+        id="daily-profit-fx"
+        class="daily-fx"
+      >
+        환차익 --
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         일간 수익 기록
+    ========================== -->
+
+    <div class="card history-card">
+
+      <div class="section-title">
+        일간 수익 기록
+      </div>
+
+      <div id="daily-history">
+
+        <div class="history-empty">
+          기록이 없습니다.
+        </div>
+
+      </div>
+
     </div>
 
 
@@ -72,33 +131,58 @@
       </div>
 
 
-      <div class="market-row">
-        <span>USD/KRW</span>
-        <span id="usdkrw">--</span>
+      <div class="market-group-title">
+        🇰🇷 국내
       </div>
-
-
-      <div class="market-row">
-        <span>S&P500</span>
-        <span id="sp500">--</span>
-      </div>
-
-
-      <div class="market-row">
-        <span>Nasdaq</span>
-        <span id="nasdaq">--</span>
-      </div>
-
 
       <div class="market-row">
         <span>KOSPI</span>
-        <span id="kospi">--</span>
-      </div>
 
+        <span id="kospi">
+          --
+        </span>
+      </div>
 
       <div class="market-row">
         <span>KOSDAQ</span>
-        <span id="kosdaq">--</span>
+
+        <span id="kosdaq">
+          --
+        </span>
+      </div>
+
+
+      <div class="market-group-title">
+        💱 환율
+      </div>
+
+      <div class="market-row">
+        <span>USD/KRW</span>
+
+        <span id="usdkrw">
+          --
+        </span>
+      </div>
+
+
+      <div class="market-group-title">
+        🇺🇸 미국
+      </div>
+
+      <div class="market-row">
+        <span>S&P 500</span>
+
+        <span id="sp500">
+          --
+        </span>
+      </div>
+
+      <div class="market-row">
+        <span>NASDAQ</span>
+
+        <span id="nasdaq">
+          --
+        </span>
       </div>
 
     </div>
@@ -440,7 +524,6 @@
 
       </div>
 
-
     </div>
 
   </div>
@@ -454,7 +537,6 @@
     id="detail-screen"
     style="display:none;"
   >
-
 
     <button id="back-button">
       ← 뒤로
@@ -476,10 +558,6 @@
 
     </div>
 
-
-    <!-- =========================
-         상세 정보
-    ========================== -->
 
     <div class="card detail-card">
 
@@ -561,7 +639,6 @@
 
       </div>
 
-
     </div>
 
 
@@ -577,7 +654,6 @@
       >
         매수
       </button>
-
 
       <button
         id="detail-sell-button"
@@ -599,7 +675,6 @@
       style="display:none;"
     >
 
-
       <div
         id="trade-title"
         class="section-title"
@@ -607,8 +682,6 @@
         매수
       </div>
 
-
-      <!-- 수량 -->
 
       <input
         type="number"
@@ -618,8 +691,6 @@
       >
 
 
-      <!-- 매수가 / 매도가 -->
-
       <input
         type="number"
         id="trade-price"
@@ -627,8 +698,6 @@
         step="0.01"
       >
 
-
-      <!-- ★ 직접 입력하는 당시 환율 -->
 
       <input
         type="number"
@@ -638,12 +707,9 @@
       >
 
 
-      <button
-        id="trade-submit"
-      >
+      <button id="trade-submit">
         확인
       </button>
-
 
     </div>
 
@@ -655,5 +721,4 @@
 <script src="script.js"></script>
 
 </body>
-
 </html>
