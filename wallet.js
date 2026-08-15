@@ -1,24 +1,25 @@
 // wallet.js
 
-const STORAGE_KEY = "wallet";
-
-const DEFAULT_WALLET = {
-    krw: 0,
-    usd: 0,
-    usdCostKRW: 0
-};
+const WALLET_KEY = "stockWallet";
 
 export function getWallet() {
 
     const saved =
-        localStorage.getItem(STORAGE_KEY);
+        localStorage.getItem(WALLET_KEY);
 
     if (!saved) {
 
-        saveWallet(DEFAULT_WALLET);
+        const wallet = {
+            cashKRW: 0,
+            cashUSD: 0
+        };
 
-        return { ...DEFAULT_WALLET };
+        localStorage.setItem(
+            WALLET_KEY,
+            JSON.stringify(wallet)
+        );
 
+        return wallet;
     }
 
     try {
@@ -27,114 +28,53 @@ export function getWallet() {
 
     } catch {
 
-        saveWallet(DEFAULT_WALLET);
-
-        return { ...DEFAULT_WALLET };
+        return {
+            cashKRW: 0,
+            cashUSD: 0
+        };
 
     }
-
 }
 
 export function saveWallet(wallet) {
 
     localStorage.setItem(
-        STORAGE_KEY,
+        WALLET_KEY,
         JSON.stringify(wallet)
     );
 
 }
 
-export function resetWallet() {
-
-    saveWallet(DEFAULT_WALLET);
-
-}
-
-export function depositKRW(amount) {
-
-    const wallet = getWallet();
-
-    wallet.krw += Number(amount);
-
-    saveWallet(wallet);
-
-    return wallet;
-
-}
-
-export function withdrawKRW(amount) {
-
-    const wallet = getWallet();
-
-    wallet.krw -= Number(amount);
-
-    if (wallet.krw < 0)
-        wallet.krw = 0;
-
-    saveWallet(wallet);
-
-    return wallet;
-
-}
-
-export function exchangeToUSD(
-    krw,
-    rate
-) {
+export function updateWallet({
+    type,
+    amountKRW = 0,
+    amountUSD = 0
+}) {
 
     const wallet =
         getWallet();
 
-    const usd =
-        krw / rate;
+    if (type === "deposit") {
 
-    wallet.krw -= krw;
+        wallet.cashKRW +=
+            Number(amountKRW);
 
-    wallet.usd += usd;
+        wallet.cashUSD +=
+            Number(amountUSD);
 
-    wallet.usdCostKRW += krw;
+    }
 
-    saveWallet(wallet);
+    if (type === "withdraw") {
 
-    return wallet;
+        wallet.cashKRW -=
+            Number(amountKRW);
 
-}
+        wallet.cashUSD -=
+            Number(amountUSD);
 
-export function exchangeToKRW(
-    usd,
-    rate
-) {
-
-    const wallet =
-        getWallet();
-
-    const krw =
-        usd * rate;
-
-    wallet.usd -= usd;
-
-    if (wallet.usd < 0)
-        wallet.usd = 0;
-
-    wallet.krw += krw;
+    }
 
     saveWallet(wallet);
 
     return wallet;
-
-}
-
-export function getAverageExchangeRate() {
-
-    const wallet =
-        getWallet();
-
-    if (wallet.usd <= 0)
-        return 0;
-
-    return (
-        wallet.usdCostKRW /
-        wallet.usd
-    );
-
 }
