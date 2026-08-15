@@ -1,12 +1,4 @@
-// ui.js (1/2)
-
-import {
-    calculateStock,
-    calculatePortfolio,
-    formatUSD,
-    formatKRW,
-    formatPercent
-} from "./calculator.js";
+// ui.js
 
 export function updateStockCard(
     symbol,
@@ -15,22 +7,65 @@ export function updateStockCard(
     getTrades
 ) {
 
-    const stock =
-        calculateStock(
-            symbol,
-            prices,
-            usdKrw,
-            getTrades
-        );
+    const price =
+        Number(prices[symbol] || 0);
 
-    const sharesElement =
-        document.getElementById(
-            `${symbol}-shares-display`
-        );
+    const trades =
+        getTrades()[symbol] || [];
+
+    let shares = 0;
+    let totalCostUSD = 0;
+
+    trades.forEach(trade => {
+
+        const quantity =
+            Number(trade.shares || 0);
+
+        const tradePrice =
+            Number(trade.price || 0);
+
+        if (trade.type === "buy") {
+
+            shares += quantity;
+
+            totalCostUSD +=
+                quantity * tradePrice;
+
+        }
+
+        if (trade.type === "sell") {
+
+            shares -= quantity;
+
+        }
+
+    });
+
+    const valueUSD =
+        shares * price;
+
+    const averagePrice =
+        shares > 0
+            ? totalCostUSD / shares
+            : 0;
+
+    const profitUSD =
+        valueUSD -
+        totalCostUSD;
+
+    const profitPercent =
+        totalCostUSD > 0
+            ? (profitUSD / totalCostUSD) * 100
+            : 0;
 
     const priceElement =
         document.getElementById(
             `${symbol}-price`
+        );
+
+    const sharesElement =
+        document.getElementById(
+            `${symbol}-shares`
         );
 
     const valueElement =
@@ -43,62 +78,35 @@ export function updateStockCard(
             `${symbol}-profit`
         );
 
-    if (sharesElement) {
-
-        sharesElement.textContent =
-            `${stock.shares.toLocaleString("ko-KR")}주`;
-
-    }
-
     if (priceElement) {
 
         priceElement.textContent =
-            stock.currentPriceUSD > 0
-                ? formatUSD(stock.currentPriceUSD)
-                : "--";
+            `$${price.toFixed(2)}`;
+
+    }
+
+    if (sharesElement) {
+
+        sharesElement.textContent =
+            `${shares.toFixed(6)}주`;
 
     }
 
     if (valueElement) {
 
         valueElement.textContent =
-            stock.shares > 0 &&
-            stock.currentPriceUSD > 0
-                ? formatKRW(stock.marketValueKRW)
-                : "--";
+            `$${valueUSD.toFixed(2)}`;
 
     }
-
-    const totalProfitKRW =
-        stock.evaluationProfitKRW +
-        stock.realizedKRW;
-
-    const returnRate =
-        stock.costKRW > 0
-            ? (totalProfitKRW / stock.costKRW) * 100
-            : 0;
 
     if (profitElement) {
 
         profitElement.textContent =
-            stock.costKRW > 0
-                ? formatPercent(returnRate)
-                : "--";
-
-        profitElement.classList.remove(
-            "up",
-            "down"
-        );
-
-        if (returnRate > 0)
-            profitElement.classList.add("up");
-
-        if (returnRate < 0)
-            profitElement.classList.add("down");
+            `${profitUSD >= 0 ? "+" : ""}$${profitUSD.toFixed(2)} (${profitPercent.toFixed(2)}%)`;
 
     }
-
 }
+
 
 export function updateTotal(
     symbols,
@@ -107,121 +115,70 @@ export function updateTotal(
     getTrades
 ) {
 
-    const portfolio =
-        calculatePortfolio(
-            symbols,
-            prices,
-            usdKrw,
-            getTrades
-        );
+    let totalUSD = 0;
 
-    const totalValue =
+    symbols.forEach(symbol => {
+
+        const price =
+            Number(prices[symbol] || 0);
+
+        const trades =
+            getTrades()[symbol] || [];
+
+        let shares = 0;
+
+        trades.forEach(trade => {
+
+            const quantity =
+                Number(trade.shares || 0);
+
+            if (trade.type === "buy") {
+
+                shares += quantity;
+
+            }
+
+            if (trade.type === "sell") {
+
+                shares -= quantity;
+
+            }
+
+        });
+
+        totalUSD +=
+            shares * price;
+
+    });
+
+    const totalKRW =
+        totalUSD * usdKrw;
+
+    const totalElement =
         document.getElementById(
-            "total-value"
+            "total-asset"
         );
 
-    if (totalValue) {
+    const totalUSDElement =
+        document.getElementById(
+            "total-asset-usd"
+        );
 
-        totalValue.textContent =
-            formatKRW(
-                portfolio.totalValueKRW
-            );
+    if (totalElement) {
+
+        totalElement.textContent =
+            `${Math.round(totalKRW).toLocaleString()}원`;
 
     }
 
-    const totalDollar =
-        document.getElementById(
-            "total-dollar"
-        );
+    if (totalUSDElement) {
 
-    if (totalDollar) {
-
-        const usd =
-            usdKrw > 0
-                ? portfolio.totalValueKRW /
-                  usdKrw
-                : 0;
-
-        totalDollar.textContent =
-            formatUSD(usd);
+        totalUSDElement.textContent =
+            `$${totalUSD.toFixed(2)}`;
 
     }
-
-    const totalProfit =
-        document.getElementById(
-            "total-profit"
-        );
-
-    if (totalProfit) {
-
-        totalProfit.textContent =
-            portfolio.totalCostKRW > 0
-                ? `${portfolio.totalProfitKRW >= 0 ? "+" : ""}${formatKRW(portfolio.totalProfitKRW)} (${formatPercent(portfolio.totalReturn)})`
-                : "--";
-
-        totalProfit.classList.remove(
-            "up",
-            "down"
-        );
-
-        if (portfolio.totalProfitKRW > 0)
-            totalProfit.classList.add("up");
-
-        if (portfolio.totalProfitKRW < 0)
-            totalProfit.classList.add("down");
-
-    }
-
 }
 
-export function updateExchangeRate(
-    usdKrw
-) {
-
-    const element =
-        document.getElementById(
-            "usdkrw"
-        );
-
-    if (!element) return;
-
-    element.textContent =
-        usdKrw > 0
-            ? usdKrw.toLocaleString(
-                  "ko-KR",
-                  {
-                      maximumFractionDigits: 2
-                  }
-              )
-            : "--";
-
-}
-
-// ui.js (2/2)
-
-import {
-    calculateStock,
-    formatUSD,
-    formatKRW,
-    formatPercent
-} from "./calculator.js";
-
-export function openDetail(symbol) {
-
-    document.getElementById("main-screen").style.display = "none";
-    document.getElementById("detail-screen").style.display = "block";
-    document.getElementById("detail-symbol").textContent = symbol;
-    document.getElementById("trade-form").style.display = "none";
-
-}
-
-export function closeDetail() {
-
-    document.getElementById("detail-screen").style.display = "none";
-    document.getElementById("main-screen").style.display = "block";
-    document.getElementById("trade-form").style.display = "none";
-
-}
 
 export function updateDetail(
     symbol,
@@ -230,107 +187,228 @@ export function updateDetail(
     getTrades
 ) {
 
-    const stock =
-        calculateStock(
-            symbol,
-            prices,
-            usdKrw,
-            getTrades
-        );
+    const price =
+        Number(prices[symbol] || 0);
 
-    document.getElementById("detail-price").textContent =
-        stock.currentPriceUSD > 0
-            ? formatUSD(stock.currentPriceUSD)
-            : "--";
+    const trades =
+        getTrades()[symbol] || [];
 
-    document.getElementById("detail-shares").textContent =
-        `${stock.shares.toLocaleString("ko-KR")}주`;
+    let shares = 0;
+    let totalCost = 0;
 
-    document.getElementById("detail-average-buy").textContent =
-        stock.averageBuyKRW > 0
-            ? formatKRW(stock.averageBuyKRW)
-            : "--";
+    trades.forEach(trade => {
 
-    document.getElementById("detail-value").textContent =
-        stock.shares > 0 && stock.currentPriceUSD > 0
-            ? formatKRW(stock.marketValueKRW)
-            : "--";
+        const quantity =
+            Number(trade.shares || 0);
 
-    const evaluation =
-        document.getElementById("detail-evaluation-profit");
+        const tradePrice =
+            Number(trade.price || 0);
 
-    evaluation.textContent =
-        stock.shares > 0
-            ? `${stock.evaluationProfitKRW >= 0 ? "+" : ""}${formatKRW(stock.evaluationProfitKRW)}`
-            : "--";
+        if (trade.type === "buy") {
 
-    evaluation.classList.remove("up", "down");
+            shares += quantity;
 
-    if (stock.evaluationProfitKRW > 0)
-        evaluation.classList.add("up");
+            totalCost +=
+                quantity * tradePrice;
 
-    if (stock.evaluationProfitKRW < 0)
-        evaluation.classList.add("down");
+        }
 
-    const realized =
-        document.getElementById("detail-realized-profit");
+        if (trade.type === "sell") {
 
-    realized.textContent =
-        `${stock.realizedKRW >= 0 ? "+" : ""}${formatKRW(stock.realizedKRW)}`;
+            shares -= quantity;
 
-    realized.classList.remove("up", "down");
+        }
 
-    if (stock.realizedKRW > 0)
-        realized.classList.add("up");
+    });
 
-    if (stock.realizedKRW < 0)
-        realized.classList.add("down");
+    const value =
+        shares * price;
 
-    const total =
-        document.getElementById("detail-total-profit");
+    const profit =
+        value - totalCost;
 
-    const totalProfitKRW =
-        stock.evaluationProfitKRW +
-        stock.realizedKRW;
-
-    const returnRate =
-        stock.costKRW > 0
-            ? (totalProfitKRW / stock.costKRW) * 100
+    const averagePrice =
+        shares > 0
+            ? totalCost / shares
             : 0;
 
-    total.textContent =
-        stock.costKRW > 0
-            ? formatPercent(returnRate)
-            : "--";
+    const detailPrice =
+        document.getElementById(
+            "detail-price"
+        );
 
-    total.classList.remove("up", "down");
+    const detailShares =
+        document.getElementById(
+            "detail-shares"
+        );
 
-    if (returnRate > 0)
-        total.classList.add("up");
+    const detailAverage =
+        document.getElementById(
+            "detail-average"
+        );
 
-    if (returnRate < 0)
-        total.classList.add("down");
+    const detailValue =
+        document.getElementById(
+            "detail-value"
+        );
+
+    const detailProfit =
+        document.getElementById(
+            "detail-profit"
+        );
+
+    if (detailPrice) {
+
+        detailPrice.textContent =
+            `$${price.toFixed(2)}`;
+
+    }
+
+    if (detailShares) {
+
+        detailShares.textContent =
+            `${shares.toFixed(6)}주`;
+
+    }
+
+    if (detailAverage) {
+
+        detailAverage.textContent =
+            `$${averagePrice.toFixed(2)}`;
+
+    }
+
+    if (detailValue) {
+
+        detailValue.textContent =
+            `$${value.toFixed(2)}`;
+
+    }
+
+    if (detailProfit) {
+
+        detailProfit.textContent =
+            `${profit >= 0 ? "+" : ""}$${profit.toFixed(2)}`;
+
+    }
+}
+
+
+export function updateExchangeRate(
+    usdKrw
+) {
+
+    const element =
+        document.getElementById(
+            "exchange-rate"
+        );
+
+    if (!element) return;
+
+    element.textContent =
+        `${Math.round(usdKrw).toLocaleString()}원`;
 
 }
 
+
+export function openDetail(
+    symbol
+) {
+
+    const modal =
+        document.getElementById(
+            "detail-modal"
+        );
+
+    if (!modal) return;
+
+    const title =
+        document.getElementById(
+            "detail-symbol"
+        );
+
+    if (title) {
+
+        title.textContent =
+            symbol;
+
+    }
+
+    modal.style.display =
+        "block";
+
+}
+
+
+export function closeDetail() {
+
+    const modal =
+        document.getElementById(
+            "detail-modal"
+        );
+
+    if (!modal) return;
+
+    modal.style.display =
+        "none";
+
+}
+
+
 export function showTradeForm(
-    tradeType,
+    type,
     selectedSymbol,
     prices
 ) {
 
-    document.getElementById("trade-form").style.display = "block";
+    const form =
+        document.getElementById(
+            "trade-form"
+        );
 
-    document.getElementById("trade-title").textContent =
-        tradeType === "buy"
-            ? "매수"
-            : "매도";
+    if (!form) return;
 
-    document.getElementById("trade-price").value =
-        prices[selectedSymbol] || "";
+    const title =
+        document.getElementById(
+            "trade-form-title"
+        );
 
-    document.getElementById("trade-exchange-rate").value = "";
+    const priceInput =
+        document.getElementById(
+            "trade-price"
+        );
 
-    document.getElementById("trade-shares").value = "";
+    const symbolElement =
+        document.getElementById(
+            "trade-symbol"
+        );
 
+    if (title) {
+
+        title.textContent =
+            type === "buy"
+                ? "매수"
+                : "매도";
+
+    }
+
+    if (symbolElement) {
+
+        symbolElement.textContent =
+            selectedSymbol || "";
+
+    }
+
+    if (priceInput) {
+
+        priceInput.value =
+            prices[selectedSymbol] || "";
+
+    }
+
+    form.dataset.type =
+        type;
+
+    form.style.display =
+        "block";
 }
