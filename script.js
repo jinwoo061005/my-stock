@@ -704,8 +704,150 @@ function updateTotal() {
       total.totalRealizedKRW
     );
   }
+updateAllocation();
 }
 
+// =========================
+// 자산 구성
+// =========================
+
+function updateAllocation() {
+
+  const allocationList =
+    document.getElementById("allocation-list");
+
+  const donut =
+    document.querySelector(".allocation-donut");
+
+  const allocationTotal =
+    document.getElementById("allocation-total");
+
+  if (!allocationList || !donut) return;
+
+
+  const stocks = [];
+
+  let totalValueKRW = 0;
+
+
+  symbols.forEach(symbol => {
+
+    const stock =
+      calculateStock(symbol);
+
+    const value =
+      Number(stock.marketValueKRW) || 0;
+
+    if (value > 0) {
+
+      stocks.push({
+        symbol,
+        value
+      });
+
+      totalValueKRW += value;
+    }
+
+  });
+
+
+  allocationList.innerHTML = "";
+
+
+  if (allocationTotal) {
+
+    allocationTotal.textContent =
+      totalValueKRW > 0
+        ? formatKRW(totalValueKRW)
+        : "--";
+  }
+
+
+  if (totalValueKRW <= 0) {
+
+    donut.style.background =
+      "conic-gradient(#333 0deg 360deg)";
+
+    return;
+  }
+
+
+  // 큰 평가금 순서
+  stocks.sort(
+    (a, b) => b.value - a.value
+  );
+
+
+  const colors = [
+    "#5B8DEF",
+    "#8B5CF6",
+    "#14B8A6",
+    "#F59E0B",
+    "#EC4899",
+    "#22C55E"
+  ];
+
+
+  let currentDegree = 0;
+
+  const gradients = [];
+
+
+  stocks.forEach((stock, index) => {
+
+    const percent =
+      (stock.value / totalValueKRW) * 100;
+
+    const degree =
+      (percent / 100) * 360;
+
+    const color =
+      colors[index % colors.length];
+
+
+    gradients.push(
+      `${color} ${currentDegree}deg ${currentDegree + degree}deg`
+    );
+
+
+    currentDegree += degree;
+
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "allocation-item";
+
+
+    item.innerHTML = `
+      <div class="allocation-name">
+        <span
+          class="allocation-dot"
+          style="background:${color}"
+        ></span>
+
+        <span>${stock.symbol}</span>
+
+        <span class="allocation-value">
+          ${formatKRW(stock.value)}
+        </span>
+      </div>
+
+      <div class="allocation-percent">
+        ${percent.toFixed(1)}%
+      </div>
+    `;
+
+
+    allocationList.appendChild(item);
+
+  });
+
+
+  donut.style.background =
+    `conic-gradient(${gradients.join(", ")})`;
+}
 
 /* =========================
    일간수익
