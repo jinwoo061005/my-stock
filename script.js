@@ -392,6 +392,516 @@ function formatPercent(value) {
   }${value.toFixed(2)}%`;
 }
 
+// =========================
+// 일간 수익률 기록
+// =========================
+
+function getDailyRecords() {
+
+  const saved =
+    localStorage.getItem("daily_profit_records");
+
+  if (!saved) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(saved);
+  } catch {
+    return {};
+  }
+}
+
+
+function saveDailyRecords(records) {
+
+  localStorage.setItem(
+    "daily_profit_records",
+    JSON.stringify(records)
+  );
+}
+
+
+// 오늘 날짜
+function getTodayString() {
+
+  const now = new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
+
+  const day =
+    String(now.getDate())
+      .padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+// 날짜 표시
+function formatDailyDate(dateString) {
+
+  const parts =
+    dateString.split("-");
+
+  if (parts.length !== 3) {
+    return dateString;
+  }
+
+  return `${parts[1]}/${parts[2]}`;
+}
+
+
+// 일간 수익률 합계
+function getTotalDailyReturn(records) {
+
+  return Object.values(records)
+    .reduce((total, record) => {
+
+      const value =
+        Number(record.returnRate);
+
+      return Number.isFinite(value)
+        ? total + value
+        : total;
+
+    }, 0);
+}
+
+
+// =========================
+// 오늘 수익률
+// =========================
+
+function updateDailyProfit() {
+
+  const records =
+    getDailyRecords();
+
+  const today =
+    getTodayString();
+
+  const todayRecord =
+    records[today];
+
+
+  const main =
+    document.getElementById(
+      "daily-profit-main"
+    );
+
+  const detail =
+    document.getElementById(
+      "daily-profit-detail"
+    );
+
+
+  if (!main || !detail) {
+    return;
+  }
+
+
+  if (!todayRecord) {
+
+    main.textContent =
+      "--";
+
+    detail.textContent =
+      "오늘 기록 없음";
+
+    main.classList.remove(
+      "up",
+      "down"
+    );
+
+    return;
+  }
+
+
+  const todayRate =
+    Number(todayRecord.returnRate) || 0;
+
+
+  const totalRate =
+    getTotalDailyReturn(records);
+
+
+  main.textContent =
+    formatPercent(todayRate);
+
+
+  detail.textContent =
+    `(총 ${formatPercent(totalRate)})`;
+
+
+  main.classList.remove(
+    "up",
+    "down"
+  );
+
+
+  if (todayRate > 0) {
+    main.classList.add("up");
+  }
+
+  if (todayRate < 0) {
+    main.classList.add("down");
+  }
+}
+
+
+// =========================
+// 날짜별 수익률 화면
+// =========================
+
+function updateDailyHistory() {
+
+  const list =
+    document.getElementById(
+      "daily-history-list"
+    );
+
+  if (!list) {
+    return;
+  }
+
+
+  const records =
+    getDailyRecords();
+
+
+  const dates =
+    Object.keys(records)
+      .sort()
+      .reverse();
+
+
+  list.innerHTML = "";
+
+
+  if (dates.length === 0) {
+
+    list.innerHTML = `
+      <div class="daily-empty">
+        아직 기록이 없습니다.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  let accumulated = 0;
+
+
+  // 오래된 날짜부터 합계를 계산
+  const sortedOldest =
+    [...dates].sort();
+
+
+  const accumulatedMap = {};
+
+
+  sortedOldest.forEach(date => {
+
+    const rate =
+      Number(
+        records[date].returnRate
+      ) || 0;
+
+    accumulated += rate;
+
+    accumulatedMap[date] =
+      accumulated;
+  });
+
+
+  // 최신 날짜부터 표시
+  dates.forEach(date => {
+
+    const rate =
+      Number(
+        records[date].returnRate
+      ) || 0;
+
+    const totalRate =
+      accumulatedMap[date];
+
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "daily-history-row";
+
+
+    const rateClass =
+      rate > 0
+        ? "up"
+        : rate < 0
+          ? "down"
+          : "";
+
+
+    const totalClass =
+      totalRate > 0
+        ? "up"
+        : totalRate < 0
+          ? "down"
+          : "";
+
+
+    row.innerHTML = `
+
+      <div class="daily-date">
+        ${formatDailyDate(date)}
+      </div>
+
+      <div class="daily-rate ${rateClass}">
+        ${formatPercent(rate)}
+      </div>
+
+      <div class="daily-total ${totalClass}">
+        (${formatPercent(totalRate)})
+      </div>
+
+      <button
+        class="daily-edit"
+        type="button"
+        data-date="${date}"
+      >
+        ✎
+      </button>
+
+    `;
+
+
+    list.appendChild(row);
+
+  });
+
+
+  // 수정 버튼
+  list
+    .querySelectorAll(".daily-edit")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          editDailyRecord(
+            button.dataset.date
+          );
+
+        }
+      );
+
+    });
+}
+
+
+// =========================
+// 일간 수익률 수정
+// =========================
+
+function editDailyRecord(date) {
+
+  const records =
+    getDailyRecords();
+
+
+  const current =
+    records[date]
+      ? Number(
+          records[date].returnRate
+        )
+      : 0;
+
+
+  const input =
+    prompt(
+      `${formatDailyDate(date)} 일간 수익률을 입력하세요.\n\n예: 1.25 또는 -0.85`,
+      current
+    );
+
+
+  if (input === null) {
+    return;
+  }
+
+
+  const value =
+    Number(input);
+
+
+  if (!Number.isFinite(value)) {
+
+    alert(
+      "올바른 숫자를 입력해주세요."
+    );
+
+    return;
+  }
+
+
+  records[date] = {
+    returnRate: value
+  };
+
+
+  saveDailyRecords(records);
+
+
+  updateDailyProfit();
+  updateDailyHistory();
+}
+
+
+// =========================
+// 일간 수익률 기록 추가
+// =========================
+
+function addDailyRecord() {
+
+  const date =
+    prompt(
+      "날짜를 입력하세요.\n예: 2026-08-17"
+    );
+
+
+  if (!date) {
+    return;
+  }
+
+
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(date)
+  ) {
+
+    alert(
+      "날짜 형식은 YYYY-MM-DD 입니다."
+    );
+
+    return;
+  }
+
+
+  const rateInput =
+    prompt(
+      "일간 수익률을 입력하세요.\n예: 1.25 또는 -0.85"
+    );
+
+
+  if (rateInput === null) {
+    return;
+  }
+
+
+  const rate =
+    Number(rateInput);
+
+
+  if (!Number.isFinite(rate)) {
+
+    alert(
+      "올바른 수익률을 입력해주세요."
+    );
+
+    return;
+  }
+
+
+  const records =
+    getDailyRecords();
+
+
+  records[date] = {
+    returnRate: rate
+  };
+
+
+  saveDailyRecords(records);
+
+
+  updateDailyProfit();
+  updateDailyHistory();
+}
+
+
+// =========================
+// 일간 수익률 클릭
+// =========================
+
+function setupDailyProfit() {
+
+  const box =
+    document.getElementById(
+      "daily-profit-box"
+    );
+
+
+  const history =
+    document.getElementById(
+      "daily-history"
+    );
+
+
+  if (!box || !history) {
+    return;
+  }
+
+
+  box.addEventListener(
+    "click",
+    () => {
+
+      const isOpen =
+        history.style.display !== "none";
+
+
+      history.style.display =
+        isOpen
+          ? "none"
+          : "block";
+
+
+      if (!isOpen) {
+        updateDailyHistory();
+      }
+
+    }
+  );
+
+
+  const addButton =
+    document.getElementById(
+      "add-daily-record"
+    );
+
+
+  if (addButton) {
+
+    addButton.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        addDailyRecord();
+
+      }
+    );
+
+  }
+
+
+  updateDailyProfit();
+}
 
 function setColor(element, value) {
 
