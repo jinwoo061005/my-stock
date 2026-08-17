@@ -110,33 +110,85 @@
       </div>
 
 
-      <!-- 일간 -->
+      <!-- =========================
+     일간 수익
+========================== -->
 
-      <div class="daily-section">
+<div
+  id="daily-profit-box"
+  class="daily-section"
+>
 
-        <div class="daily-header">
-          <span>오늘</span>
-          <span id="daily-date"></span>
-        </div>
+  <div class="daily-header">
+
+    <span>
+      오늘
+    </span>
+
+    <span id="daily-date">
+    </span>
+
+  </div>
 
 
-        <div class="daily-main">
+  <div class="daily-main">
 
-          <strong id="daily-profit-krw">
-            --
-          </strong>
+    <strong id="daily-profit-krw">
+      --
+    </strong>
 
-          <span id="daily-profit-usd">
-            --
-          </span>
+    <span id="daily-profit-usd">
+      --
+    </span>
 
-          <span id="daily-profit-rate">
-            --
-          </span>
+    <span id="daily-profit-rate">
+      --
+    </span>
 
-        </div>
+    <span
+      id="daily-profit-total-rate"
+      class="daily-total-rate"
+    >
+      --
+    </span>
 
-      </div>
+  </div>
+
+</div>
+
+
+<!-- =========================
+     날짜별 일간 수익률
+========================== -->
+
+<div
+  id="daily-history"
+  class="daily-history"
+  style="display:none;"
+>
+
+  <div class="daily-history-header">
+
+    <span>
+      날짜별 수익률
+    </span>
+
+    <button
+      id="add-daily-record"
+      type="button"
+    >
+      + 기록 추가
+    </button>
+
+  </div>
+
+
+  <div
+    id="daily-history-list"
+    class="daily-history-list"
+  ></div>
+
+</div>
 
     </section>
 
