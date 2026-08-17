@@ -2,28 +2,14 @@
   box-sizing: border-box;
 }
 
-:root {
-  --bg: #080a0f;
-  --card: #11141b;
-  --card2: #151922;
-  --border: #202531;
-  --text: #f5f7fa;
-  --sub: #8c94a3;
-  --muted: #646c7a;
-
-  /* 상승 = 빨강 */
-  --up: #ff5c6c;
-
-  /* 하락 = 파랑 */
-  --down: #4c9aff;
-
-  --accent: #ffffff;
+html {
+  background: #0b0d10;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
+  background: #0b0d10;
+  color: #f1f3f5;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -31,6 +17,7 @@ body {
     Roboto,
     "Noto Sans KR",
     sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -40,140 +27,67 @@ input {
 
 button {
   border: 0;
+  cursor: pointer;
 }
 
 .container {
   width: 100%;
-  max-width: 680px;
+  max-width: 560px;
   margin: 0 auto;
   padding: 22px 16px 50px;
 }
 
 
 /* =========================
-   공통
+   기본
 ========================= */
 
-.hidden {
-  display: none !important;
-}
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-}
-
-.section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.section-title {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.section-subtitle {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-}
-
-.empty-text {
-  padding: 25px 10px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
+h1 {
+  margin: 4px 0 20px;
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -0.7px;
 }
 
 
 /* =========================
-   HEADER
+   카드
 ========================= */
 
-.top-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.app-title {
-  font-size: 25px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-}
-
-.app-subtitle {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-}
-
-.live-dot {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 7px 10px;
-
-  border: 1px solid var(--border);
-  border-radius: 999px;
-
-  color: var(--sub);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-}
-
-.live-dot span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #55d88a;
+.card,
+.hero-card {
+  background: #13161a;
+  border: 1px solid #20242a;
+  border-radius: 18px;
 }
 
 
 /* =========================
-   HERO
+   총 평가금
 ========================= */
 
 .hero-card {
-  padding: 25px 22px 18px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #151922 0%,
-      #0f1218 100%
-    );
-
-  border: 1px solid var(--border);
-  border-radius: 24px;
-
-  box-shadow:
-    0 15px 45px rgba(0, 0, 0, 0.25);
+  padding: 23px 20px 20px;
+  margin-bottom: 14px;
 }
 
 .hero-label {
-  color: var(--sub);
+  color: #8d949e;
   font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
 }
 
 .hero-value {
-  margin-top: 7px;
   font-size: 32px;
   font-weight: 800;
-  letter-spacing: -0.05em;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
 }
 
 .hero-dollar {
-  margin-top: 4px;
-  color: var(--sub);
+  margin-top: 5px;
+  color: #7f8791;
   font-size: 14px;
 }
 
@@ -183,79 +97,110 @@ button {
 ========================= */
 
 .profit-main {
-  margin-top: 25px;
+  margin-top: 22px;
   padding-top: 18px;
-
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #22262c;
 }
 
 .profit-label {
-  color: var(--sub);
+  color: #8d949e;
   font-size: 12px;
+  margin-bottom: 6px;
 }
 
 .profit-main-value {
-  margin-top: 6px;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-
-.profit-details {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  margin-top: 13px;
-
-  background: rgba(255,255,255,0.025);
-  border-radius: 14px;
-}
-
-.profit-detail-row {
-  padding: 13px 14px;
-}
-
-.profit-detail-row + .profit-detail-row {
-  border-left: 1px solid var(--border);
-}
-
-.profit-detail-row span {
-  display: block;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.profit-detail-row strong {
-  display: block;
-  margin-top: 5px;
-  font-size: 13px;
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
 }
 
 
 /* =========================
-   오늘 수익
+   수익 색상
+   상승 = 초록
+   하락 = 파랑
+========================= */
+
+.up {
+  color: #35d07f !important;
+}
+
+.down {
+  color: #5da9ff !important;
+}
+
+
+/* =========================
+   환차익 / 판매수익
+========================= */
+
+.profit-details {
+  margin-top: 15px;
+  padding: 12px 14px;
+  background: #0e1013;
+  border-radius: 12px;
+}
+
+.profit-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 29px;
+}
+
+.profit-detail-row + .profit-detail-row {
+  margin-top: 4px;
+}
+
+.profit-detail-row span {
+  color: #858c95;
+  font-size: 13px;
+}
+
+.profit-detail-row strong {
+  font-size: 13px;
+  font-weight: 650;
+}
+
+
+/* =========================
+   일간 수익
 ========================= */
 
 .daily-section {
-  width: 100%;
-  margin-top: 15px;
-  padding: 16px;
+  margin-top: 16px;
+  padding: 15px 16px;
+  background: #101317;
+  border: 1px solid #20252b;
+  border-radius: 14px;
+}
 
-  background: #0d1016;
-  color: var(--text);
-
-  border: 1px solid var(--border);
-  border-radius: 15px;
-
-  text-align: left;
+.daily-section.clickable {
   cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.daily-section.clickable:active {
+  transform: scale(0.99);
+  background: #15191e;
 }
 
 .daily-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
 
-  color: var(--sub);
+.daily-header span:first-child {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.daily-header span:last-child {
+  color: #727982;
   font-size: 11px;
 }
 
@@ -263,352 +208,253 @@ button {
   display: flex;
   align-items: baseline;
   gap: 9px;
-
-  margin-top: 9px;
+  margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .daily-main strong {
   font-size: 19px;
+  font-weight: 750;
 }
 
 .daily-main span {
-  color: var(--sub);
   font-size: 12px;
+  color: #8a919b;
 }
 
-.daily-main #daily-profit-rate {
+#daily-profit-rate {
   font-weight: 700;
 }
 
 .daily-hint {
-  display: flex;
-  justify-content: space-between;
-
-  margin-top: 11px;
-
-  color: var(--muted);
-  font-size: 10px;
+  margin-top: 9px;
+  color: #626a74;
+  font-size: 11px;
 }
 
 
 /* =========================
-   일간 기록
+   일간 수익 기록
 ========================= */
 
 .history-card {
-  margin-top: 14px;
+  margin-top: 12px;
   padding: 18px;
 }
 
-.history-total {
-  font-size: 15px;
-  font-weight: 800;
+.section-title {
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -0.2px;
 }
 
-.history-row {
-  padding: 14px 0;
-
-  border-top: 1px solid var(--border);
+.daily-history-item {
+  padding: 13px 0;
+  border-bottom: 1px solid #20242a;
 }
 
-.history-row:first-child {
-  border-top: 0;
+.daily-history-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 2px;
 }
 
-.history-main {
+.daily-history-date {
+  color: #858c95;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.daily-history-values {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-}
-
-.history-date {
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.history-values {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-
-  font-size: 12px;
-}
-
-.history-rate {
-  font-weight: 800;
-}
-
-.history-actions {
-  display: none;
-  margin-top: 10px;
   gap: 8px;
 }
 
-.history-row.open .history-actions {
-  display: flex;
-}
-
-.history-edit {
-  flex: 1;
-
-  padding: 8px 10px;
-
-  background: var(--card2);
-  color: var(--text);
-
-  border: 1px solid var(--border);
-  border-radius: 9px;
-}
-
-.history-save,
-.history-delete {
-  padding: 8px 12px;
-
-  border-radius: 9px;
-
-  cursor: pointer;
-}
-
-.history-save {
-  background: #e9edf3;
-  color: #111;
-}
-
-.history-delete {
-  background: #20232b;
-  color: #ff7c89;
-}
-
-
-/* =========================
-   자산구성
-========================= */
-
-.allocation-card {
-  margin-top: 14px;
-  padding: 18px;
-}
-
-.allocation-item {
-  margin-bottom: 15px;
-}
-
-.allocation-item:last-child {
-  margin-bottom: 0;
-}
-
-.allocation-top {
-  display: flex;
-  justify-content: space-between;
-
-  font-size: 12px;
-}
-
-.allocation-name {
+.daily-history-krw {
+  font-size: 15px;
   font-weight: 700;
 }
 
-.allocation-percent {
-  color: var(--sub);
+.daily-history-right {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
 }
 
-.allocation-bar {
-  height: 5px;
-  margin-top: 8px;
-
-  overflow: hidden;
-
-  background: #20242d;
-  border-radius: 99px;
+.daily-history-usd {
+  color: #7d858f;
+  font-size: 11px;
 }
 
-.allocation-fill {
-  height: 100%;
-  background: #e8ebef;
-  border-radius: 99px;
+.daily-history-rate {
+  font-size: 12px;
+  font-weight: 700;
 }
 
 
 /* =========================
-   시장
+   주요 시장
 ========================= */
 
 .market-card {
-  margin-top: 14px;
-  padding: 18px;
+  padding: 19px 18px;
+  margin-bottom: 14px;
+}
+
+.market-group {
+  margin-top: 15px;
+}
+
+.market-group + .market-group {
+  margin-top: 18px;
 }
 
 .market-group-title {
-  margin-bottom: 4px;
-
-  color: var(--muted);
-  font-size: 10px;
+  color: #686f78;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  margin-bottom: 7px;
+  text-transform: uppercase;
 }
 
 .market-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  min-height: 32px;
+  padding: 0 2px;
+}
 
-  padding: 11px 0;
-
+.market-row span:first-child {
+  color: #aab0b8;
   font-size: 13px;
 }
 
-.market-row span {
-  color: var(--sub);
-}
-
-.market-row strong {
-  font-weight: 700;
-}
-
-.market-divider {
-  height: 1px;
-  margin: 4px 0 13px;
-  background: var(--border);
+.market-row span:last-child {
+  color: #f0f2f4;
+  font-size: 13px;
+  font-weight: 650;
 }
 
 
 /* =========================
-   종목
+   종목 목록
 ========================= */
 
-.stock-section-head {
-  margin-top: 27px;
-  margin-bottom: 13px;
+#stocks {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
 }
 
 .stock-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 18px;
-
-  margin-bottom: 9px;
-
-  background: var(--card);
-
-  border: 1px solid var(--border);
-  border-radius: 17px;
-
+  padding: 17px 16px;
+  background: #13161a;
+  border: 1px solid #20242a;
+  border-radius: 16px;
   cursor: pointer;
-
   transition:
-    transform 0.15s,
-    background 0.15s;
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
 }
 
 .stock-card:active {
-  transform: scale(0.985);
+  background: #171b20;
+  transform: scale(0.99);
 }
 
-.stock-card:hover {
-  background: #151922;
+.stock-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
 }
 
 .stock-name {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 750;
+  letter-spacing: -0.2px;
 }
 
 .stock-shares {
   margin-top: 5px;
-  color: var(--muted);
+  color: #747c86;
   font-size: 11px;
 }
 
-.stock-right {
+.stock-info {
+  min-width: 120px;
   text-align: right;
 }
 
 .stock-price {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
 }
 
 .stock-value {
-  margin-top: 3px;
-  color: var(--sub);
+  margin-top: 4px;
+  color: #858c95;
   font-size: 11px;
 }
 
 .stock-profit {
+  display: inline-block;
   margin-top: 5px;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 750;
 }
 
 
 /* =========================
-   색상
+   상세 화면
 ========================= */
 
-.up {
-  color: var(--up) !important;
+#detail-screen {
+  padding-bottom: 40px;
 }
 
-.down {
-  color: var(--down) !important;
-}
-
-
-/* =========================
-   상세
-========================= */
-
-.back-button {
-  padding: 0;
-
+#back-button {
+  padding: 7px 0;
   background: transparent;
-  color: var(--sub);
-
+  color: #8e959e;
   font-size: 13px;
-
-  cursor: pointer;
 }
 
 .detail-header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-
-  margin: 25px 4px 17px;
+  margin: 14px 2px 17px;
 }
 
-.detail-symbol {
-  font-size: 28px;
+#detail-symbol {
+  font-size: 25px;
   font-weight: 800;
 }
 
-.detail-label {
-  margin-top: 3px;
-
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-}
-
 .detail-price {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 
+
+/* =========================
+   상세 카드
+========================= */
+
 .detail-card {
-  padding: 7px 18px;
+  padding: 8px 18px;
 }
 
 .detail-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-
-  padding: 15px 0;
-
-  border-bottom: 1px solid var(--border);
+  justify-content: space-between;
+  min-height: 46px;
+  border-bottom: 1px solid #20242a;
 }
 
 .detail-row:last-child {
@@ -616,119 +462,89 @@ button {
 }
 
 .detail-row span {
-  color: var(--sub);
+  color: #858c95;
   font-size: 12px;
 }
 
 .detail-row strong {
   font-size: 13px;
+  font-weight: 650;
 }
 
 
 /* =========================
-   거래 버튼
+   매수 / 매도 버튼
 ========================= */
 
 .trade-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 9px;
-
-  margin-top: 13px;
+  margin: 13px 0;
 }
 
 .trade-buttons button {
-  padding: 14px;
-
+  height: 46px;
   border-radius: 13px;
-
-  font-weight: 800;
-
-  cursor: pointer;
+  font-size: 14px;
+  font-weight: 750;
 }
 
 .buy-button {
-  background: #f0f2f5;
-  color: #111;
+  background: #163c2b;
+  color: #55d68b;
 }
 
 .sell-button {
-  background: #20242d;
-  color: #ff6b79;
+  background: #172d43;
+  color: #67aeff;
+}
+
+.buy-button:active,
+.sell-button:active {
+  transform: scale(0.98);
 }
 
 
 /* =========================
-   거래창
+   거래 입력
 ========================= */
 
 .trade-form {
-  margin-top: 13px;
   padding: 18px;
-}
-
-.trade-form label {
-  display: block;
-
-  margin-top: 15px;
-  margin-bottom: 7px;
-
-  color: var(--sub);
-  font-size: 11px;
+  margin-bottom: 13px;
 }
 
 .trade-form input {
   width: 100%;
-
-  padding: 13px;
-
-  background: #0c0f14;
-  color: var(--text);
-
-  border: 1px solid var(--border);
+  height: 44px;
+  margin-top: 9px;
+  padding: 0 13px;
+  border: 1px solid #292e35;
   border-radius: 11px;
-
   outline: none;
+  background: #0d1013;
+  color: #f1f3f5;
+  font-size: 13px;
+}
+
+.trade-form input::placeholder {
+  color: #626a73;
 }
 
 .trade-form input:focus {
-  border-color: #4b5260;
+  border-color: #3c444e;
 }
 
-.trade-submit {
+.trade-form button {
   width: 100%;
-
-  margin-top: 17px;
-  padding: 14px;
-
-  background: #edf0f4;
-  color: #111;
-
+  height: 44px;
+  margin-top: 11px;
   border-radius: 11px;
-
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.sell-total-box {
-  margin-top: 13px;
-  padding: 12px;
-
-  background: #0c0f14;
-
-  border: 1px solid var(--border);
-  border-radius: 11px;
-}
-
-.sell-total-box div {
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.sell-total-box strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 15px;
+  background: #e9edf1;
+  color: #101215;
+  font-size: 13px;
+  font-weight: 750;
 }
 
 
@@ -736,89 +552,99 @@ button {
    거래내역
 ========================= */
 
-.transactions-card {
-  margin-top: 14px;
+.trade-history-card {
   padding: 18px;
 }
 
-.transaction-item {
-  padding: 14px 0;
-
-  border-top: 1px solid var(--border);
+.trade-history-item {
+  padding: 13px 0;
+  border-bottom: 1px solid #20242a;
 }
 
-.transaction-top {
+.trade-history-item:last-child {
+  border-bottom: 0;
+}
+
+.trade-history-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.transaction-left {
+.trade-history-type {
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.trade-history-date {
+  color: #656d76;
+  font-size: 10px;
+}
+
+.trade-history-info {
   display: flex;
-  align-items: center;
-  gap: 9px;
+  justify-content: space-between;
+  margin-top: 7px;
 }
 
-.transaction-type {
-  padding: 4px 7px;
-
-  border-radius: 6px;
-
-  font-size: 9px;
-  font-weight: 800;
-}
-
-.transaction-buy {
-  background: rgba(76,154,255,0.12);
-  color: var(--down);
-}
-
-.transaction-sell {
-  background: rgba(255,92,108,0.12);
-  color: var(--up);
-}
-
-.transaction-date {
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.transaction-delete {
-  padding: 6px 8px;
-
-  background: transparent;
-  color: var(--muted);
-
-  border: 1px solid var(--border);
-  border-radius: 7px;
-
-  font-size: 10px;
-  cursor: pointer;
-}
-
-.transaction-detail {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  margin-top: 9px;
-
-  color: var(--sub);
+.trade-history-info span {
+  color: #858c95;
   font-size: 11px;
-  line-height: 1.8;
 }
 
-@media (max-width: 420px) {
+.trade-history-profit {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.trade-history-buttons {
+  display: flex;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.trade-history-buttons button {
+  padding: 5px 9px;
+  border-radius: 7px;
+  background: #1b1f24;
+  color: #9ca3ac;
+  font-size: 10px;
+}
+
+
+/* =========================
+   빈 상태
+========================= */
+
+.empty-history {
+  padding: 18px 0 5px;
+  color: #626a73;
+  text-align: center;
+  font-size: 12px;
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width: 400px) {
+
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 
   .hero-value {
-    font-size: 28px;
+    font-size: 29px;
   }
 
-  .profit-main-value {
-    font-size: 20px;
+  .stock-info {
+    min-width: 105px;
   }
 
-  .transaction-detail {
-    grid-template-columns: 1fr;
+  .daily-main {
+    gap: 6px;
   }
-
 }
