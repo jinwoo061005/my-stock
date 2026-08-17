@@ -2459,6 +2459,8 @@ document.addEventListener(
 
     setupEvents();
 
+    setupDailyProfit();
+
     loadQuotes();
 
     setInterval(
