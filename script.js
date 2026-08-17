@@ -30,12 +30,8 @@ let editingDailyIndex = null;
 ====================================================== */
 
 function num(value) {
-
   const n = Number(value);
-
-  return Number.isFinite(n)
-    ? n
-    : 0;
+  return Number.isFinite(n) ? n : 0;
 }
 
 
@@ -75,30 +71,310 @@ function formatDate(date) {
 
 /* ======================================================
    저장 데이터
+   ★ 기존 데이터 절대 초기화하지 않음
 ====================================================== */
 
-let holdings =
-  JSON.parse(
-    localStorage.getItem("holdings") || "{}"
-  );
+function readJSON(keys, fallback) {
+
+  for (const key of keys) {
+
+    const value =
+      localStorage.getItem(key);
+
+    if (
+      value !== null &&
+      value !== ""
+    ) {
+
+      try {
+        return JSON.parse(value);
+      } catch {}
+    }
+  }
+
+  return fallback;
+}
+
+
+/*
+ * 기존에 사용하던 저장 데이터를 우선적으로 찾음.
+ * 없는 경우에만 빈 배열/객체 사용.
+ */
 
 let trades =
-  JSON.parse(
-    localStorage.getItem("trades") || "[]"
+  readJSON(
+    [
+      "trades",
+      "tradeHistory",
+      "stockTrades",
+      "transactions"
+    ],
+    []
   );
+
 
 let dailyProfits =
-  JSON.parse(
-    localStorage.getItem("dailyProfits") || "[]"
+  readJSON(
+    [
+      "dailyProfits",
+      "dailyProfitRecords",
+      "dailyRecords"
+    ],
+    []
   );
 
+
+/* ======================================================
+   기존 보유수량 저장값
+   ★ 새 holdings 객체로 덮어쓰지 않음
+====================================================== */
+
+function getSavedHolding(symbol) {
+
+  const possibleKeys = [
+
+    `holding_${symbol}`,
+    `${symbol}_holding`,
+    `${symbol}_shares`,
+    `shares_${symbol}`
+
+  ];
+
+
+  for (const key of possibleKeys) {
+
+    const value =
+      localStorage.getItem(key);
+
+    if (
+      value !== null &&
+      value !== ""
+    ) {
+
+      const n = Number(value);
+
+      if (Number.isFinite(n)) {
+        return n;
+      }
+    }
+  }
+
+
+  /*
+   * 기존 거래기록으로부터 계산
+   */
+
+  if (Array.isArray(trades)) {
+
+    let shares = 0;
+
+    trades.forEach(trade => {
+
+      if (
+        trade.symbol !== symbol
+      ) {
+        return;
+      }
+
+
+      const quantity =
+        num(
+          trade.shares ??
+          trade.quantity ??
+          trade.qty
+        );
+
+
+      const type =
+        String(
+          trade.type || ""
+        ).toLowerCase();
+
+
+      if (
+        type === "buy" ||
+        type === "매수"
+      ) {
+
+        shares += quantity;
+
+      } else if (
+        type === "sell" ||
+        type === "매도"
+      ) {
+
+        shares -= quantity;
+      }
+
+    });
+
+
+    return Math.max(
+      0,
+      shares
+    );
+  }
+
+
+  return 0;
+}
+
+
+/* ======================================================
+   보유주식
+   ★ 기존 저장값에서 읽음
+====================================================== */
+
+const holdings = {};
+
+
+symbols.forEach(symbol => {
+
+  holdings[symbol] = {
+    shares:
+      getSavedHolding(symbol),
+
+    averageBuy:
+      getSavedAverageBuy(symbol),
+
+    exchangeRate:
+      getSavedExchangeRate(symbol)
+  };
+
+});
+
+
+function getHolding(symbol) {
+
+  return holdings[symbol] || {
+    shares: 0,
+    averageBuy: 0,
+    exchangeRate: 0
+  };
+}
+
+
+/* ======================================================
+   평단
+====================================================== */
+
+function getSavedAverageBuy(symbol) {
+
+  const keys = [
+
+    `${symbol}_averageBuy`,
+    `${symbol}_avgBuy`,
+    `averageBuy_${symbol}`,
+    `avgBuy_${symbol}`
+
+  ];
+
+
+  for (const key of keys) {
+
+    const value =
+      localStorage.getItem(key);
+
+    if (
+      value !== null &&
+      value !== ""
+    ) {
+
+      const n = Number(value);
+
+      if (Number.isFinite(n)) {
+        return n;
+      }
+    }
+  }
+
+
+  /*
+   * 거래기록의 기존 평단값 사용
+   */
+
+  if (Array.isArray(trades)) {
+
+    const buyTrades =
+      trades.filter(trade =>
+        trade.symbol === symbol &&
+        (
+          trade.type === "buy" ||
+          trade.type === "매수"
+        )
+      );
+
+
+    if (buyTrades.length) {
+
+      const last =
+        buyTrades[
+          buyTrades.length - 1
+        ];
+
+
+      return num(
+        last.averageBuy ??
+        last.avgPrice ??
+        last.price
+      );
+    }
+  }
+
+
+  return 0;
+}
+
+
+/* ======================================================
+   매수 당시 환율
+====================================================== */
+
+function getSavedExchangeRate(symbol) {
+
+  const keys = [
+
+    `${symbol}_exchangeRate`,
+    `${symbol}_fxRate`,
+    `exchangeRate_${symbol}`,
+    `fxRate_${symbol}`
+
+  ];
+
+
+  for (const key of keys) {
+
+    const value =
+      localStorage.getItem(key);
+
+    if (
+      value !== null &&
+      value !== ""
+    ) {
+
+      const n = Number(value);
+
+      if (Number.isFinite(n)) {
+        return n;
+      }
+    }
+  }
+
+
+  return 0;
+}
+
+
+/* ======================================================
+   저장
+====================================================== */
 
 function saveData() {
 
-  localStorage.setItem(
-    "holdings",
-    JSON.stringify(holdings)
-  );
+  /*
+   * 기존 저장 데이터는 유지.
+   * 수정된 거래/일간수익만 저장.
+   */
 
   localStorage.setItem(
     "trades",
@@ -113,16 +389,47 @@ function saveData() {
 
 
 /* ======================================================
-   보유수량
+   포맷
 ====================================================== */
 
-function getHolding(symbol) {
+function formatKRW(value) {
 
-  return holdings[symbol] || {
-    shares: 0,
-    averageBuy: 0,
-    exchangeRate: 0
-  };
+  const n = num(value);
+
+  return (
+    (n > 0 ? "+" : n < 0 ? "-" : "") +
+    "₩" +
+    Math.abs(n).toLocaleString(
+      "ko-KR",
+      {
+        maximumFractionDigits: 0
+      }
+    )
+  );
+}
+
+
+function formatUSD(value) {
+
+  const n = num(value);
+
+  return (
+    (n > 0 ? "+" : n < 0 ? "-" : "") +
+    "$" +
+    Math.abs(n).toFixed(2)
+  );
+}
+
+
+function formatRate(value) {
+
+  const n = num(value);
+
+  return (
+    (n > 0 ? "+" : "") +
+    n.toFixed(2) +
+    "%"
+  );
 }
 
 
@@ -142,6 +449,7 @@ function applyProfitColor(
     "profit-down",
     "profit-zero"
   );
+
 
   if (value > 0) {
 
@@ -175,19 +483,30 @@ async function loadPrices() {
     const response =
       await fetch(API_URL);
 
+    if (!response.ok) {
+      throw new Error(
+        "API 오류"
+      );
+    }
+
+
     const data =
       await response.json();
 
+
     prices = data || {};
+
 
     usdKrw =
       num(
-        prices.USD_KRW ||
-        prices.USDKRW ||
+        prices.USD_KRW ??
+        prices.USDKRW ??
         prices.usdkrw
       );
 
+
     updateAll();
+
 
   } catch (error) {
 
@@ -200,224 +519,7 @@ async function loadPrices() {
 
 
 /* ======================================================
-   총 평가금
-====================================================== */
-
-function updateTotal() {
-
-  let totalUSD = 0;
-  let totalKRW = 0;
-
-  let investedUSD = 0;
-  let investedKRW = 0;
-
-  let fxProfit = 0;
-
-
-  symbols.forEach(symbol => {
-
-    const holding =
-      getHolding(symbol);
-
-    const price =
-      num(prices[symbol]);
-
-    const shares =
-      num(holding.shares);
-
-    const averageBuy =
-      num(holding.averageBuy);
-
-    const exchangeRate =
-      num(holding.exchangeRate);
-
-
-    totalUSD +=
-      price * shares;
-
-
-    investedUSD +=
-      averageBuy * shares;
-
-
-    if (
-      exchangeRate > 0 &&
-      averageBuy > 0 &&
-      usdKrw > 0
-    ) {
-
-      fxProfit +=
-        averageBuy *
-        shares *
-        (
-          usdKrw -
-          exchangeRate
-        );
-    }
-
-
-    const valueKRW =
-      price *
-      shares *
-      usdKrw;
-
-    totalKRW +=
-      valueKRW;
-
-
-    investedKRW +=
-      averageBuy *
-      shares *
-      (
-        exchangeRate ||
-        usdKrw
-      );
-
-  });
-
-
-  const totalValue =
-    document.getElementById(
-      "total-value"
-    );
-
-  const totalDollar =
-    document.getElementById(
-      "total-dollar"
-    );
-
-
-  if (totalValue) {
-
-    totalValue.textContent =
-      `₩${Math.round(
-        totalKRW
-      ).toLocaleString("ko-KR")}`;
-  }
-
-
-  if (totalDollar) {
-
-    totalDollar.textContent =
-      `$${totalUSD.toLocaleString(
-        "en-US",
-        {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }
-      )}`;
-  }
-
-
-  /* ====================================================
-     현재 보유주식 평가수익
-     판매수익 제외
-  ==================================================== */
-
-  const evaluationProfit =
-    totalKRW -
-    investedKRW;
-
-
-  const evaluationRate =
-    investedKRW > 0
-      ? (
-          evaluationProfit /
-          investedKRW
-        ) * 100
-      : 0;
-
-
-  const totalProfit =
-    document.getElementById(
-      "total-profit"
-    );
-
-
-  if (totalProfit) {
-
-    totalProfit.innerHTML = `
-      ${formatKRW(evaluationProfit)}
-      <span class="profit-rate">
-        (${formatRate(evaluationRate)})
-      </span>
-    `;
-
-    applyProfitColor(
-      totalProfit,
-      evaluationProfit
-    );
-  }
-
-
-  /* ====================================================
-     환차익
-  ==================================================== */
-
-  const fxElement =
-    document.getElementById(
-      "total-fx-profit"
-    );
-
-
-  if (fxElement) {
-
-    fxElement.textContent =
-      formatKRW(fxProfit);
-
-    applyProfitColor(
-      fxElement,
-      fxProfit
-    );
-  }
-
-
-  /* ====================================================
-     판매수익
-  ==================================================== */
-
-  const salesProfit =
-    trades
-      .filter(
-        trade =>
-          trade.type === "sell"
-      )
-      .reduce(
-        (sum, trade) =>
-          sum +
-          num(
-            trade.profitKRW
-          ),
-        0
-      );
-
-
-  const realizedElement =
-    document.getElementById(
-      "total-realized-profit"
-    );
-
-
-  if (realizedElement) {
-
-    realizedElement.textContent =
-      formatKRW(
-        salesProfit
-      );
-
-    applyProfitColor(
-      realizedElement,
-      salesProfit
-    );
-  }
-
-
-  updateTodayProfit();
-}
-
-
-/* ======================================================
-   전체 화면 업데이트
+   전체 업데이트
 ====================================================== */
 
 function updateAll() {
@@ -427,7 +529,6 @@ function updateAll() {
   );
 
   updateTotal();
-
   updateMarket();
 }
 
@@ -441,11 +542,29 @@ function updateStock(symbol) {
   const holding =
     getHolding(symbol);
 
+
   const price =
-    num(prices[symbol]);
+    num(
+      prices[symbol]
+    );
+
 
   const shares =
-    num(holding.shares);
+    num(
+      holding.shares
+    );
+
+
+  const priceElement =
+    document.getElementById(
+      `${symbol}-price`
+    );
+
+
+  const valueElement =
+    document.getElementById(
+      `${symbol}-value`
+    );
 
 
   const sharesElement =
@@ -453,15 +572,6 @@ function updateStock(symbol) {
       `${symbol}-shares-display`
     );
 
-  const priceElement =
-    document.getElementById(
-      `${symbol}-price`
-    );
-
-  const valueElement =
-    document.getElementById(
-      `${symbol}-value`
-    );
 
   const profitElement =
     document.getElementById(
@@ -516,16 +626,14 @@ function updateStock(symbol) {
 
     const rate =
       (
-        (
-          price -
-          averageBuy
-        ) /
+        (price - averageBuy) /
         averageBuy
       ) * 100;
 
 
     profitElement.textContent =
       formatRate(rate);
+
 
     applyProfitColor(
       profitElement,
@@ -536,127 +644,255 @@ function updateStock(symbol) {
 
 
 /* ======================================================
+   총 평가금
+====================================================== */
+
+function updateTotal() {
+
+  let totalUSD = 0;
+  let investedUSD = 0;
+
+  let fxProfit = 0;
+
+
+  symbols.forEach(symbol => {
+
+    const holding =
+      getHolding(symbol);
+
+
+    const price =
+      num(prices[symbol]);
+
+
+    const shares =
+      num(holding.shares);
+
+
+    const averageBuy =
+      num(holding.averageBuy);
+
+
+    const exchangeRate =
+      num(holding.exchangeRate);
+
+
+    totalUSD +=
+      price *
+      shares;
+
+
+    investedUSD +=
+      averageBuy *
+      shares;
+
+
+    if (
+      averageBuy > 0 &&
+      exchangeRate > 0 &&
+      usdKrw > 0
+    ) {
+
+      fxProfit +=
+        averageBuy *
+        shares *
+        (
+          usdKrw -
+          exchangeRate
+        );
+    }
+  });
+
+
+  const totalKRW =
+    totalUSD *
+    usdKrw;
+
+
+  const investedKRW =
+    investedUSD *
+    usdKrw;
+
+
+  const evaluationProfit =
+    totalKRW -
+    investedKRW;
+
+
+  const evaluationRate =
+    investedKRW > 0
+      ? evaluationProfit /
+        investedKRW *
+        100
+      : 0;
+
+
+  const totalValue =
+    document.getElementById(
+      "total-value"
+    );
+
+
+  if (totalValue) {
+
+    totalValue.textContent =
+      `₩${Math.round(
+        totalKRW
+      ).toLocaleString("ko-KR")}`;
+  }
+
+
+  const totalDollar =
+    document.getElementById(
+      "total-dollar"
+    );
+
+
+  if (totalDollar) {
+
+    totalDollar.textContent =
+      `$${totalUSD.toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      )}`;
+  }
+
+
+  /* 평가수익 */
+
+  const totalProfit =
+    document.getElementById(
+      "total-profit"
+    );
+
+
+  if (totalProfit) {
+
+    totalProfit.innerHTML =
+      `${formatKRW(
+        evaluationProfit
+      )}
+      <span class="profit-rate">
+        (${formatRate(
+          evaluationRate
+        )})
+      </span>`;
+
+
+    applyProfitColor(
+      totalProfit,
+      evaluationProfit
+    );
+  }
+
+
+  /* 환차익 */
+
+  const fxElement =
+    document.getElementById(
+      "total-fx-profit"
+    );
+
+
+  if (fxElement) {
+
+    fxElement.textContent =
+      formatKRW(fxProfit);
+
+
+    applyProfitColor(
+      fxElement,
+      fxProfit
+    );
+  }
+
+
+  /* 판매수익 */
+
+  const salesProfit =
+    trades
+      .filter(trade =>
+        trade.type === "sell" ||
+        trade.type === "매도"
+      )
+      .reduce(
+        (sum, trade) =>
+          sum +
+          num(
+            trade.profitKRW ??
+            trade.profit ??
+            0
+          ),
+        0
+      );
+
+
+  const realizedElement =
+    document.getElementById(
+      "total-realized-profit"
+    );
+
+
+  if (realizedElement) {
+
+    realizedElement.textContent =
+      formatKRW(
+        salesProfit
+      );
+
+
+    applyProfitColor(
+      realizedElement,
+      salesProfit
+    );
+  }
+
+
+  updateTodayProfit();
+}
+
+
+/* ======================================================
    시장
 ====================================================== */
 
 function updateMarket() {
 
-  const usd =
-    document.getElementById(
-      "usdkrw"
-    );
-
-  const sp500 =
-    document.getElementById(
-      "sp500"
-    );
-
-  const nasdaq =
-    document.getElementById(
-      "nasdaq"
-    );
-
-  const kospi =
-    document.getElementById(
-      "kospi"
-    );
-
-  const kosdaq =
-    document.getElementById(
-      "kosdaq"
-    );
+  const values = {
+    usdkrw: usdKrw,
+    sp500: prices.SP500,
+    nasdaq: prices.NASDAQ,
+    kospi: prices.KOSPI,
+    kosdaq: prices.KOSDAQ
+  };
 
 
-  if (usd) {
+  Object.entries(values)
+    .forEach(
+      ([id, value]) => {
 
-    usd.textContent =
-      usdKrw
-        ? `₩${usdKrw.toLocaleString(
-            "ko-KR",
-            {
-              maximumFractionDigits: 2
-            }
-          )}`
-        : "--";
-  }
+        const element =
+          document.getElementById(id);
 
+        if (!element) return;
 
-  if (sp500) {
-
-    sp500.textContent =
-      prices.SP500 ||
-      "--";
-  }
-
-
-  if (nasdaq) {
-
-    nasdaq.textContent =
-      prices.NASDAQ ||
-      "--";
-  }
-
-
-  if (kospi) {
-
-    kospi.textContent =
-      prices.KOSPI ||
-      "--";
-  }
-
-
-  if (kosdaq) {
-
-    kosdaq.textContent =
-      prices.KOSDAQ ||
-      "--";
-  }
-}
-
-
-/* ======================================================
-   포맷
-====================================================== */
-
-function formatKRW(value) {
-
-  const n =
-    num(value);
-
-  return (
-    (n > 0 ? "+" : "") +
-    `₩${n.toLocaleString(
-      "ko-KR",
-      {
-        maximumFractionDigits: 0
+        element.textContent =
+          value !== undefined &&
+          value !== null &&
+          value !== ""
+            ? Number(value)
+                .toLocaleString(
+                  "ko-KR",
+                  {
+                    maximumFractionDigits: 2
+                  }
+                )
+            : "--";
       }
-    )}`
-  );
-}
-
-
-function formatUSD(value) {
-
-  const n =
-    num(value);
-
-  return (
-    (n > 0 ? "+" : "") +
-    `$${n.toFixed(2)}`
-  );
-}
-
-
-function formatRate(value) {
-
-  const n =
-    num(value);
-
-  return (
-    (n > 0 ? "+" : "") +
-    n.toFixed(2) +
-    "%"
-  );
+    );
 }
 
 
@@ -682,10 +918,12 @@ function updateTodayProfit() {
       ? num(record.krw)
       : 0;
 
+
   const usd =
     record
       ? num(record.usd)
       : 0;
+
 
   const rate =
     record
@@ -698,10 +936,12 @@ function updateTodayProfit() {
       "daily-profit-krw"
     );
 
+
   const usdElement =
     document.getElementById(
       "daily-profit-usd"
     );
+
 
   const rateElement =
     document.getElementById(
@@ -747,7 +987,7 @@ function updateTodayProfit() {
 
 
 /* ======================================================
-   일간수익 화면
+   일간수익 새 창
 ====================================================== */
 
 function openDailyScreen() {
@@ -757,10 +997,12 @@ function openDailyScreen() {
       "main-screen"
     );
 
+
   const detail =
     document.getElementById(
       "detail-screen"
     );
+
 
   const daily =
     document.getElementById(
@@ -773,10 +1015,12 @@ function openDailyScreen() {
       "none";
   }
 
+
   if (detail) {
     detail.style.display =
       "none";
   }
+
 
   if (daily) {
 
@@ -795,6 +1039,7 @@ function closeDailyScreen() {
       "daily-screen"
     );
 
+
   const main =
     document.getElementById(
       "main-screen"
@@ -802,13 +1047,12 @@ function closeDailyScreen() {
 
 
   if (daily) {
-
     daily.style.display =
       "none";
   }
 
-  if (main) {
 
+  if (main) {
     main.style.display =
       "block";
   }
@@ -816,7 +1060,64 @@ function closeDailyScreen() {
 
 
 /* ======================================================
-   30일 일간수익
+   최근 30일
+====================================================== */
+
+function getLast30Dates() {
+
+  const result = [];
+
+  const today =
+    new Date();
+
+  today.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  for (
+    let i = 0;
+    i < 30;
+    i++
+  ) {
+
+    const d =
+      new Date(today);
+
+    d.setDate(
+      today.getDate() - i
+    );
+
+
+    result.push(
+      todayStringFromDate(d)
+    );
+  }
+
+
+  return result;
+}
+
+
+function todayStringFromDate(d) {
+
+  return [
+    d.getFullYear(),
+    String(
+      d.getMonth() + 1
+    ).padStart(2, "0"),
+    String(
+      d.getDate()
+    ).padStart(2, "0")
+  ].join("-");
+}
+
+
+/* ======================================================
+   일간수익 렌더링
 ====================================================== */
 
 function renderDailyProfits() {
@@ -826,134 +1127,148 @@ function renderDailyProfits() {
       "daily-record-list"
     );
 
+
   if (!container) return;
 
 
   container.innerHTML = "";
 
 
-  let cumulativeRate = 0;
+  const dates =
+    getLast30Dates();
 
 
-  const records =
-    [...dailyProfits]
-      .sort(
-        (a, b) =>
-          new Date(a.date) -
-          new Date(b.date)
-      );
+  /*
+   * 오래된 날짜부터 누적 계산
+   */
+
+  let cumulative = 0;
+
+  const cumulativeMap = {};
 
 
-  const last30 =
-    records.slice(-30);
+  [...dates]
+    .reverse()
+    .forEach(date => {
 
+      const record =
+        dailyProfits.find(
+          item =>
+            item.date === date
+        );
 
-  last30.forEach(
-    record => {
 
       const rate =
-        num(record.rate);
-
-      cumulativeRate +=
-        rate;
-
-
-      const row =
-        document.createElement(
-          "div"
-        );
+        record
+          ? num(record.rate)
+          : 0;
 
 
-      row.className =
-        "daily-record";
+      cumulative += rate;
+
+      cumulativeMap[date] =
+        cumulative;
+    });
 
 
-      row.innerHTML = `
-        <div class="daily-record-date">
-          ${formatDate(record.date)}
-        </div>
+  dates.forEach(date => {
 
-        <div class="daily-record-values">
-
-          <span class="daily-krw">
-            ${formatKRW(record.krw)}
-          </span>
-
-          <span class="daily-usd">
-            ${formatUSD(record.usd)}
-          </span>
-
-          <span class="daily-rate">
-            ${formatRate(rate)}
-            <small>
-              (${formatRate(cumulativeRate)})
-            </small>
-          </span>
-
-        </div>
-
-        <button
-          class="daily-edit-button"
-          data-index="${dailyProfits.indexOf(record)}"
-        >
-          수정
-        </button>
-      `;
-
-
-      applyProfitColor(
-        row.querySelector(
-          ".daily-krw"
-        ),
-        num(record.krw)
+    const index =
+      dailyProfits.findIndex(
+        item =>
+          item.date === date
       );
 
 
-      applyProfitColor(
-        row.querySelector(
-          ".daily-usd"
-        ),
-        num(record.usd)
+    const record =
+      index >= 0
+        ? dailyProfits[index]
+        : {
+            date,
+            krw: 0,
+            usd: 0,
+            rate: 0
+          };
+
+
+    const row =
+      document.createElement(
+        "div"
       );
 
 
-      applyProfitColor(
-        row.querySelector(
-          ".daily-rate"
-        ),
-        rate
-      );
+    row.className =
+      "daily-record";
 
 
-      container.appendChild(
-        row
-      );
-    }
-  );
+    row.innerHTML = `
+      <div class="daily-record-date">
+        ${formatDate(record.date)}
+      </div>
 
+      <div class="daily-record-values">
 
-  container
-    .querySelectorAll(
-      ".daily-edit-button"
-    )
-    .forEach(
-      button => {
+        <span class="daily-krw">
+          ${formatKRW(record.krw)}
+        </span>
 
-        button.addEventListener(
-          "click",
-          () => {
+        <span class="daily-usd">
+          ${formatUSD(record.usd)}
+        </span>
 
-            editDailyProfit(
-              num(
-                button.dataset.index
-              )
-            );
+        <span class="daily-rate">
+          ${formatRate(record.rate)}
+          <small>
+            (${formatRate(
+              cumulativeMap[date]
+            )})
+          </small>
+        </span>
 
-          }
-        );
+      </div>
 
+      ${
+        index >= 0
+          ? `
+            <button
+              type="button"
+              class="daily-edit-button"
+              data-index="${index}"
+            >
+              수정
+            </button>
+          `
+          : ""
       }
+    `;
+
+
+    applyProfitColor(
+      row.querySelector(
+        ".daily-krw"
+      ),
+      num(record.krw)
     );
+
+
+    applyProfitColor(
+      row.querySelector(
+        ".daily-usd"
+      ),
+      num(record.usd)
+    );
+
+
+    applyProfitColor(
+      row.querySelector(
+        ".daily-rate"
+      ),
+      num(record.rate)
+    );
+
+
+    container.appendChild(row);
+  });
 }
 
 
@@ -963,10 +1278,16 @@ function renderDailyProfits() {
 
 function editDailyProfit(index) {
 
+  if (
+    index < 0 ||
+    !dailyProfits[index]
+  ) {
+    return;
+  }
+
+
   const record =
     dailyProfits[index];
-
-  if (!record) return;
 
 
   const date =
@@ -974,6 +1295,7 @@ function editDailyProfit(index) {
       "날짜 (YYYY-MM-DD)",
       record.date
     );
+
 
   if (date === null) return;
 
@@ -984,6 +1306,7 @@ function editDailyProfit(index) {
       record.krw
     );
 
+
   if (krw === null) return;
 
 
@@ -992,6 +1315,7 @@ function editDailyProfit(index) {
       "달러 수익",
       record.usd
     );
+
 
   if (usd === null) return;
 
@@ -1002,21 +1326,16 @@ function editDailyProfit(index) {
       record.rate
     );
 
+
   if (rate === null) return;
 
 
   dailyProfits[index] = {
-
+    ...record,
     date,
-
-    krw:
-      num(krw),
-
-    usd:
-      num(usd),
-
-    rate:
-      num(rate)
+    krw: num(krw),
+    usd: num(usd),
+    rate: num(rate)
   };
 
 
@@ -1029,112 +1348,251 @@ function editDailyProfit(index) {
 
 
 /* ======================================================
-   일간수익 새 기록
-====================================================== */
-
-function addDailyProfit() {
-
-  const date =
-    prompt(
-      "날짜 (YYYY-MM-DD)",
-      todayString()
-    );
-
-  if (date === null) return;
-
-
-  const krw =
-    prompt(
-      "원화 수익"
-    );
-
-  if (krw === null) return;
-
-
-  const usd =
-    prompt(
-      "달러 수익"
-    );
-
-  if (usd === null) return;
-
-
-  const rate =
-    prompt(
-      "일간 수익률 (%)"
-    );
-
-  if (rate === null) return;
-
-
-  dailyProfits.push({
-
-    date,
-
-    krw:
-      num(krw),
-
-    usd:
-      num(usd),
-
-    rate:
-      num(rate)
-  });
-
-
-  saveData();
-
-  renderDailyProfits();
-
-  updateTodayProfit();
-}
-
-
-/* ======================================================
-   일간수익 화면 버튼
+   터치 / 클릭
+   ★ 모바일에서 반드시 작동하도록 이벤트 위임
 ====================================================== */
 
 document.addEventListener(
   "click",
-  event => {
+  function(event) {
 
-    if (
+    const dailyButton =
       event.target.closest(
         "#daily-profit-button"
-      ) ||
+      );
+
+
+    const dailyKRW =
       event.target.closest(
         "#daily-profit-krw"
-      ) ||
+      );
+
+
+    const dailyUSD =
       event.target.closest(
         "#daily-profit-usd"
-      ) ||
+      );
+
+
+    const dailyRate =
       event.target.closest(
         "#daily-profit-rate"
-      )
+      );
+
+
+    if (
+      dailyButton ||
+      dailyKRW ||
+      dailyUSD ||
+      dailyRate
     ) {
+
+      event.preventDefault();
 
       openDailyScreen();
+
+      return;
     }
 
 
-    if (
+    const back =
       event.target.closest(
         "#daily-back-button"
-      )
-    ) {
+      );
+
+
+    if (back) {
+
+      event.preventDefault();
 
       closeDailyScreen();
+
+      return;
     }
+
+
+    const edit =
+      event.target.closest(
+        ".daily-edit-button"
+      );
+
+
+    if (edit) {
+
+      event.preventDefault();
+
+      editDailyProfit(
+        Number(
+          edit.dataset.index
+        )
+      );
+
+      return;
+    }
+
+
+    /*
+     * 종목 카드 터치
+     */
+
+    const card =
+      event.target.closest(
+        ".stock-card"
+      );
 
 
     if (
-      event.target.closest(
-        "#add-daily-button"
+      card &&
+      !event.target.closest(
+        "button,input,select,textarea"
       )
     ) {
 
-      addDailyProfit();
+      const symbol =
+        card.dataset.symbol;
+
+
+      if (symbol) {
+
+        openStockDetail(
+          symbol
+        );
+      }
     }
+
+  },
+  false
+);
+
+
+/* ======================================================
+   종목 상세
+====================================================== */
+
+function openStockDetail(symbol) {
+
+  selectedSymbol =
+    symbol;
+
+
+  const main =
+    document.getElementById(
+      "main-screen"
+    );
+
+
+  const detail =
+    document.getElementById(
+      "detail-screen"
+    );
+
+
+  if (main) {
+    main.style.display =
+      "none";
+  }
+
+
+  if (detail) {
+    detail.style.display =
+      "block";
+  }
+
+
+  const holding =
+    getHolding(symbol);
+
+
+  const symbolElement =
+    document.getElementById(
+      "detail-symbol"
+    );
+
+
+  const sharesElement =
+    document.getElementById(
+      "detail-shares"
+    );
+
+
+  const averageElement =
+    document.getElementById(
+      "detail-average-buy"
+    );
+
+
+  if (symbolElement) {
+    symbolElement.textContent =
+      symbol;
+  }
+
+
+  if (sharesElement) {
+    sharesElement.textContent =
+      `${holding.shares}주`;
+  }
+
+
+  if (averageElement) {
+
+    averageElement.textContent =
+      holding.averageBuy
+        ? `$${num(
+            holding.averageBuy
+          ).toFixed(2)}`
+        : "--";
+  }
+}
+
+
+function closeStockDetail() {
+
+  const detail =
+    document.getElementById(
+      "detail-screen"
+    );
+
+
+  const main =
+    document.getElementById(
+      "main-screen"
+    );
+
+
+  if (detail) {
+    detail.style.display =
+      "none";
+  }
+
+
+  if (main) {
+    main.style.display =
+      "block";
+  }
+}
+
+
+/* ======================================================
+   상세 뒤로가기
+====================================================== */
+
+document.addEventListener(
+  "click",
+  function(event) {
+
+    const button =
+      event.target.closest(
+        "#back-button"
+      );
+
+
+    if (button) {
+
+      event.preventDefault();
+
+      closeStockDetail();
+    }
+
   }
 );
 
@@ -1145,8 +1603,6 @@ document.addEventListener(
 
 loadPrices();
 
-
-/* 1분마다 갱신 */
 
 setInterval(
   loadPrices,
