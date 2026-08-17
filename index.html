@@ -17,29 +17,32 @@
   >
 </head>
 
-
 <body>
 
 <div class="container">
 
-
-  <!-- ==================================================
-       메인 화면
-  =================================================== -->
+  <!-- =========================
+       메인
+  ========================== -->
 
   <main id="main-screen">
 
     <header class="top-header">
       <div>
         <div class="app-title">My Stock</div>
-        <div class="app-subtitle">Portfolio Dashboard</div>
+        <div class="app-subtitle">MY PORTFOLIO</div>
+      </div>
+
+      <div class="live-dot">
+        <span></span>
+        LIVE
       </div>
     </header>
 
 
-    <!-- ==================================================
+    <!-- =========================
          총 평가금
-    =================================================== -->
+    ========================== -->
 
     <section class="hero-card">
 
@@ -62,7 +65,7 @@
       </div>
 
 
-      <!-- 전체 수익 -->
+      <!-- 전체수익 -->
 
       <div class="profit-main">
 
@@ -80,85 +83,66 @@
       </div>
 
 
-      <!-- 세부 수익 -->
+      <!-- 세부수익 -->
 
       <div class="profit-details">
 
         <div class="profit-detail-row">
-
-          <span>
-            환차익
-          </span>
+          <span>환차익</span>
 
           <strong id="total-fx-profit">
             --
           </strong>
-
         </div>
 
-
         <div class="profit-detail-row">
-
-          <span>
-            판매수익
-          </span>
+          <span>판매수익</span>
 
           <strong id="total-realized-profit">
             --
           </strong>
-
         </div>
 
       </div>
 
 
-      <!-- ==================================================
+      <!-- =========================
            오늘 수익
-           클릭하면 일간 수익 화면으로 이동
-      =================================================== -->
+      ========================== -->
 
       <button
-        id="daily-profit-button"
-        class="daily-preview"
-        type="button"
+        id="daily-profit-toggle"
+        class="daily-section"
       >
 
-        <div class="daily-preview-left">
+        <div class="daily-header">
 
-          <div class="daily-preview-label">
-            오늘 수익
-          </div>
+          <span>오늘 수익</span>
 
-          <div
-            id="daily-profit-krw"
-            class="daily-preview-krw"
-          >
-            --
-          </div>
-
-          <div
-            id="daily-profit-usd"
-            class="daily-preview-usd"
-          >
-            --
-          </div>
+          <span id="daily-date"></span>
 
         </div>
 
 
-        <div class="daily-preview-right">
+        <div class="daily-main">
 
-          <div
-            id="daily-profit-rate"
-            class="daily-preview-rate"
-          >
+          <strong id="daily-profit-krw">
             --
-          </div>
+          </strong>
 
-          <div class="daily-preview-arrow">
-            ›
-          </div>
+          <span id="daily-profit-usd">
+            --
+          </span>
 
+          <span id="daily-profit-rate">
+            --
+          </span>
+
+        </div>
+
+        <div class="daily-hint">
+          날짜별 수익 보기
+          <span>›</span>
         </div>
 
       </button>
@@ -166,156 +150,179 @@
     </section>
 
 
-    <!-- ==================================================
-         주요 시장
-    =================================================== -->
+    <!-- =========================
+         날짜별 일간수익
+    ========================== -->
 
-    <section class="section-block">
+    <section
+      id="daily-history"
+      class="card history-card hidden"
+    >
 
-      <div class="section-heading">
-        주요 시장
-      </div>
+      <div class="section-head">
 
-
-      <!-- 한국 -->
-
-      <div class="market-group">
-
-        <div class="market-group-title">
-          국내
-        </div>
-
-        <div class="market-grid">
-
-          <div class="market-item">
-
-            <span>
-              KOSPI
-            </span>
-
-            <strong id="kospi">
-              --
-            </strong>
-
+        <div>
+          <div class="section-title">
+            일간 수익
           </div>
 
-
-          <div class="market-item">
-
-            <span>
-              KOSDAQ
-            </span>
-
-            <strong id="kosdaq">
-              --
-            </strong>
-
+          <div class="section-subtitle">
+            날짜별 수익률
           </div>
-
         </div>
-
-      </div>
-
-
-      <!-- 환율 -->
-
-      <div class="market-group">
-
-        <div class="market-group-title">
-          환율
-        </div>
-
-        <div class="market-grid">
-
-          <div class="market-item market-wide">
-
-            <span>
-              USD / KRW
-            </span>
-
-            <strong id="usdkrw">
-              --
-            </strong>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- 미국 -->
-
-      <div class="market-group">
-
-        <div class="market-group-title">
-          미국
-        </div>
-
-        <div class="market-grid">
-
-          <div class="market-item">
-
-            <span>
-              S&P 500
-            </span>
-
-            <strong id="sp500">
-              --
-            </strong>
-
-          </div>
-
-
-          <div class="market-item">
-
-            <span>
-              Nasdaq
-            </span>
-
-            <strong id="nasdaq">
-              --
-            </strong>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ==================================================
-         자산 구성
-    =================================================== -->
-
-    <section class="section-block">
-
-      <div class="section-heading">
-        자산 구성
-      </div>
-
-      <div class="allocation-card">
 
         <div
-          id="allocation-bars"
-          class="allocation-bars"
-        ></div>
+          id="daily-total-rate"
+          class="history-total"
+        >
+          0.00%
+        </div>
+
+      </div>
+
+
+      <div id="daily-history-list">
+
+        <div class="empty-text">
+          아직 기록이 없습니다.
+        </div>
 
       </div>
 
     </section>
 
 
-    <!-- ==================================================
+    <!-- =========================
+         자산 구성
+    ========================== -->
+
+    <section class="card allocation-card">
+
+      <div class="section-head">
+
+        <div>
+          <div class="section-title">
+            자산 구성
+          </div>
+
+          <div class="section-subtitle">
+            현재 평가금 기준
+          </div>
+        </div>
+
+      </div>
+
+      <div
+        id="allocation-list"
+        class="allocation-list"
+      >
+        <div class="empty-text">
+          보유 종목이 없습니다.
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         주요 시장
+    ========================== -->
+
+    <section class="card market-card">
+
+      <div class="section-head">
+
+        <div>
+          <div class="section-title">
+            주요 시장
+          </div>
+
+          <div class="section-subtitle">
+            Market Overview
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="market-group">
+
+        <div class="market-group-title">
+          🇰🇷 국내시장
+        </div>
+
+        <div class="market-row">
+          <span>KOSPI</span>
+          <strong id="kospi">--</strong>
+        </div>
+
+        <div class="market-row">
+          <span>KOSDAQ</span>
+          <strong id="kosdaq">--</strong>
+        </div>
+
+      </div>
+
+
+      <div class="market-divider"></div>
+
+
+      <div class="market-group">
+
+        <div class="market-group-title">
+          💱 환율
+        </div>
+
+        <div class="market-row">
+          <span>USD / KRW</span>
+          <strong id="usdkrw">--</strong>
+        </div>
+
+      </div>
+
+
+      <div class="market-divider"></div>
+
+
+      <div class="market-group">
+
+        <div class="market-group-title">
+          🇺🇸 미국시장
+        </div>
+
+        <div class="market-row">
+          <span>S&P 500</span>
+          <strong id="sp500">--</strong>
+        </div>
+
+        <div class="market-row">
+          <span>NASDAQ</span>
+          <strong id="nasdaq">--</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
          종목
-    =================================================== -->
+    ========================== -->
 
-    <section class="section-block">
+    <section>
 
-      <div class="section-heading">
-        보유 종목
+      <div class="section-head stock-section-head">
+
+        <div>
+          <div class="section-title">
+            보유 종목
+          </div>
+
+          <div class="section-subtitle">
+            US STOCKS
+          </div>
+        </div>
+
       </div>
 
 
@@ -336,8 +343,8 @@
             </div>
 
             <div
-              id="NVDY-shares-display"
               class="stock-shares"
+              id="NVDY-shares-display"
             >
               0주
             </div>
@@ -348,22 +355,22 @@
           <div class="stock-right">
 
             <div
-              id="NVDY-price"
               class="stock-price"
+              id="NVDY-price"
             >
               --
             </div>
 
             <div
-              id="NVDY-value"
               class="stock-value"
+              id="NVDY-value"
             >
               --
             </div>
 
             <div
-              id="NVDY-profit"
               class="stock-profit"
+              id="NVDY-profit"
             >
               --
             </div>
@@ -387,8 +394,8 @@
             </div>
 
             <div
-              id="QQQM-shares-display"
               class="stock-shares"
+              id="QQQM-shares-display"
             >
               0주
             </div>
@@ -398,22 +405,22 @@
           <div class="stock-right">
 
             <div
-              id="QQQM-price"
               class="stock-price"
+              id="QQQM-price"
             >
               --
             </div>
 
             <div
-              id="QQQM-value"
               class="stock-value"
+              id="QQQM-value"
             >
               --
             </div>
 
             <div
-              id="QQQM-profit"
               class="stock-profit"
+              id="QQQM-profit"
             >
               --
             </div>
@@ -437,8 +444,8 @@
             </div>
 
             <div
-              id="SCHD-shares-display"
               class="stock-shares"
+              id="SCHD-shares-display"
             >
               0주
             </div>
@@ -448,22 +455,22 @@
           <div class="stock-right">
 
             <div
-              id="SCHD-price"
               class="stock-price"
+              id="SCHD-price"
             >
               --
             </div>
 
             <div
-              id="SCHD-value"
               class="stock-value"
+              id="SCHD-value"
             >
               --
             </div>
 
             <div
-              id="SCHD-profit"
               class="stock-profit"
+              id="SCHD-profit"
             >
               --
             </div>
@@ -487,8 +494,8 @@
             </div>
 
             <div
-              id="SPMO-shares-display"
               class="stock-shares"
+              id="SPMO-shares-display"
             >
               0주
             </div>
@@ -498,22 +505,22 @@
           <div class="stock-right">
 
             <div
-              id="SPMO-price"
               class="stock-price"
+              id="SPMO-price"
             >
               --
             </div>
 
             <div
-              id="SPMO-value"
               class="stock-value"
+              id="SPMO-value"
             >
               --
             </div>
 
             <div
-              id="SPMO-profit"
               class="stock-profit"
+              id="SPMO-profit"
             >
               --
             </div>
@@ -537,8 +544,8 @@
             </div>
 
             <div
-              id="SKHY-shares-display"
               class="stock-shares"
+              id="SKHY-shares-display"
             >
               0주
             </div>
@@ -548,22 +555,22 @@
           <div class="stock-right">
 
             <div
-              id="SKHY-price"
               class="stock-price"
+              id="SKHY-price"
             >
               --
             </div>
 
             <div
-              id="SKHY-value"
               class="stock-value"
+              id="SKHY-value"
             >
               --
             </div>
 
             <div
-              id="SKHY-profit"
               class="stock-profit"
+              id="SKHY-profit"
             >
               --
             </div>
@@ -587,8 +594,8 @@
             </div>
 
             <div
-              id="VIG-shares-display"
               class="stock-shares"
+              id="VIG-shares-display"
             >
               0주
             </div>
@@ -598,22 +605,22 @@
           <div class="stock-right">
 
             <div
-              id="VIG-price"
               class="stock-price"
+              id="VIG-price"
             >
               --
             </div>
 
             <div
-              id="VIG-value"
               class="stock-value"
+              id="VIG-value"
             >
               --
             </div>
 
             <div
-              id="VIG-profit"
               class="stock-profit"
+              id="VIG-profit"
             >
               --
             </div>
@@ -622,7 +629,6 @@
 
         </div>
 
-
       </div>
 
     </section>
@@ -630,231 +636,101 @@
   </main>
 
 
-  <!-- ==================================================
-       일간 수익 화면
-  =================================================== -->
-
-  <main
-    id="daily-screen"
-    style="display:none;"
-  >
-
-    <header class="sub-header">
-
-      <button
-        id="daily-back-button"
-        class="back-button"
-        type="button"
-      >
-        ←
-      </button>
-
-      <div>
-
-        <div class="sub-title">
-          일간 수익
-        </div>
-
-        <div
-          id="daily-screen-date"
-          class="sub-date"
-        >
-        </div>
-
-      </div>
-
-    </header>
-
-
-    <!-- 요약 -->
-
-    <section class="daily-summary-card">
-
-      <div class="daily-summary-label">
-        누적 일간 수익률
-      </div>
-
-      <div
-        id="daily-summary-total"
-        class="daily-summary-total"
-      >
-        --
-      </div>
-
-    </section>
-
-
-    <!-- 기록 -->
-
-    <section class="section-block">
-
-      <div class="daily-history-header">
-
-        <div class="section-heading">
-          날짜별 기록
-        </div>
-
-        <button
-          id="add-daily-record"
-          class="small-button"
-          type="button"
-        >
-          + 기록 추가
-        </button>
-
-      </div>
-
-
-      <div
-        id="daily-history-list"
-        class="daily-history-list"
-      ></div>
-
-    </section>
-
-  </main>
-
-
-  <!-- ==================================================
+  <!-- =========================
        상세 화면
-  =================================================== -->
+  ========================== -->
 
   <main
     id="detail-screen"
-    style="display:none;"
+    class="hidden"
   >
 
-    <header class="sub-header">
+    <button
+      id="back-button"
+      class="back-button"
+    >
+      ← 뒤로
+    </button>
 
-      <button
-        id="back-button"
-        class="back-button"
-        type="button"
-      >
-        ←
-      </button>
+
+    <div class="detail-header">
 
       <div>
 
         <div
           id="detail-symbol"
-          class="sub-title"
+          class="detail-symbol"
         >
           NVDY
         </div>
 
-        <div
-          id="detail-price"
-          class="sub-date"
-        >
-          --
+        <div class="detail-label">
+          STOCK DETAIL
         </div>
 
       </div>
 
-    </header>
-
-
-    <section class="detail-card">
-
-
-      <div class="detail-row">
-
-        <span>
-          보유수량
-        </span>
-
-        <strong id="detail-shares">
-          0주
-        </strong>
-
+      <div
+        id="detail-price"
+        class="detail-price"
+      >
+        --
       </div>
 
+    </div>
+
+
+    <!-- 상세정보 -->
+
+    <section class="card detail-card">
 
       <div class="detail-row">
-
-        <span>
-          평균매수가
-        </span>
-
-        <strong id="detail-average-buy">
-          --
-        </strong>
-
+        <span>보유수량</span>
+        <strong id="detail-shares">0주</strong>
       </div>
-
 
       <div class="detail-row">
-
-        <span>
-          평가금
-        </span>
-
-        <strong id="detail-value">
-          --
-        </strong>
-
+        <span>평균매수가</span>
+        <strong id="detail-average-buy">--</strong>
       </div>
-
 
       <div class="detail-row">
-
-        <span>
-          평가손익
-        </span>
-
-        <strong id="detail-evaluation-profit">
-          --
-        </strong>
-
+        <span>평가금</span>
+        <strong id="detail-value">--</strong>
       </div>
-
 
       <div class="detail-row">
-
-        <span>
-          실현손익
-        </span>
-
-        <strong id="detail-realized-profit">
-          ₩0
-        </strong>
-
+        <span>평가손익</span>
+        <strong id="detail-evaluation-profit">--</strong>
       </div>
-
 
       <div class="detail-row">
-
-        <span>
-          총 수익률
-        </span>
-
-        <strong id="detail-total-profit">
-          --
-        </strong>
-
+        <span>실현손익</span>
+        <strong id="detail-realized-profit">₩0</strong>
       </div>
 
+      <div class="detail-row">
+        <span>총 수익률</span>
+        <strong id="detail-total-profit">--</strong>
+      </div>
 
     </section>
 
 
-    <!-- 매수 / 매도 -->
+    <!-- 매수/매도 -->
 
     <div class="trade-buttons">
 
       <button
         id="detail-buy-button"
-        class="trade-buy"
-        type="button"
+        class="buy-button"
       >
         매수
       </button>
 
       <button
         id="detail-sell-button"
-        class="trade-sell"
-        type="button"
+        class="sell-button"
       >
         매도
       </button>
@@ -866,55 +742,102 @@
 
     <section
       id="trade-form"
-      class="trade-form"
-      style="display:none;"
+      class="card trade-form hidden"
     >
 
       <div
         id="trade-title"
-        class="trade-form-title"
+        class="section-title"
       >
         매수
       </div>
 
+
+      <label>
+        거래 날짜
+      </label>
+
+      <input
+        type="date"
+        id="trade-date"
+      >
+
+
+      <label>
+        수량
+      </label>
 
       <input
         type="number"
         id="trade-shares"
         placeholder="수량"
         step="0.000001"
+        min="0"
       >
 
+
+      <label>
+        주가 (USD)
+      </label>
 
       <input
         type="number"
         id="trade-price"
-        placeholder="가격 (USD)"
+        placeholder="주가 (USD)"
         step="0.01"
+        min="0"
       >
 
+
+      <label>
+        거래 당시 환율
+      </label>
 
       <input
         type="number"
         id="trade-exchange-rate"
-        placeholder="거래 당시 환율 (KRW/USD)"
+        placeholder="KRW / USD"
         step="0.01"
+        min="0"
       >
 
 
+      <div
+        id="sell-total-box"
+        class="sell-total-box hidden"
+      >
+
+        <div>
+          예상 매도금액
+        </div>
+
+        <strong id="sell-calculated-total">
+          ₩0
+        </strong>
+
+      </div>
+
+
+      <label
+        id="sell-total-label"
+        class="hidden"
+      >
+        실제 총 매도금액 (원화)
+      </label>
+
       <input
         type="number"
-        id="trade-fee"
-        placeholder="수수료 / 제세금 (KRW)"
+        id="trade-total-krw"
+        class="hidden"
+        placeholder="실제 체결된 총 원화금액"
         step="1"
-        value="0"
+        min="0"
       >
 
 
       <button
         id="trade-submit"
         class="trade-submit"
-        type="button"
       >
         거래 저장
       </button>
@@ -922,38 +845,40 @@
     </section>
 
 
-    <!-- 평단 수정 -->
+    <!-- =========================
+         거래내역
+    ========================== -->
 
-    <section class="manual-average-card">
+    <section class="card transactions-card">
 
-      <div class="manual-average-title">
-        평단 직접 수정
+      <div class="section-head">
+
+        <div>
+
+          <div class="section-title">
+            거래내역
+          </div>
+
+          <div class="section-subtitle">
+            매수 · 매도 기록
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="manual-average-description">
-        토스증권과 평단을 맞춰야 할 경우 사용
+
+      <div id="transaction-list">
+
+        <div class="empty-text">
+          거래내역이 없습니다.
+        </div>
+
       </div>
-
-
-      <input
-        type="number"
-        id="manual-average-krw"
-        placeholder="원화 평단"
-        step="1"
-      >
-
-
-      <button
-        id="manual-average-save"
-        type="button"
-      >
-        평단 저장
-      </button>
 
     </section>
 
   </main>
-
 
 </div>
 
@@ -961,5 +886,4 @@
 <script src="script.js"></script>
 
 </body>
-
 </html>
