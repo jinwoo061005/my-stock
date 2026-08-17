@@ -3,13 +3,13 @@
 }
 
 html {
-  background: #0b0d10;
+  background: #090b0f;
 }
 
 body {
   margin: 0;
-  background: #0b0d10;
-  color: #f1f3f5;
+  background: #090b0f;
+  color: #f4f5f7;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -17,7 +17,6 @@ body {
     Roboto,
     "Noto Sans KR",
     sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -27,423 +26,440 @@ input {
 
 button {
   border: 0;
-  cursor: pointer;
 }
 
 .container {
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: 22px 16px 50px;
+  padding: 18px 16px 50px;
 }
 
 
-/* =========================
-   기본
-========================= */
+/* ======================================================
+   HEADER
+====================================================== */
 
-h1 {
-  margin: 4px 0 20px;
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.app-title {
   font-size: 24px;
   font-weight: 750;
   letter-spacing: -0.7px;
 }
 
+.app-subtitle {
+  margin-top: 3px;
+  color: #737984;
+  font-size: 12px;
+}
 
-/* =========================
-   카드
-========================= */
+.icon-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #15181e;
+  color: #b9bec8;
+  font-size: 22px;
+  cursor: pointer;
+}
 
-.card,
-.hero-card {
-  background: #13161a;
-  border: 1px solid #20242a;
-  border-radius: 18px;
+.icon-button:active {
+  transform: scale(.96);
 }
 
 
-/* =========================
-   총 평가금
-========================= */
+/* ======================================================
+   CARD
+====================================================== */
+
+.card {
+  background: #111419;
+  border: 1px solid #1c2027;
+  border-radius: 20px;
+}
+
+
+/* ======================================================
+   HERO
+====================================================== */
 
 .hero-card {
-  padding: 23px 20px 20px;
+  padding: 24px 20px 18px;
   margin-bottom: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      #15191f,
+      #0e1014
+    );
+  border: 1px solid #20252d;
+  border-radius: 24px;
 }
 
 .hero-label {
-  color: #8d949e;
+  color: #858b96;
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 7px;
 }
 
 .hero-value {
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -1.2px;
+  margin-top: 5px;
+  font-size: 34px;
   line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -1.5px;
 }
 
 .hero-dollar {
   margin-top: 5px;
-  color: #7f8791;
+  color: #8d939d;
   font-size: 14px;
 }
 
 
-/* =========================
-   전체수익
-========================= */
+/* ======================================================
+   VALUATION PROFIT
+====================================================== */
 
-.profit-main {
+.valuation-box {
   margin-top: 22px;
   padding-top: 18px;
-  border-top: 1px solid #22262c;
+  border-top: 1px solid #20242b;
 }
 
 .profit-label {
-  color: #8d949e;
+  color: #8a909a;
   font-size: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .profit-main-value {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 750;
-  letter-spacing: -0.4px;
+  letter-spacing: -.4px;
+}
+
+.profit-sub-value {
+  margin-top: 4px;
+  color: #777e89;
+  font-size: 12px;
 }
 
 
-/* =========================
-   수익 색상
-   상승 = 초록
-   하락 = 파랑
-========================= */
-
-.up {
-  color: #35d07f !important;
-}
-
-.down {
-  color: #5da9ff !important;
-}
-
-
-/* =========================
-   환차익 / 판매수익
-========================= */
+/* ======================================================
+   PROFIT DETAILS
+====================================================== */
 
 .profit-details {
-  margin-top: 15px;
-  padding: 12px 14px;
-  background: #0e1013;
-  border-radius: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #1d2128;
 }
 
 .profit-detail-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  min-height: 29px;
-}
-
-.profit-detail-row + .profit-detail-row {
-  margin-top: 4px;
+  align-items: center;
+  min-height: 30px;
+  font-size: 13px;
 }
 
 .profit-detail-row span {
-  color: #858c95;
-  font-size: 13px;
+  color: #7d838e;
 }
 
 .profit-detail-row strong {
-  font-size: 13px;
   font-weight: 650;
 }
 
 
-/* =========================
-   일간 수익
-========================= */
+/* ======================================================
+   DAILY
+====================================================== */
 
 .daily-section {
+  display: block;
+  width: 100%;
   margin-top: 16px;
-  padding: 15px 16px;
-  background: #101317;
-  border: 1px solid #20252b;
-  border-radius: 14px;
-}
-
-.daily-section.clickable {
+  padding: 14px 15px;
+  text-align: left;
+  background: #15181e;
+  border: 1px solid #20242b;
+  border-radius: 15px;
+  color: #fff;
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.15s ease;
 }
 
-.daily-section.clickable:active {
-  transform: scale(0.99);
-  background: #15191e;
+.daily-section:active {
+  transform: scale(.99);
 }
 
 .daily-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-}
-
-.daily-header span:first-child {
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.daily-header span:last-child {
-  color: #727982;
-  font-size: 11px;
+  color: #8b919b;
+  font-size: 12px;
 }
 
 .daily-main {
   display: flex;
   align-items: baseline;
-  gap: 9px;
+  gap: 10px;
   margin-top: 8px;
-  flex-wrap: wrap;
 }
 
 .daily-main strong {
-  font-size: 19px;
-  font-weight: 750;
+  font-size: 20px;
 }
 
 .daily-main span {
   font-size: 12px;
-  color: #8a919b;
-}
-
-#daily-profit-rate {
-  font-weight: 700;
+  color: #858b96;
 }
 
 .daily-hint {
-  margin-top: 9px;
-  color: #626a74;
+  margin-top: 8px;
+  color: #666d78;
   font-size: 11px;
 }
 
 
-/* =========================
-   일간 수익 기록
-========================= */
+/* ======================================================
+   SECTION
+====================================================== */
 
-.history-card {
-  margin-top: 12px;
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px 2px 10px;
+  color: #dfe2e7;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#last-updated {
+  color: #606670;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+
+/* ======================================================
+   MARKET
+====================================================== */
+
+.market-card {
   padding: 18px;
+  margin-bottom: 20px;
 }
 
 .section-title {
   font-size: 14px;
-  font-weight: 750;
-  letter-spacing: -0.2px;
-}
-
-.daily-history-item {
-  padding: 13px 0;
-  border-bottom: 1px solid #20242a;
-}
-
-.daily-history-item:last-child {
-  border-bottom: 0;
-  padding-bottom: 2px;
-}
-
-.daily-history-date {
-  color: #858c95;
-  font-size: 11px;
-  margin-bottom: 6px;
-}
-
-.daily-history-values {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.daily-history-krw {
-  font-size: 15px;
   font-weight: 700;
-}
-
-.daily-history-right {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-}
-
-.daily-history-usd {
-  color: #7d858f;
-  font-size: 11px;
-}
-
-.daily-history-rate {
-  font-size: 12px;
-  font-weight: 700;
-}
-
-
-/* =========================
-   주요 시장
-========================= */
-
-.market-card {
-  padding: 19px 18px;
-  margin-bottom: 14px;
+  color: #e7e9ed;
 }
 
 .market-group {
-  margin-top: 15px;
-}
-
-.market-group + .market-group {
-  margin-top: 18px;
+  margin-top: 17px;
 }
 
 .market-group-title {
-  color: #686f78;
-  font-size: 11px;
-  font-weight: 700;
   margin-bottom: 7px;
+  color: #606772;
+  font-size: 11px;
+  font-weight: 650;
   text-transform: uppercase;
 }
 
-.market-row {
+.market-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.market-grid.single {
+  grid-template-columns: 1fr;
+}
+
+.market-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  min-height: 32px;
-  padding: 0 2px;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 12px;
+  background: #16191f;
+  border-radius: 12px;
 }
 
-.market-row span:first-child {
-  color: #aab0b8;
+.market-item span {
+  color: #808691;
+  font-size: 12px;
+}
+
+.market-item strong {
+  color: #e8eaf0;
   font-size: 13px;
 }
 
-.market-row span:last-child {
-  color: #f0f2f4;
-  font-size: 13px;
-  font-weight: 650;
-}
 
-
-/* =========================
-   종목 목록
-========================= */
-
-#stocks {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
+/* ======================================================
+   STOCK
+====================================================== */
 
 .stock-card {
-  padding: 17px 16px;
-  background: #13161a;
-  border: 1px solid #20242a;
-  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 82px;
+  margin-bottom: 8px;
+  padding: 16px;
+  background: #111419;
+  border: 1px solid #1c2027;
+  border-radius: 18px;
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.15s ease;
+  transition: .15s;
 }
 
 .stock-card:active {
-  background: #171b20;
-  transform: scale(0.99);
+  transform: scale(.985);
+  background: #15181e;
 }
 
-.stock-main {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
+.stock-left {
+  min-width: 0;
 }
 
 .stock-name {
   font-size: 15px;
   font-weight: 750;
-  letter-spacing: -0.2px;
+  letter-spacing: .2px;
 }
 
 .stock-shares {
-  margin-top: 5px;
-  color: #747c86;
+  margin-top: 6px;
+  color: #737984;
   font-size: 11px;
 }
 
-.stock-info {
-  min-width: 120px;
+.stock-right {
   text-align: right;
 }
 
 .stock-price {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 650;
 }
 
 .stock-value {
   margin-top: 4px;
-  color: #858c95;
+  color: #8a909a;
   font-size: 11px;
 }
 
 .stock-profit {
-  display: inline-block;
-  margin-top: 5px;
+  margin-top: 4px;
   font-size: 11px;
-  font-weight: 750;
-}
-
-
-/* =========================
-   상세 화면
-========================= */
-
-#detail-screen {
-  padding-bottom: 40px;
-}
-
-#back-button {
-  padding: 7px 0;
-  background: transparent;
-  color: #8e959e;
-  font-size: 13px;
-}
-
-.detail-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 14px 2px 17px;
-}
-
-#detail-symbol {
-  font-size: 25px;
-  font-weight: 800;
-}
-
-.detail-price {
-  font-size: 18px;
   font-weight: 700;
 }
 
 
-/* =========================
-   상세 카드
-========================= */
+/* ======================================================
+   COLORS
+====================================================== */
+
+.up {
+  color: #36d39a !important;
+}
+
+.down {
+  color: #ff6673 !important;
+}
+
+
+/* ======================================================
+   ALLOCATION
+====================================================== */
+
+.allocation-card {
+  margin-top: 20px;
+  padding: 18px;
+}
+
+.allocation-row {
+  margin-top: 15px;
+}
+
+.allocation-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.allocation-name {
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.allocation-percent {
+  color: #858b96;
+  font-size: 11px;
+}
+
+.allocation-bar {
+  height: 6px;
+  overflow: hidden;
+  background: #1d2128;
+  border-radius: 999px;
+}
+
+.allocation-fill {
+  height: 100%;
+  background: #727985;
+  border-radius: 999px;
+}
+
+
+/* ======================================================
+   DETAIL
+====================================================== */
+
+.back-button {
+  margin: 2px 0 20px;
+  padding: 8px 0;
+  background: transparent;
+  color: #969ca7;
+  cursor: pointer;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.detail-symbol {
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.detail-label {
+  margin-top: 4px;
+  color: #666d78;
+  font-size: 11px;
+}
+
+.detail-price {
+  font-size: 19px;
+  font-weight: 700;
+}
 
 .detail-card {
   padding: 8px 18px;
@@ -451,10 +467,10 @@ h1 {
 
 .detail-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  min-height: 46px;
-  border-bottom: 1px solid #20242a;
+  align-items: center;
+  min-height: 50px;
+  border-bottom: 1px solid #1c2027;
 }
 
 .detail-row:last-child {
@@ -462,174 +478,332 @@ h1 {
 }
 
 .detail-row span {
-  color: #858c95;
+  color: #777e89;
   font-size: 12px;
 }
 
 .detail-row strong {
   font-size: 13px;
-  font-weight: 650;
 }
 
 
-/* =========================
-   매수 / 매도 버튼
-========================= */
+/* ======================================================
+   TRADE
+====================================================== */
 
 .trade-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 9px;
-  margin: 13px 0;
+  margin-top: 12px;
 }
 
-.trade-buttons button {
-  height: 46px;
-  border-radius: 13px;
+.buy-button,
+.sell-button {
+  height: 48px;
+  border-radius: 14px;
   font-size: 14px;
-  font-weight: 750;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .buy-button {
-  background: #163c2b;
-  color: #55d68b;
+  background: #17392f;
+  color: #56d6a5;
 }
 
 .sell-button {
-  background: #172d43;
-  color: #67aeff;
+  background: #3b2025;
+  color: #ff7882;
 }
-
-.buy-button:active,
-.sell-button:active {
-  transform: scale(0.98);
-}
-
-
-/* =========================
-   거래 입력
-========================= */
 
 .trade-form {
-  padding: 18px;
-  margin-bottom: 13px;
-}
-
-.trade-form input {
-  width: 100%;
-  height: 44px;
-  margin-top: 9px;
-  padding: 0 13px;
-  border: 1px solid #292e35;
-  border-radius: 11px;
-  outline: none;
-  background: #0d1013;
-  color: #f1f3f5;
-  font-size: 13px;
-}
-
-.trade-form input::placeholder {
-  color: #626a73;
-}
-
-.trade-form input:focus {
-  border-color: #3c444e;
-}
-
-.trade-form button {
-  width: 100%;
-  height: 44px;
-  margin-top: 11px;
-  border-radius: 11px;
-  background: #e9edf1;
-  color: #101215;
-  font-size: 13px;
-  font-weight: 750;
-}
-
-
-/* =========================
-   거래내역
-========================= */
-
-.trade-history-card {
+  margin-top: 12px;
   padding: 18px;
 }
 
-.trade-history-item {
-  padding: 13px 0;
-  border-bottom: 1px solid #20242a;
+.trade-form label,
+.daily-editor input + label {
+  display: block;
 }
 
-.trade-history-item:last-child {
-  border-bottom: 0;
-}
-
-.trade-history-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.trade-history-type {
-  font-size: 12px;
-  font-weight: 750;
-}
-
-.trade-history-date {
-  color: #656d76;
-  font-size: 10px;
-}
-
-.trade-history-info {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 7px;
-}
-
-.trade-history-info span {
-  color: #858c95;
+.trade-form label {
+  margin: 14px 0 6px;
+  color: #777e89;
   font-size: 11px;
 }
 
-.trade-history-profit {
-  margin-top: 6px;
+.trade-form input,
+.daily-editor input {
+  width: 100%;
+  height: 45px;
+  padding: 0 12px;
+  outline: none;
+  color: #f0f1f4;
+  background: #181b21;
+  border: 1px solid #242932;
+  border-radius: 11px;
+}
+
+.trade-form input:focus,
+.daily-editor input:focus {
+  border-color: #4c535e;
+}
+
+.primary-button,
+.secondary-button {
+  height: 45px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-button {
+  width: 100%;
+  margin-top: 15px;
+  background: #e9ebee;
+  color: #111318;
+}
+
+.secondary-button {
+  flex: 1;
+  background: #20242b;
+  color: #b5bac3;
+}
+
+
+/* ======================================================
+   HISTORY
+====================================================== */
+
+.history-card {
+  margin-top: 12px;
+  padding: 18px;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid #1d2128;
+}
+
+.history-item:last-child {
+  border-bottom: 0;
+}
+
+.history-main {
+  min-width: 0;
+}
+
+.history-type {
   font-size: 12px;
   font-weight: 700;
 }
 
-.trade-history-buttons {
-  display: flex;
-  gap: 6px;
-  margin-top: 9px;
+.history-info {
+  margin-top: 5px;
+  color: #777e89;
+  font-size: 10px;
+  line-height: 1.6;
 }
 
-.trade-history-buttons button {
+.history-profit {
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.history-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 6px;
+}
+
+.history-actions button {
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: #1b1f25;
+  color: #858b96;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+
+/* ======================================================
+   MODAL
+====================================================== */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 12px;
+  background: rgba(0, 0, 0, .65);
+  backdrop-filter: blur(8px);
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px;
+  background: #111419;
+  border: 1px solid #252a32;
+  border-radius: 23px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.modal-subtitle {
+  margin-top: 3px;
+  color: #666d78;
+  font-size: 11px;
+}
+
+.close-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #1b1f25;
+  color: #9aa0a9;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+
+/* ======================================================
+   DAILY TOTAL
+====================================================== */
+
+.daily-total-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding: 14px;
+  background: #171a20;
+  border-radius: 14px;
+}
+
+.daily-total-box span {
+  color: #777e89;
+  font-size: 12px;
+}
+
+.daily-total-box strong {
+  font-size: 15px;
+}
+
+
+/* ======================================================
+   DAILY HISTORY
+====================================================== */
+
+.daily-history-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 3px;
+  border-bottom: 1px solid #1d2128;
+}
+
+.daily-history-date {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.daily-history-money {
+  margin-top: 4px;
+  color: #777e89;
+  font-size: 10px;
+}
+
+.daily-history-rate {
+  font-size: 13px;
+  font-weight: 750;
+  text-align: right;
+}
+
+.daily-history-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 6px;
+}
+
+.daily-history-actions button {
   padding: 5px 9px;
-  border-radius: 7px;
-  background: #1b1f24;
-  color: #9ca3ac;
+  border-radius: 8px;
+  background: #1a1e24;
+  color: #7f8691;
   font-size: 10px;
 }
 
 
-/* =========================
-   빈 상태
-========================= */
+/* ======================================================
+   DAILY EDITOR
+====================================================== */
 
-.empty-history {
-  padding: 18px 0 5px;
-  color: #626a73;
-  text-align: center;
-  font-size: 12px;
+.daily-editor {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #20242b;
+}
+
+.editor-title {
+  margin-bottom: 10px;
+  color: #dfe2e7;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.daily-editor input {
+  margin-top: 7px;
+}
+
+.editor-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.editor-buttons .primary-button {
+  flex: 1;
 }
 
 
-/* =========================
-   모바일
-========================= */
+/* ======================================================
+   EMPTY
+====================================================== */
 
-@media (max-width: 400px) {
+.empty-message {
+  padding: 20px 0;
+  text-align: center;
+  color: #626873;
+  font-size: 11px;
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 380px) {
 
   .container {
     padding-left: 12px;
@@ -637,14 +811,11 @@ h1 {
   }
 
   .hero-value {
-    font-size: 29px;
+    font-size: 30px;
   }
 
-  .stock-info {
-    min-width: 105px;
+  .stock-card {
+    padding: 14px;
   }
 
-  .daily-main {
-    gap: 6px;
-  }
 }
