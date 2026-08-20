@@ -69,10 +69,6 @@ button {
   cursor: pointer;
 }
 
-.icon-button:active {
-  transform: scale(.96);
-}
-
 
 /* ======================================================
    CARD
@@ -122,11 +118,6 @@ button {
   font-size: 14px;
 }
 
-
-/* ======================================================
-   VALUATION PROFIT
-====================================================== */
-
 .valuation-box {
   margin-top: 22px;
   padding-top: 18px;
@@ -142,7 +133,6 @@ button {
 .profit-main-value {
   font-size: 22px;
   font-weight: 750;
-  letter-spacing: -.4px;
 }
 
 .profit-sub-value {
@@ -150,11 +140,6 @@ button {
   color: #777e89;
   font-size: 12px;
 }
-
-
-/* ======================================================
-   PROFIT DETAILS
-====================================================== */
 
 .profit-details {
   margin-top: 16px;
@@ -196,10 +181,6 @@ button {
   cursor: pointer;
 }
 
-.daily-section:active {
-  transform: scale(.99);
-}
-
 .daily-header {
   display: flex;
   justify-content: space-between;
@@ -210,6 +191,7 @@ button {
 .daily-main {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 8px;
 }
@@ -488,6 +470,44 @@ button {
 
 
 /* ======================================================
+   GRAPH
+====================================================== */
+
+.graph-card {
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #dfe2e7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.graph-header span:last-child {
+  color: #666d78;
+  font-weight: 400;
+}
+
+#stock-chart {
+  display: block;
+  width: 100%;
+  height: 220px;
+}
+
+.graph-empty {
+  display: none;
+  padding: 70px 0;
+  text-align: center;
+  color: #626873;
+  font-size: 11px;
+}
+
+
+/* ======================================================
    TRADE
 ====================================================== */
 
@@ -523,11 +543,8 @@ button {
 }
 
 .trade-form label,
-.daily-editor input + label {
+.daily-editor label {
   display: block;
-}
-
-.trade-form label {
   margin: 14px 0 6px;
   color: #777e89;
   font-size: 11px;
@@ -548,6 +565,22 @@ button {
 .trade-form input:focus,
 .daily-editor input:focus {
   border-color: #4c535e;
+}
+
+.input-hint {
+  margin-top: 7px;
+  color: #666d78;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.trade-calculation {
+  margin-top: 12px;
+  padding: 11px 12px;
+  background: #171a20;
+  border-radius: 10px;
+  color: #9298a2;
+  font-size: 11px;
 }
 
 .primary-button,
@@ -688,32 +721,12 @@ button {
 
 
 /* ======================================================
-   DAILY TOTAL
-====================================================== */
-
-.daily-total-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 18px;
-  padding: 14px;
-  background: #171a20;
-  border-radius: 14px;
-}
-
-.daily-total-box span {
-  color: #777e89;
-  font-size: 12px;
-}
-
-.daily-total-box strong {
-  font-size: 15px;
-}
-
-
-/* ======================================================
    DAILY HISTORY
 ====================================================== */
+
+.daily-history {
+  margin-top: 12px;
+}
 
 .daily-history-item {
   display: grid;
@@ -733,6 +746,7 @@ button {
   margin-top: 4px;
   color: #777e89;
   font-size: 10px;
+  line-height: 1.6;
 }
 
 .daily-history-rate {
@@ -757,6 +771,30 @@ button {
 
 
 /* ======================================================
+   DAILY TOTAL
+====================================================== */
+
+.daily-total-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding: 14px;
+  background: #171a20;
+  border-radius: 14px;
+}
+
+.daily-total-box span {
+  color: #777e89;
+  font-size: 12px;
+}
+
+.daily-total-box strong {
+  font-size: 15px;
+}
+
+
+/* ======================================================
    DAILY EDITOR
 ====================================================== */
 
@@ -771,10 +809,6 @@ button {
   color: #dfe2e7;
   font-size: 13px;
   font-weight: 700;
-}
-
-.daily-editor input {
-  margin-top: 7px;
 }
 
 .editor-buttons {
